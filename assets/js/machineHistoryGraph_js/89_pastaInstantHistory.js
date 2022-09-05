@@ -20,15 +20,14 @@ let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
 let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 5, 6, arrayUM)
 let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 5, 6, arrayUM)
 // Crea le series da visualizzare sul grafico
-am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 5, false, true, true)
-am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 5, false, true)
-am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 5, false, false)
-am.createLineSeries(chartActualProduction, "PV - Temperatura Camera", "time", "PV_Temp_Camera", "°C", 5, false, false)
-am.createLineSeries(chartActualProduction, "PV - Portata Vapore", "time", "PV_Portata_Vapore", "°C", 5, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 5, false, true, true)
+am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 5, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 5, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Temperatura Camera", "time", "PV_Temp_Camera", "°C", 5, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Portata Vapore", "time", "PV_Portata_Vapore", "°C", 5, false, false)
 // Crea le series da visualizzare nel grafico
 
 // Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
-setInterval(am.refreshLegendSize, 1000, chartActualProduction, 'IDLegendActualProduzione')
 setInterval(am.refreshLegendSize, 1000, chartHistoryProduction, 'IDLegendHistoryProduction')
 
 // Definisce la query da inviare a influxdb
@@ -44,4 +43,4 @@ query += 'FROM "' + entityName + '" '
 query += 'WHERE time > '+ timeStartZoom.getTime() + 'ms and time < '+ timeEndZoom.getTime() + 'ms GROUP BY time(10s) fill(previous)'
 
 // ******************** STORICO PRODUZIONI ********************
-common.historyLineProduction(chartHistoryProduction, query, entityName)
+common.actualLineProduction(chartHistoryProduction, query, entityName)

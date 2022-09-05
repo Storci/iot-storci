@@ -181,6 +181,17 @@ async function setChartData(chart, query) {
 	chart.data = data;
 	console.log(response.results[0].series[0].values.length)
 }
+// pulsante per aprire il grafico quotidiano in un'altra tab
+$('#daily_graph').click(function(){
+	let url ='./machineHistoryGraph/86_preDryerHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+	window.open(url, '_blank')
+})
+
+// pulsante per aprire il grafico attuale in un'altra tab
+$('#actual_graph').click(function(){
+	let url ='./machineHistoryGraph/86_preDryerHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+	window.open(url, '_blank')
+})
 
 // Funzione che recupera tutti gli allarmi attivi della linea.
 // Effettua una chiamata a tw per il recupero degli allarmi,

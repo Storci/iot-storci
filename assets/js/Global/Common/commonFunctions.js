@@ -249,7 +249,7 @@ function historyLineProduction(chart, query, entityName){
 
 	// pulsante per aprire il grafico storico della pasta instant 
 	$('#fullscreenHistoryPastaInstant').click(function(){
-		let url ='./machineHistoryGraph/88_pastaInstantHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+		let url ='./machineHistoryGraph/89_pastaInstantHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
 		window.open(url, '_blank')
 	})
 }

@@ -45,4 +45,4 @@ query += 'FROM "' + entityName + '" '
 query += 'WHERE time > '+ timeStartZoom.getTime() + 'ms and time < '+ timeEndZoom.getTime() + 'ms GROUP BY time(10s) fill(previous)'
 
 // ******************** STORICO PRODUZIONI ********************
-common.historyLineProduction(chartHistoryProduction, query, entityName)
+common.actualLineProduction(chartHistoryProduction, query, entityName)
