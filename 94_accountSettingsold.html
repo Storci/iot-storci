@@ -12,7 +12,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"/>
         <!-- JQUERY -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
         <!-- Bootstrap core -->
         <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css"/>
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -35,7 +34,7 @@
         <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js" type="module"></script>
         <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
         <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js" type="module"></script>
-        <script defer src="./assets/js/Global/Firebase/firebase_config.js" type="module"></script>
+        <script defer src="./assets/js/Global/Firebase/firebase_config.js"></script>
         <script defer src="./assets/js/userAccountSettings.js" type="module"></script>
         <script src="./assets/js/Global/Common/Theme.js" type="module"></script>
     </head>
@@ -177,120 +176,123 @@
                     </div>
                 </nav>
                 <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h2 class="card-result" translate_id="profile_settings">Profile settings</h2>
-                    </div>
-                    <div class="justify-content-center row row-cols-1 text-start">
-                        <div class="col-12 col-lg-6 text-start">
-                            <h5 class="card-result mb-2 mt-3" translate_id="personalInfo">Personal Info</h5>
-                            <div class="mb-2 row row-cols-1 row-cols-md-3">
-                                <div class="col-md-12 form-group mt-2">
-                                    <form role="form" class="mb-2" action="" method="post" id="user-data">
-                                        <div class="input-group mb-3"> <span class="input-group-text align-items-center d-flex material-icons-outlined" style="position: relative;">person</span>
-                                            <input type="text" class="form-control user-info" placeholder="Firstname" aria-label="Username" aria-describedby="basic-addon1" required name="firstname" invalid-messagge="invalid-mess-1" id="field-firstname"/>
-                                            <div id="invalid-mess-1" class="invalid-feedback">Please enter your firstname.</div>
+                    <section class="mt-5 profile_container">
+                        <div class="card mt-2 vertical_center">
+                            <div class="card-body customized-body  rounded-lg shadow">
+                                <!--<div class="border-2 col-md-8  tab-content tab_content" id="v-pills-tabContent">-->
+                                <!--<div class="tab-pane fade show active" id="v-pills-account-info" role="tabpanel" aria-labelledby="v-pills-account-info-tab">-->
+                                <!-- <div class="card-body customized-card m-auto pb-auto pe-auto ps-auto"> -->
+                                <div class="row">
+                                    <h3 translate_id="profile_settings" class="card-result">My Profile Settings </h3>
+                                    <form id="editProfile">
+                                        <div class="row row-cols-1 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 row-cols-xl-2 row-cols-xxl-2">
+                                            <div class="form-group col-md-6">
+                                                <label class="form-label card-result" translate_id="name">Name</label>
+                                                <input type="text" class="form-control mb-1" id="display_name"/>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="form-label card-result" translate_id="lastname">Surname</label>
+                                                <input type="text" class="form-control" id="display_lastname"/>
+                                            </div>
                                         </div>
-                                        <div class="input-group mb-3"> <span class="input-group-text align-items-center d-flex material-icons-outlined" style="position: relative;">person</span>
-                                            <input type="text" class="form-control user-info" placeholder="Lastname" aria-label="Username" aria-describedby="basic-addon1" required name="lastname" invalid-messagge="invalid-mess-2" id="field-lastname"/>
-                                            <div id="invalid-mess-2" class="invalid-feedback">Please enter your lastname.</div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="form-label card-result" translate_id="email">E-mail</label>
+                                                <input type="text" class="form-control mb-1" id="display_email"/>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="form-label card-result" translate_id="company">Company</label>
+                                                <input type="text" class="form-control" id="display_company"/>
+                                            </div>
                                         </div>
-                                        <div class="input-group mb-3"> <span class="input-group-text align-items-center d-flex material-icons-outlined" style="position: relative;">alternate_email</span>
-                                            <input type="email" class="form-control user-info" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1" required name="email" invalid-messagge="invalid-mess-3" id="field-email"/>
-                                            <div id="invalid-mess-3" class="invalid-feedback">Please enter your email.</div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label class="form-label card-result" translate_id="tel">Telephone number</label>
+                                                <input type="text" class="form-control mb-1" id="display_telephone"/>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="form-label card-result" translate_id="state">State / Country</label>
+                                                <input type="text" class="form-control" id="display_country"/>
+                                            </div>
                                         </div>
-                                        <div class="input-group mb-3"> <span class="input-group-text align-items-center d-flex material-icons-outlined" style="position: relative;">business</span>
-                                            <input type="text" class="form-control user-info" placeholder="Company" aria-label="Username" aria-describedby="basic-addon1" name="company" invalid-messagge="" id="field-company"/>
+                                        <div class="row">
+                                            <div class="col-md-12 alert alert-success alert-dismissible fade show" role="alert" id="updateSuccessAlert" style="display: none;"> <strong translate_id="alert_profile_update">Profile updated Successfully</strong>
+                                            </div>
                                         </div>
-                                        <div class="input-group mb-3"> <span class="input-group-text align-items-center d-flex material-icons-outlined" style="position: relative;">flag</span>
-                                            <input type="text" class="form-control user-info" placeholder="State" aria-label="Username" aria-describedby="basic-addon1" name="state" invalid-messagge="" id="field-state"/>
+                                        <div class="col d-flex d-lg-flex d-md-flex d-sm-flex d-xl-flex d-xxl-flex flex-column flex-lg-column flex-md-column flex-sm-column flex-xl-column flex-xxl-column justify-content-end justify-content-lg-end justify-content-md-end justify-content-sm-end justify-content-xl-end justify-content-xxl-end">
+                                            <button type="button" id="profile_Update" class="btn btn-primary mt-2 d-block" translate_id="update_btn_profile">Update profile Info</button>
                                         </div>
-                                        <div class="input-group mb-3"> <span class="input-group-text align-items-center d-flex material-icons-outlined" style="position: relative;">local_post_office</span>
-                                            <input type="text" class="form-control user-info" placeholder="zip code" aria-label="Username" aria-describedby="basic-addon1" name="zip_code" invalid-messagge="" id="field-zip"/>
-                                        </div>
-                                        <div class="input-group mb-3"> <span class="input-group-text align-items-center d-flex material-icons-outlined" style="position: relative;">smartphone</span>
-                                            <input type="tel" class="form-control user-info" placeholder="mobile phone" aria-label="Username" aria-describedby="basic-addon1" required name="mobile_phone" invalid-messagge="invalid-mess-7" id="field-mobile"/>
-                                            <div id="invalid-mess-7" class="invalid-feedback">Please enter your mobile phone.</div>
-                                        </div>
-                                        <button type="button" class="btn btn-outline-primary" id="userUpdate">Save</button>
                                     </form>
                                 </div>
-                                <div class="alert alert-success col-12 col-md-12 mt-2" id="user-successAlert" style="display: none;"><strong translate_id="alert_password_update" spellcheck="false" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="3" medium-editor-index="72c2379b-db55-9f9e-7148-aaf2840b4247" data-placeholder="Type your text" data-medium-focused="true"><span translate_id="alert_profile_update">Data Updated Successfully</span></strong>
-                                </div>
-                                <div class="alert alert-danger col-12 col-md-12" id="user-errorAlert" style="display: none;"><strong translate_id="alert_password_update_error" spellcheck="false" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="4" medium-editor-index="9d40f86d-26b0-8684-e2d8-b8aef7bd0d6b" data-placeholder="Type your text" data-medium-focused="true"><span translate_id="alert_profile_update_error">Data update failed, Please try again.</span></strong>
-                                </div>
-                            </div>
-                            <div class="align-items-center border-bottom d-flex flex-md-nowrap flex-wrap justify-content-between mb-5 mt-5">
-</div>
-                            <h5 class="card-result mb-2 mt-2" translate_id="change_password">Change password</h5>
-                            <div class="mb-2 row row-cols-1 row-cols-md-3">
-                                <div class="col-md-12 form-group mt-2">
-                                    <form id="changePasswordForm" class="mb-2" action="" method="post">
-                                        <div class="input-group mb-3">
-                                            <input name="oldPassword" type="password" class="form-control password-field" id="oldPassword" placeholder="Enter old password" aria-describedby="togglePassword1" autocomplete="off"/>
-                                            <span id="togglePassword1" class="cursor-pointer input-group-text align-items-center d-flex material-icons-outlined toggle-password" style="position: relative;" passwordField="oldPassword">visibility</span>
-                                            <div id="invalid-mess-10" class="invalid-feedback">Please enter your current password.</div>
+                                <div class="row">
+                                    <h4 class="col mt-3 card-result" translate_id="change_password" translate_id="update_heading">Change Password</h4>
+                                    <div class="row row-cols-1 row-cols-lg-2 row-cols-md-1 row-cols-sm-1 row-cols-xl-2 row-cols-xxl-2">
+                                        <div class="form-group col-md-6 ">
+                                            <label class="form-label card-result" translate_id="old">Old Password</label>
+                                            <input type="password" class="form-control form-control-md" id="oldPassword" required placeholder="****"/>
                                         </div>
-                                        <div class="input-group mb-3">
-                                            <input name="newPassword" type="password" class="form-control password-field" id="newPassword" placeholder="New Password" autocomplete="off" aria-describedby="togglePassword2"/>
-                                            <span id="togglePassword2" class="cursor-pointer input-group-text align-items-center d-flex material-icons-outlined toggle-password" style="position: relative;" passwordField="newPassword">visibility</span>
-                                            <div id="invalid-mess-11" class="invalid-feedback">Please enter your new password.</div>
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label card-result" translate_id="new">&nbsp;New Password</label>
+                                            <input type="password" class="form-control form-control-md" id="newPassword" required placeholder="****"/>
                                         </div>
-                                        <div class="input-group mb-3">
-                                            <input name="confirmPassword" type="password" class="form-control password-field" id="confirmPassword" placeholder="Confirm Password" autocomplete="off" aria-describedby="togglePassword3"/>
-                                            <span id="togglePassword3" class="cursor-pointer input-group-text align-items-center d-flex material-icons-outlined toggle-password" style="position: relative;" passwordField="confirmPassword">visibility</span>
-                                            <div id="invalid-mess-12" class="invalid-feedback">Please confirm your new password.</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 alert alert-success alert-dismissible fade show" role="alert" id="successAlert"> <strong translate_id="alert_password_update">Password Updated Successfully</strong>
                                         </div>
-                                        <div class="mb-3">
-                                            <div class="form-text">Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12  alert alert-danger alert-dismissible fade show" role="alert" id="errorAlert"> <strong translate_id="alert_password_update_error">Password update failed, Please try again</strong> 
                                         </div>
-                                        <button type="button" class="btn btn-outline-primary" id="passwordUpdate" disabled="disabled">Save</button>
-                                    </form>
-                                </div>
-                                <div class="alert alert-success col-12 col-md-12 mt-2" id="successAlert" style="display: none;">
-                                    <strong translate_id="alert_password_update" spellcheck="false" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="3" medium-editor-index="72c2379b-db55-9f9e-7148-aaf2840b4247" data-placeholder="Type your text" data-medium-focused="true"><span translate_id="alert_password_update">Password Updated Successfully</span></strong>
-                                </div>
-                                <div class="alert alert-danger col-12 col-md-12" id="errorAlert" style="display: none;">
-                                    <strong translate_id="alert_password_update_error" spellcheck="false" data-medium-editor-element="true" role="textbox" aria-multiline="true" data-medium-editor-editor-index="4" medium-editor-index="9d40f86d-26b0-8684-e2d8-b8aef7bd0d6b" data-placeholder="Type your text" data-medium-focused="true"><span translate_id="alert_profile_update_error">Password update failed, Please try again.</span></strong>
-                                </div>
-                            </div>
-                            <div class="align-items-center border-bottom d-flex flex-md-nowrap flex-wrap justify-content-between mb-5 mt-5">
-</div>
-                            <h5 class="card-result mb-2 mt-2">Settings</h5>
-                            <div class="mb-5 row row-cols-1 row-cols-md-3">
-                                <div class="align-items-center col-md-12 d-flex form-group justify-content-between mt-2" style="min-height: 30px;">
-                                    <h6 translate_id="notification" class="card-result">Notification</h6>
-                                    <div class="form-check form-switch">
-                                        <input type="checkbox" class="form-check-input" id="notification-toggle"/>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-md-between row">
+                                        <div class="col d-flex d-lg-flex d-md-flex d-sm-flex d-xl-flex d-xxl-flex flex-column flex-lg-column flex-md-column flex-sm-column flex-xl-column flex-xxl-column justify-content-end justify-content-lg-end justify-content-md-end justify-content-sm-end justify-content-xl-end justify-content-xxl-end">
+                                            <button type="button" id="passwordUpdate" class="btn btn-primary mt-2 d-block" translate_id="update_btn">Update Password</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="align-items-center col-md-12 d-flex form-group justify-content-between mt-2" style="min-height: 30px;">
-                                    <h6 translate_id="theme" class="card-result">Color theme</h6>
-                                    <div class="form-check form-switch">
-                                        <input type="checkbox" class="form-check-input" id="formInput8"/>
+                                <div class="mt-5 row row-cols-2 row-cols-lg-2 row-cols-md-2 row-cols-xl-2 row-cols-xxl-2">
+                                    <div class="form-group col-md-6">
+                                        <h5 translate_id="notification" class="card-result">Notification</h5>
+                                        <div class="d-flex justify-content-start align-items-start">
+                                            <label class="form-label card-result" id="" translate_id="no">No</label>
+                                            <div class="form-check form-switch form-check-inline d-flex align-items-center" style="margin: 0px;padding: 0px;padding-top: 0px;">
+                                                <input class="form-check-input" type="checkbox" style="margin: 0px;margin-right: 10px;margin-left: 10px;"/>
+                                                <label class="form-check-label card-result" translate_id="yes">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5 translate_id="theme" class="card-result">Theme</h5>
+                                        <div class="d-flex justify-content-start align-items-start">
+                                            <label class="form-label" id="IDLightModeIcon" style="width: 24px; background: url(./assets/img/loghi/dark/light_mode_black_24dp.svg); height: 24px; margin: 0px;"></label>
+                                            <div class="form-check form-switch form-check-inline d-flex align-items-center" style="margin: 0px;padding: 0px;padding-top: 0px;">
+                                                <input class="form-check-input" type="checkbox" id="mycheck" style="margin: 0px;margin-right: 10px;margin-left: 10px;" name="mycheck"/>
+                                                <label class="form-check-label" id="IDDarkModeIcon" for="mycheck" style="color: rgb(112, 122, 131); background: url(./assets/img/loghi/dark/dark_mode_black_24dp.svg); width: 24px; height: 24px;"></label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="align-items-center col-md-12 d-flex form-group justify-content-between mt-2" style="min-height: 30px;">
-                                    <h6 translate_id="language" class="card-result">Language</h6>
-                                    <div class="dropdown dropup placeholder-glow">
-                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" id="dropdown1" data-bs-toggle="dropdown" aria-expanded="false" type="button">Select</button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdown1" id="dropdown-language">
-                                            <li id="en" value="English" class="translate">
-                                                <a class="dropdown-item" href="#">English</a>
-                                            </li>
-                                            <li id="it" value="Italiano" class="translate">
-                                                <a class="dropdown-item" href="#" data-pg-name="Italiano">Italiano</a>
-                                            </li>
-                                            <li id="fr" value="Français" class="translate">
-                                                <a class="dropdown-item" href="#">Français</a>
-                                            </li>
-                                            <li id="es" value="Español" class="translate"><a class="dropdown-item" href="#">Español</a>
-                                            </li>
-                                        </ul>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5 class="card-result" translate_id="language">Language</h5>
+                                        <nav class="navbar navbar-light navbar-expand-md">
+                                            <div class="d-md-flex justify-content-start" id="navcol-2">
+                                                <ul class="navbar-nav">
+                                                    <button class="collapse navbar-collapse nav-item dropup show language_menu btn btn-light" id="IDdropdown" onchange="dropDown" style="position: relative; text-align: center;"> <a class="dropdown-toggle nav-link lang" aria-expanded="false" data-bs-toggle="dropdown" id="IDDefault" style="color: #0d0d0e; text-align: center;">Select</a>
+                                                        <div class="dropdown-menu dropdown-menu-light"> <a class="dropdown-item translate" id="eng" value="English"><img style="width: 20px;height: 15px;" src="./assets/img/EN_flag.png"/>English</a> <a class="dropdown-item translate" id="it" value="Italiano"><img style="width: 20px;height: 15px;" src="./assets/img/IT_flag.png"/>Italiano</a> <a class="dropdown-item translate" id="es" value="Español"><img style="width: 20px;height: 15px;padding: 0px;margin: 0px;" src="./assets/img/ES_flag.png"/>Espanol</a> <a class="dropdown-item translate" id="fr" value="Français"><img style="width: 20px;height: 15px;" src="./assets/img/FR_flag.png"/>Français</a>
+                                                        </div>
+                                                    </button>
+                                                </ul>
+                                            </div>
+                                        </nav>
                                     </div>
                                 </div>
+                                <!--</div> -->
+                                <!--</div>-->
+                                <!--</div> -->
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </main>
             </div>
         </div>
