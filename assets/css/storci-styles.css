@@ -206,7 +206,7 @@ a {
 }
 
 .card_cells,
-.card-hover {
+.card-hover {
     cursor: pointer;
 }
 
@@ -326,83 +326,85 @@ a {
 } */
 .card-body {
     background-color: var(--bs-card-background-default-hover) !important;
-  }
-  .card{
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20) !important;
-  }
+}
 
-  /*.profile_container{
+.card {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.20) !important;
+}
+
+/* .profile_container{
       display: flex;
       align-items: center;
       justify-content: center;
-  }*/
-
-  /* div per centrare la il contenuto*/
-  .vertical_center{
+  } */
+/* div per centrare la il contenuto */
+.vertical_center {
     width: 80% !important;
-    margin:auto;
-  }
+    margin: auto;
+}
 
-  /*una altezza fissa per gestire questo quando la risoluzione di default*/
-  .customized-body{
-      height: 700px !important;
+/* una altezza fissa per gestire questo quando la risoluzione di default */
+.customized-body {
+    height: 700px !important;
+}
 
-  }
-  /* media query per gestire l'altezza del div quando la risoluzione ha un massimo di 767 pixel*/
-  @media (max-width :767px ) {
-    .customized-body{
+/* media query per gestire l'altezza del div quando la risoluzione ha un massimo di 767 pixel */
+@media (max-width :767px ) {
+    .customized-body {
         height: 1150px !important;
     }
-    .tab_content{
 
+    .tab_content {
     }
+}
 
-  }
-/* */
-  @media (max-width :992px) {
-      .vertical_center{
-          width: 100% !important;
+/*  */
+@media (max-width :992px) {
+    .vertical_center {
+        width: 100% !important;
+    }
+}
 
-      }
-  }
-
-  .customized-card{
+.customized-card {
     padding: 0rem 0rem !important;
-  }
-  .tab_content{
+}
+
+.tab_content {
     width: 90%;
     margin: auto;
-  }
-/* colore per i testi per i label */
- .card-result{
-    color:var(--bs-heading-high-emphasis);
- }
+}
 
-/**/
-thead{
+/* colore per i testi per i label */
+.card-result {
+    color: var(--bs-heading-high-emphasis);
+}
+
+/*  */
+thead {
     position: sticky;
     top: 0px;
     background-color: floralwhite;
 }
-.tableDiv{
 
+.tableDiv {
     height: 500px;
     max-width: 700%;
     overflow: scroll;
-
 }
-/* regola per gestire lo scroll sulla tabella senza allargare l'altezza*/
-.tableDiv::-webkit-scrollbar{
+
+/* regola per gestire lo scroll sulla tabella senza allargare l'altezza */
+.tableDiv::-webkit-scrollbar {
     display: none;
 }
-.actual_graph{
+
+.actual_graph {
     height: 30%;
 }
-.history_graph{
+
+.history_graph {
     height: -webkit-fill-available;
 }
 
-
-.cursor-pointer{
-  cursor: pointer;
+.cursor-pointer {
+    cursor: pointer;
 }
