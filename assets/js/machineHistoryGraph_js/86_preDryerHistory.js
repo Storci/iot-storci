@@ -10,7 +10,7 @@ const urlParams = new URLSearchParams(queryString)
 
 
 // Recupera l'entity name della thing
-let entityName = urlParams.get('entityname')
+let entityName = urlParams.get('entityName')
 let timeStartZoom = new Date(urlParams.get('timeStart'))
 console.log(timeStartZoom)
 let timeEndZoom = new Date(urlParams.get ('timeEnd'))
