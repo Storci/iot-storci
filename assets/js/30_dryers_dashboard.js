@@ -101,7 +101,7 @@ function createCellCard(cellsGroup){
 		$("#IDRow").append(card)
 
 		document.getElementById(id).onclick = function(){
-			window.location.href = "./32_dryer_dashboard.html?entityname=" + el.ID
+			window.location.href = "./32_dryer_dashboard.html?entityName=" + el.entityName
 		}
 	})
 }
