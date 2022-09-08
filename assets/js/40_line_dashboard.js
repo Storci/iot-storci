@@ -65,7 +65,7 @@ $("body").ready(async function(){
 	// ***** GRAFICO PRODUZIONE ATTUALE *****
 	// Instazia il grafico della linea
 
-	let chartProduction = am.createXYChart("IDtrendProduction", 'IDLegendProduction', 1, 2, ['Produzione Oraria', 'Pressione Estrusore'])
+	let chartProduction = am.createXYChart("IDtrendProduction", 'IDLegendProduction', 2, 2, ['Produzione Oraria', 'Pressione Estrusore'])
 	// Crea le series da visualizzare nel grafico
 	am.createLineSeries(chartProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, true, false, true, 0.77)
 	am.createLineSeries(chartProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, false, false, 0.77)

@@ -69,7 +69,7 @@ $('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActual
 $('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function(){
-	let url ='./machineGraph/71_extruderGraph.html?'+'entityName='+ entityName 
+	let url ='./machineGraph/71_extruderGraph.html?'+'entityName='+ entityName
 	window.open(url, '_blank')
 })
 
