@@ -16,20 +16,9 @@ async function signInWithEmailPassword(email, password) {
 function signUpWithEmailPassword(email, password, baseURL) {
 	// [START auth_signup_password]
 	firebase.auth().createUserWithEmailAndPassword(email, password)
-	.then((userCredential)  => {
-            let db = firebase.firestore();
-            db.collection('users').doc(userCredential.user.email).set({
-            firstName : signUpForm['IDName'].value,
-            lastName : signUpForm['IDLastName'].value,
-			mail : signUpForm['IDEmail'].value,
-            phoneNumber : signUpForm['IDPhoneNumber'].value,
-            Countries : signUpForm['IDCountries'].value,
-			companyName: signUpForm['IDCompanyName'].value
-        });
-	}).then(() =>{
-		$("#signUpSuccess").fadeIn(3000);
-		//window.location.href = './90_signIn.html'
-    })
+	.then(() =>{
+		$("#signUpSuccess").fadeIn(1500)
+  })
 	.catch((error) => {
 		let errorCode = error.code
 		let errorMessage = error.message
@@ -41,7 +30,7 @@ function signUpWithEmailPassword(email, password, baseURL) {
 
 		// effettuare un controllo se la mail esiste gia in firebase
 		if(errorMail == "auth/email-already-in-use"){
-			$("#signUpfailed").fadeIn(3000);
+			$("#signUpfailed").fadeIn(1500);
 			console.log(errorMail)
 		}
 	})
@@ -148,7 +137,7 @@ function setPersistenceNone() {
 
 
 /*function userUpdatePassword(user, newPassword){
-	user.updatePassword(newPassword).then(() => 
+	user.updatePassword(newPassword).then(() =>
 	{
 		console.log("ok")
 		// Update successful.
@@ -162,10 +151,10 @@ function setPersistenceNone() {
 	user.reauthenticateWithCredential(credential).then(() => {
 		// User re-authenticated.
 		console.log(newPassword)
-		user.updatePassword(newPassword).then(() => 
+		user.updatePassword(newPassword).then(() =>
 	{
 		alert("Password Successfully updated")
-	  
+
 	  });
 	  }).catch((error) => {
 		// An error ocurred
@@ -204,7 +193,7 @@ function setPersistenceNone() {
 		  // User is signed in, see docs for a list of available properties
 		  // https://firebase.google.com/docs/reference/js/firebase.User
 		  var firstName = user.firstName;
-		  
+
 		  // ...
 		} else {
 		  // User is signed out
@@ -218,13 +207,13 @@ export {
 	signUpWithEmailPassword,
 	sendEmailVerification,
 	sendPasswordReset,
-	signOut, 
-	onAuthStateChanged, 
-	setPersistenceSession, 
-	setPersistenceNone, 
-	onAuthStateChanged_2, 
-	//userUpdatePassword, 
+	signOut,
+	onAuthStateChanged,
+	setPersistenceSession,
+	setPersistenceNone,
+	onAuthStateChanged_2,
+	//userUpdatePassword,
 	//changePassword
 	//getUserData
-	
+
 };
