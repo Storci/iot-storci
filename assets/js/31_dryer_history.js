@@ -27,157 +27,7 @@ fb.onAuthStateChanged_2()
 // funzione per la traduzione
 lang.getLanguage()
 
-// Definisce le variabili come date
-let timeStartHistory = new Date()
-let timeEndHistory   = new Date()
-// Imposta X giorni prima della data odierna
-timeStartHistory.setDate(timeStartHistory.getDate() - 14)
-// Imposta i 2 data picker con le date calcolate prima
-// La funzione getDate ritorna solamente l'anno, il mese e il giorno
-// yyyy-MM-dd
-$('#IDTimeStart').val(common.getDate(timeStartHistory))
-$('#IDTimeEnd').val(common.getDate(timeEndHistory))
 
-// Cancella tutte le righe della tabella
-$("#IDHistoryTableBody").empty()
-
-// Recupera tutte le celle installate dal cliente
-tw.getCustomerCells(selectedCustomer)
-.then(dryers => {
-	dryers.array.forEach((dryer) =>{
-		console.log(dryer)
-		console.log(timeStartHistory)
-		console.log(timeEndHistory)
-		let dryer_name = dryer.entityName.split(".")
-		dryer_name = dryer_name[4] + " " + dryer_name[5]
-		// Recupera lo storico delle lavorazioni effettuate dalla cella
-		tw.getCellHistoryProductions(dryer.entityName, timeStartHistory, timeEndHistory, '')
-		.then(productions => {
-			// Per ogni ricetta trovata genera una nuova riga nella tabella
-			productions.rows.forEach((el, i) => {
-				// Converte il timestamp in Date
-				let timeStart = new Date(el.timeStart).toLocaleString();
-				let timeEnd = new Date(el.timeEnd).toLocaleString();
-				// Definisce l'id della riga della tabella
-				let id = "IDHistoryTableRow" + i;
-				// Definisce l'html della riga da aggiungere
-				let row = '<tr id=' + id + ' class="hover_tr" style="border-style: none;background: var(--bs-table-bg);">'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + timeStart  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + timeEnd    + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.ricetta + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.durata  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + dryer_name  + '</td>'
-				row    += '</tr>'
-				// Aggiunge la riga alla tabella
-				$("#IDHistoryTableBody").append(row)
-				// Imposta i timestamp di inizio e fine essiccazione (il range temporale è allargato 30 min prima dell'inizio e 30 min dopo la fine)
-				let timestampStart = el.timeStart - 1800000
-				let timestampEnd   = el.timeEnd + 1800000
-				// Controlla se la data è invalida, nel caso l'essiccazione è in corso e carica la data attuale
-				if(timestampEnd == undefined || timestampEnd == null || timestampEnd == '' || Number.isNaN(timestampEnd)){
-					timestampEnd = Date.now() + 1800000
-				}
-			})
-		})
-	})
-})
-.catch(error => console.error(error))
-
-$("#countrow").click(function(){
-	let table = $("#IDHistoryTableBody")
-	let rows = table[0].children
-	console.log(rows.length)
-	$("#countrow").text(rows.length)
-})
-
-$("th").click(function() {
-	/*
-	let table = $("#IDHistoryTableBody")
-
-	table[0].children.forEach((row) => {
-		console.log(row)
-	})
-	*/
-	let n = $(this).index()
-
-
-	let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0
-	table = $("#IDHistoryTableBody")
-	switching = true
-
-	// Set the sorting direction to ascending:
-	dir = "asc"
-	/* Make a loop that will continue until
-	no switching has been done: */
-	while (switching) {
-	  // Start by saying: no switching is done:
-	  switching = false
-	  rows = table[0].children
-	  /* Loop through all table rows (except the
-	  first, which contains table headers): */
-	  for (i = 0; i < (rows.length - 1); i++) {
-	    // Start by saying there should be no switching:
-	    shouldSwitch = false;
-	    /* Get the two elements you want to compare,
-	    one from current row and one from the next: */
-	    x = rows[i].getElementsByTagName("TD")[n];
-	    y = rows[i + 1].getElementsByTagName("TD")[n];
-	    /* Check if the two rows should switch place,
-	    based on the direction, asc or desc: */
-	    if (dir == "asc") {
-				console.log(Date.parse(x.innerHTML))
-				if(Date.parse(x.innerHTML) > Date.parse(y.innerHTML)){
-				//if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-					// If so, mark as a switch and break the loop:
-	        shouldSwitch = true;
-	        break;
-				}
-	    } else if (dir == "desc") {
-				if (Date.parse(x.innerHTML) < Date.parse(y.innerHTML)) {
-	      //if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-	        // If so, mark as a switch and break the loop:
-	        shouldSwitch = true;
-	        break;
-	      }
-	    }
-	  }
-	  if (shouldSwitch) {
-	    /* If a switch has been marked, make the switch
-	    and mark that a switch has been done: */
-	    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-	    switching = true;
-	    // Each time a switch is done, increase this count by 1:
-	    switchcount ++;
-	  } else {
-	    /* If no switching has been done AND the direction is "asc",
-	    set the direction to "desc" and run the while loop again. */
-	    if (switchcount == 0 && dir == "asc") {
-	      dir = "desc";
-	      switching = true;
-	    }
-	  }
-	}
-
-
-
-
-
-
-
-
-
-})
-
-
-function sortTable(table, column){
-
-
-}
-
-
-
-/****************************************************************************************************/
-/*
 // Istanzia i grafici dell'attuale e dello storico
 // I grafici devono essere istanziati una volta solamente
 // La funzione am.createXYChart ha i seguenti parametri di ingresso
@@ -211,9 +61,177 @@ query += 'mean("Dati_Aggiuntivi_Umidita_Ambiente") as "PV_Umidita_Ambiente", '
 query += 'mean("Dati_Ciclo_Umidita_PV") as "PV_Umidita_Cella", '
 query += 'mean("Dati_Ciclo_Umidita_SP") as "SP_Umidita_Cella", '
 query += 'mean("Dati_Aggiuntivi_Kcal_Ciclo") as "PV_Consumo_Ciclo" '
-query += 'FROM "' + entityName + '" '
+query += 'FROM "{3}" '
 query += 'WHERE time > {1}ms and time < {2}ms GROUP BY time(10s) fill(previous)'
 
+
+
+
+// Definisce le variabili come date
+let timeStartHistory = new Date()
+let timeEndHistory   = new Date()
+// Imposta X giorni prima della data odierna
+timeStartHistory.setDate(timeStartHistory.getDate() - 14)
+// Imposta i 2 data picker con le date calcolate prima
+// La funzione getDate ritorna solamente l'anno, il mese e il giorno
+// yyyy-MM-dd
+$('#IDTimeStart').val(common.getDate(timeStartHistory))
+$('#IDTimeEnd').val(common.getDate(timeEndHistory))
+
+// Cancella tutte le righe della tabella
+$("#IDHistoryTableBody").empty()
+
+// Recupera tutte le celle installate dal cliente
+tw.getCustomerCells(selectedCustomer)
+.then(dryers => {listHistoryProduction(dryers)})
+.catch(error => console.error(error))
+
+$("#IDTimeStart").change(()=>{
+	console.log(timeStartHistory)
+	timeStartHistory = new Date($("#IDTimeStart").val())
+	console.log(timeStartHistory)
+	// Recupera tutte le celle installate dal cliente
+	tw.getCustomerCells(selectedCustomer)
+	.then(dryers => {listHistoryProduction(dryers)})
+	.catch(error => console.error(error))
+})
+
+$("#IDTimeEnd").change(()=>{
+
+	timeEndHistory = new Date($("#IDTimeEnd").val())
+	// Recupera tutte le celle installate dal cliente
+	tw.getCustomerCells(selectedCustomer)
+	.then(dryers => {listHistoryProduction(dryers)})
+	.catch(error => console.error(error))
+})
+
+
+
+let direction = true
+$("th").click(function() {
+	let icon = "#" + $(this)[0].children[0].children[1].id
+	$(".icon-table").addClass("d-none")
+  $(icon).removeClass("d-none")
+
+	if(direction){
+		$(icon).text("expand_more")
+	}else{
+		$(icon).text("expand_less")
+	}
+
+
+	let column = $(this).index()
+	let table = $("#IDHistoryTableBody")
+
+	let start = new Date().getTime()
+	insertionSort(table[0], column, direction)
+	let stop  = new Date().getTime()
+	console.log(stop-start + " ms")
+
+	direction = !direction
+})
+
+function convertDate(s){
+	let sdate = s
+	sdate = sdate.split(", ")
+	let date = sdate[0]
+	date = date.split("/")
+	let time = sdate[1]
+
+	let day = date[0]
+	let month = date[1]
+	let year = date[2]
+
+	return Date.parse(year + "/" + month + "/" + day + " " + time)
+}
+
+function insertionSort(table, column, dir){
+	let rows = 	table.children
+	let parent = table
+
+	for(let i=1; i<rows.length; i++){
+		for(let j=i-1; j>-1; j--){
+			let value1 = rows[j].getElementsByTagName("TD")[column].innerHTML
+			let value2 = rows[j+1].getElementsByTagName("TD")[column].innerHTML
+
+			if(column == 0 || column == 1){
+				value1 = convertDate(value1)
+				value2 = convertDate(value2)
+			}
+
+			if(dir){
+				if(value2 < value1){
+					parent.insertBefore(rows[j+1], rows[j])
+				}
+			}else{
+				if(value2 > value1){
+					parent.insertBefore(rows[j+1], rows[j])
+				}
+			}
+		}
+	}
+}
+
+
+function listHistoryProduction(dryers){
+	$("#IDHistoryTableBody").empty()
+	dryers.array.forEach((dryer, d) =>{
+		let dryer_name = dryer.entityName.split(".")
+		dryer_name = dryer_name[4] + " " + dryer_name[5]
+		// Recupera lo storico delle lavorazioni effettuate dalla cella
+		tw.getCellHistoryProductions(dryer.entityName, timeStartHistory, timeEndHistory, '')
+		.then(productions => {
+			// Per ogni ricetta trovata genera una nuova riga nella tabella
+			productions.rows.forEach((el, i) => {
+				// Converte il timestamp in Date
+				let timeStart = new Date(el.timeStart).toLocaleString();
+				let timeEnd = new Date(el.timeEnd).toLocaleString();
+				// Definisce l'id della riga della tabella
+				let id = "IDHistoryTableRow" + i + d;
+				// Definisce l'html della riga da aggiungere
+				let row = '<tr id=' + id + ' class="hover_tr" style="border-style: none;background: var(--bs-table-bg);">'
+				row    += '    <td style="font-size: 12px;border-style: none;">' + timeStart  + '</td>'
+				row    += '    <td style="font-size: 12px;border-style: none;">' + timeEnd    + '</td>'
+				row    += '    <td style="font-size: 12px;border-style: none;">' + el.ricetta + '</td>'
+				row    += '    <td style="font-size: 12px;border-style: none;">' + el.durata  + '</td>'
+				row    += '    <td style="font-size: 12px;border-style: none;">' + dryer_name  + '</td>'
+				row    += '</tr>'
+				// Aggiunge la riga alla tabella
+				$("#IDHistoryTableBody").append(row)
+				// Imposta i timestamp di inizio e fine essiccazione (il range temporale è allargato 30 min prima dell'inizio e 30 min dopo la fine)
+				let timestampStart = el.timeStart - 1800000
+				let timestampEnd   = el.timeEnd + 1800000
+				// Controlla se la data è invalida, nel caso l'essiccazione è in corso e carica la data attuale
+				if(timestampEnd == undefined || timestampEnd == null || timestampEnd == '' || Number.isNaN(timestampEnd)){
+					timestampEnd = Date.now() + 1800000
+				}
+
+				id = "#" + id
+				$(id).click(function(){
+					// Aggiunge la classe table-primary alla riga seleziona e la rimuove dalle altre righe
+					$(this).addClass('table-primary').siblings().removeClass('table-primary')
+
+					// Definisce la query da inviare a influxdb
+					let subquery = query.replaceAll('{1}', timestampStart).replaceAll('{2}', timestampEnd).replaceAll('{3}', dryer.entityName)
+					// Recupera i dati da influxdb e li visualizza sul grafico
+					am.setChartData(chartHistoryProduction, subquery, '')
+				})
+
+				// Recupera la prima riga della tabella
+				let elem = document.getElementById('firstColumn')
+		    // Definisce la variabile come click event
+				let clickEvent = new Event('click');
+		    // Esegue l'evento dell'elemento, in questo modo simula il click
+		    // sulla prima riga della tabella, e viene caricato il grafico
+				elem.dispatchEvent(clickEvent)
+
+			})
+		})
+	})
+}
+// Abilita onclick sulla card
+
+/*
 // ******************** STORICO PRODUZIONI ********************
 common.historyDryerProduction(chartHistoryProduction, query, entityName)
 
