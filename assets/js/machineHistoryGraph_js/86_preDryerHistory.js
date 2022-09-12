@@ -18,7 +18,7 @@ console.log(timeEndZoom)
 
 let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
 //let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 7, 8, arrayUM)
-let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 7, 8, arrayUM)
+let chartHistoryProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 7, 8, arrayUM)
 // Crea le series da visualizzare sul grafico
 am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 7, false, true, true)
 am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 7, false, true)
