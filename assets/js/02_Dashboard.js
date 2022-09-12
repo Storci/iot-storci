@@ -5,6 +5,11 @@ import * as fb from "./Global/Firebase/firebase_auth_module.js"
 import * as lang from "./Global/Common/Translation.js"
 import * as common from "./Global/Common/commonFunctions.js"
 
+
+const queryString = window.location.search
+const urlParams = new URLSearchParams(queryString)
+
+
 // definisce l'url di base della pagina attuale (in questo caso della pagina index.html).
 // il risultato è http(s)://xxx.xxx.xxx.xxx:xxxx
 // baseURL verrà utilizzato come base per il cambio pagina.
@@ -21,7 +26,8 @@ if(window.location.protocol == 'https:'){
 // Recupera dei dati dalle local storage
 let selectedCustomer = localStorage.getItem("global_selected_customer")
 let selectedLine 		 = localStorage.getItem("global_selected_line")
-let entityName			 = localStorage.getItem('global_entityName')
+let entityName = urlParams.get('entityName')
+console.log(entityName)
 // Toglie gli underscore dal nome e li visualizza nel campo
 $('#IDCustomerName').text(selectedCustomer.replace(/_/g, " "))
 // Imposta il nome del cliente nella breadcrumb
