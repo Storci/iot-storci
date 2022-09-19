@@ -12,6 +12,7 @@ import * as common from "./Global/Common/commonFunctions.js"
 let baseURL = window.location.protocol + "//" + window.location.host
 let pageURL = window.location.href
 */
+
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 
@@ -37,15 +38,15 @@ lang.getLanguage()
 // - Numero di assi Y associate al GRAFICO
 // - Array con le unità di misura
 let arrayUM = ['Essicazione', 'Calorie']
-let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 0, 2, arrayUM)
+let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 0, 2, arrayUM, true)
 // Crea le series da visualizzare sul grafico
-am.createLineSeries(chartHistoryProduction, "PV - Temperature Ambient", "time", "PV_Temperatura_Ambiente", "°C", 0, false, true)
-am.createLineSeries(chartHistoryProduction, "PV - Temperature", "time", "PV_Temperatura_Cella", "°C", 0, true, false, true)
-am.createLineSeries(chartHistoryProduction, "SP - Temperature", "time", "SP_Temperatura_Cella", "°C", 0, false, false)
-am.createLineSeries(chartHistoryProduction, 'PV - Humidity Ambient', 'time', 'PV_Umidita_Ambiente', '%H', 0, false, true)
-am.createLineSeries(chartHistoryProduction, 'PV - Humidity', 'time', 'PV_Umidita_Cella', '%H', 0, true, false)
-am.createLineSeries(chartHistoryProduction, 'SP - Humidity', 'time', 'SP_Umidita_Cella', '%H', 0, false, false)
-am.createLineSeries(chartHistoryProduction, 'PV - kcal/h', 'time', 'PV_Consumo_Ciclo', 'kcal', 1, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Temperature Ambient", "time", "PV_Temperatura_Ambiente", "°C", 0, false, true, 0.77)
+am.createLineSeries(chartHistoryProduction, "PV - Temperature", "time", "PV_Temperatura_Cella", "°C", 0, false, false, true, 0.77)
+am.createLineSeries(chartHistoryProduction, "SP - Temperature", "time", "SP_Temperatura_Cella", "°C", 0, false, false, 0.77)
+am.createLineSeries(chartHistoryProduction, 'PV - Humidity Ambient', 'time', 'PV_Umidita_Ambiente', '%H', 0, false, true, 0.77)
+am.createLineSeries(chartHistoryProduction, 'PV - Humidity', 'time', 'PV_Umidita_Cella', '%H', 0, false, false, 0.77)
+am.createLineSeries(chartHistoryProduction, 'SP - Humidity', 'time', 'SP_Umidita_Cella', '%H', 0, false, false, 0.77)
+am.createLineSeries(chartHistoryProduction, 'PV - kcal/h', 'time', 'PV_Consumo_Ciclo', 'kcal', 1, false, true, 0.77)
 
 // Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
 setInterval(am.refreshLegendSize, 1000, chartHistoryProduction, 'IDLegendHistoryProduction')
@@ -63,8 +64,6 @@ query += 'mean("Dati_Ciclo_Umidita_SP") as "SP_Umidita_Cella", '
 query += 'mean("Dati_Aggiuntivi_Kcal_Ciclo") as "PV_Consumo_Ciclo" '
 query += 'FROM "{3}" '
 query += 'WHERE time > {1}ms and time < {2}ms GROUP BY time(10s) fill(previous)'
-
-
 
 
 // Definisce le variabili come date
@@ -179,7 +178,7 @@ function listHistoryProduction(dryers){
 		let dryer_name = dryer.entityName.split(".")
 		dryer_name = dryer_name[4] + " " + dryer_name[5]
 		// Recupera lo storico delle lavorazioni effettuate dalla cella
-		tw.getCellHistoryProductions(dryer.entityName, timeStartHistory, timeEndHistory, '')
+		tw.service_03_getDryerHistoryProductions(dryer.entityName, timeStartHistory, timeEndHistory)
 		.then(productions => {
 			// Per ogni ricetta trovata genera una nuova riga nella tabella
 			productions.rows.forEach((el, i) => {
@@ -210,11 +209,41 @@ function listHistoryProduction(dryers){
 				$(id).click(function(){
 					// Aggiunge la classe table-primary alla riga seleziona e la rimuove dalle altre righe
 					$(this).addClass('table-primary').siblings().removeClass('table-primary')
-
 					// Definisce la query da inviare a influxdb
 					let subquery = query.replaceAll('{1}', timestampStart).replaceAll('{2}', timestampEnd).replaceAll('{3}', dryer.entityName)
 					// Recupera i dati da influxdb e li visualizza sul grafico
 					am.setChartData(chartHistoryProduction, subquery, '')
+
+					tw.service_05_getDryerStartEnd(dryer.entityName, timestampStart, timestampEnd)
+					.then(result => {
+						console.log(result)
+						let range = chartHistoryProduction.xAxes.values[0].axisRanges.values[0]
+						range.date = new Date(result.array[0].start)
+						range.grid.stroke = am4core.color("#396478");
+						range.grid.strokeWidth = 2;
+						range.grid.strokeOpacity = 0.6;
+						range.label.inside = true;
+						range.label.text = "Inizio Essicazione";
+
+						let range1 = chartHistoryProduction.xAxes.values[0].axisRanges.values[1]
+						range1.date = new Date(result.array[0].stop)
+						range1.grid.stroke = am4core.color("#396478");
+						range1.grid.strokeWidth = 2;
+						range1.grid.strokeOpacity = 0.6;
+						range1.label.inside = true;
+						range1.label.text = "Fine Essicazione";
+
+						if(result.array[0].endLoad){
+							let range2 = chartHistoryProduction.xAxes.values[0].axisRanges.values[2]
+							range2.date = new Date(result.array[0].endLoad)
+							range2.grid.stroke = am4core.color("#396478");
+							range2.grid.strokeWidth = 2;
+							range2.grid.strokeOpacity = 0.6;
+							range2.label.inside = true;
+							range2.label.text = "Fine Carico";
+						}
+					})
+					.catch(e => {console.log(e)})
 				})
 
 				// Recupera la prima riga della tabella
@@ -229,96 +258,3 @@ function listHistoryProduction(dryers){
 		})
 	})
 }
-// Abilita onclick sulla card
-
-/*
-// ******************** STORICO PRODUZIONI ********************
-common.historyDryerProduction(chartHistoryProduction, query, entityName)
-
-// Imposta il valore dei campi di INFO CELLA
-setCellinfo(entityName)
-setInterval(setCellinfo, 30000, entityName)
-setHistoryInfo(chartHistoryProduction)
-setInterval(setHistoryInfo, 1000, chartHistoryProduction)
-
-// Pulsanti per l'esportazione del grafico in png
-$('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActualProduction) })
-$('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
-
-$('#fullscreen').click(function(){
-	let url ='61_actualCellGraph.html?'+'entityName='+ entityName
-	window.open(url, '_blank')
-})
-
-// ******************** FUNCTION ********************
-// Funzione che imposta i dati della cella nei rispettivi campi
-function setCellinfo(entityName){
-	$('.lds-dual-ring.info-cell').show()
-	// Recupera le informazioni della cella
-  tw.getCellInfo(entityName).then(dryer => {
-		// Imposta i valori dei vari tile con i dati recuperati da thingworx
-		$("#cell_number").text("Dryer " + dryer.numero_cella);
-		$("#number_trolleys").text(dryer.numero_carrelli);
-		$("#cell_status").text(dryer.stato_cella);
-		$("#recipe").text(dryer.nome_ricetta);
-		//$("#recipe").text(dryer.numero_ricetta + " - " + dryer.nome_ricetta);
-		$("#total_time_recipe").text(dryer.tempo_ricetta_programmato);
-		$("#phase_time_recipe").text(dryer.tempo_ricetta_trascorso);
-		//$("#IDNumeroCarrelli").text(dryer.numero_carrelli);
-		setTimeout(function() {	$('.lds-dual-ring.info-cell').hide() }, 1000);
-	})
-}
-
-// Funzione che recupera i dati di ricetta dell'essicazione selezionata
-// Viene calcolata la temperatura media, min e max
-// Viene calcolata l'umidità media, min e max
-function setHistoryInfo(chart){
-	try{
-		// Dichiara le variabili
-		let temp = [];
-		let umid = [];
-		// Effettua un ciclo per ogni punto del grafico
-		chart.data.forEach(el => {
-			// Aggiungi i dati della temperatura al grafico, ignora i valori uguali a NaN
-			el.PV_Temperatura_Ambiente = parseFloat(el.PV_Temperatura_Ambiente)
-			if(!Number.isNaN(el.PV_Temperatura_Ambiente)){ temp.push(el.PV_Temperatura_Ambiente) }
-			// Aggiungi i dati dell'umidità al grafico, ignora i valori uguali a NaN
-			el.PV_Umidita_Ambiente = parseFloat(el.PV_Umidita_Ambiente)
-			if(!Number.isNaN(el.PV_Umidita_Ambiente)){ umid.push(el.PV_Umidita_Ambiente) }
-		})
-		// Dichiara la funzione della media matematica e la associa alla variabile arrAvg
-		let arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length
-		// Effettua la media sul valore di temperatura ambientale, recupera anche il valore minimo ed il valore massimo
-		$("#IDTemperaturaMedia").text(arrAvg(temp).toFixed(2) + " °C")
-		$("#IDTemperaturaMediaMax").text("Max: " + Math.max(...temp) + " °C")
-		$("#IDTemperaturaMediaMin").text("Min: " + Math.min(...temp) + " °C")
-		// Effettua la media sul valore di umidità ambientale, recupera anche il valore minimo ed il valore massimo
-		$("#IDUmiditaMedia").text(arrAvg(umid).toFixed(2) + " %H")
-		$("#IDUmiditaMediaMax").text("Max: " + Math.max(...umid) + " %H")
-		$("#IDUmiditaMediaMin").text("Min: " + Math.min(...umid) + " %H")
-		// Recupera le kcal consumate per il ciclo di essiccazione selezionato dalla lista dello storico
-		try{ $("#IDCalorieTotali").text(chart.data[chart.data.length-1].PV_Consumo_Ciclo + " kcal") }catch(e){}
-		// Recupera i dati di ricetta
-		tw.getCellHistoryRecipe(entityName, chart.data[0].time, chart.data[chart.data.length-1].time).then(recipe => {
-			// Svuota la tabella della ricetta
-			$('#IDHistoryTableRecipeBody').empty();
-			// Per ogni dato recuperato viene generata una riga nella tabella
-			recipe.rows.forEach(el => {
-				// Definisce l'html della riga da aggiungere
-				let row = '<tr class="hover_tr" style="border-style: none;background: var(--bs-table-bg);">'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.Fase  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.tempo_fase    + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.delta_T + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.temperatura  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.umidita  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.hz_inverter  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.tempo_ventilazione  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + el.tempo_pausa  + '</td>'
-				row    += '</tr>'
-				// Aggiunge la riga alla tabella
-				$('#IDHistoryTableRecipeBody').append(row);
-			})
-		})
-	}catch(e){}
-}
-*/
