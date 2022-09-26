@@ -21,7 +21,7 @@ function getDate(date){
   // Aggiunge lo zero nei numeri inferiori a 10, in modo da avere sempre 2 cifre
   day = day < 10 ? '0' + day : day
   // Ritorna la stringa
-	return year + '-' + month + '-' + day
+	return year + '/' + month + '/' + day
 }
 
 // ********** FUNZIONI COMUNI PER LA CELLA **********
@@ -211,7 +211,7 @@ function historyLineProduction(chart, query, entityName){
 		timeEndZoom = timestampEnd
 	})
 
-	// pulsante per aprire il grafico storico dell' impasto 
+	// pulsante per aprire il grafico storico dell' impasto
 	$('#fullscreenHistoryDough').click(function(){
 		let url ='./machineHistoryGraph/80_doughHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
 		window.open(url, '_blank')
@@ -229,25 +229,25 @@ function historyLineProduction(chart, query, entityName){
 		window.open(url, '_blank')
 	})
 
-	// pulsante per aprire il grafico storico della stenditrice 
+	// pulsante per aprire il grafico storico della stenditrice
 	$('#fullscreenHistorySpreader').click(function(){
 		let url ='./machineHistoryGraph/84_spreaderHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
 		window.open(url, '_blank')
 	})
 
-	// pulsante per aprire il grafico storico del trabatto 
+	// pulsante per aprire il grafico storico del trabatto
 	$('#fullscreenHistoryPreDryer').click(function(){
 		let url ='./machineHistoryGraph/86_preDryerHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
 		window.open(url, '_blank')
 	})
 
-	// pulsante per aprire il grafico storico dell' Omnidryer 
+	// pulsante per aprire il grafico storico dell' Omnidryer
 	$('#fullscreenHistoryOmnidryer').click(function(){
 		let url ='./machineHistoryGraph/87_omnidryerHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
 		window.open(url, '_blank')
 	})
 
-	// pulsante per aprire il grafico storico della pasta instant 
+	// pulsante per aprire il grafico storico della pasta instant
 	$('#fullscreenHistoryPastaInstant').click(function(){
 		let url ='./machineHistoryGraph/88_pastaInstantHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
 		window.open(url, '_blank')

@@ -12,7 +12,6 @@ import * as common from "./Global/Common/commonFunctions.js"
 let baseURL = window.location.protocol + "//" + window.location.host
 let pageURL = window.location.href
 */
-
 const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 
@@ -28,6 +27,61 @@ fb.onAuthStateChanged_2()
 // funzione per la traduzione
 lang.getLanguage()
 
+
+// Definisce le variabili come date
+let timeStartHistory = new Date()
+let timeEndHistory   = new Date()
+// Imposta X giorni prima della data odierna
+timeStartHistory.setDate(timeStartHistory.getDate() - 14)
+// Imposta i 2 data picker con le date calcolate prima
+// La funzione getDate ritorna solamente l'anno, il mese e il giorno
+// yyyy-MM-dd
+let disp_timeStart = common.getDate(timeStartHistory)
+let disp_timeEnd = common.getDate(timeEndHistory)
+
+$('#dateTimePicker').daterangepicker({
+    "locale": {
+        "format": "YYYY/MM/DD",
+        "separator": " - ",
+        "applyLabel": "Apply",
+        "cancelLabel": "Cancel",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Su",
+            "Mo",
+            "Tu",
+            "We",
+            "Th",
+            "Fr",
+            "Sa"
+        ],
+        "monthNames": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ],
+        "firstDay": 1
+    },
+    "startDate": disp_timeStart,
+    "endDate": disp_timeEnd
+}, function(start, end, label) {
+	// Recupera tutte le celle installate dal cliente
+	tw.getCustomerCells(selectedCustomer)
+	.then(dryers => {listHistoryProduction(dryers, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))})
+	.catch(error => console.error(error))
+});
 
 // Istanzia i grafici dell'attuale e dello storico
 // I grafici devono essere istanziati una volta solamente
@@ -66,45 +120,13 @@ query += 'FROM "{3}" '
 query += 'WHERE time > {1}ms and time < {2}ms GROUP BY time(10s) fill(previous)'
 
 
-// Definisce le variabili come date
-let timeStartHistory = new Date()
-let timeEndHistory   = new Date()
-// Imposta X giorni prima della data odierna
-timeStartHistory.setDate(timeStartHistory.getDate() - 14)
-// Imposta i 2 data picker con le date calcolate prima
-// La funzione getDate ritorna solamente l'anno, il mese e il giorno
-// yyyy-MM-dd
-$('#IDTimeStart').val(common.getDate(timeStartHistory))
-$('#IDTimeEnd').val(common.getDate(timeEndHistory))
-
 // Cancella tutte le righe della tabella
 $("#IDHistoryTableBody").empty()
 
 // Recupera tutte le celle installate dal cliente
 tw.getCustomerCells(selectedCustomer)
-.then(dryers => {listHistoryProduction(dryers)})
+.then(dryers => {listHistoryProduction(dryers, timeStartHistory, timeEndHistory)})
 .catch(error => console.error(error))
-
-$("#IDTimeStart").change(()=>{
-	console.log(timeStartHistory)
-	timeStartHistory = new Date($("#IDTimeStart").val())
-	console.log(timeStartHistory)
-	// Recupera tutte le celle installate dal cliente
-	tw.getCustomerCells(selectedCustomer)
-	.then(dryers => {listHistoryProduction(dryers)})
-	.catch(error => console.error(error))
-})
-
-$("#IDTimeEnd").change(()=>{
-
-	timeEndHistory = new Date($("#IDTimeEnd").val())
-	// Recupera tutte le celle installate dal cliente
-	tw.getCustomerCells(selectedCustomer)
-	.then(dryers => {listHistoryProduction(dryers)})
-	.catch(error => console.error(error))
-})
-
-
 
 let direction = true
 $("th").click(function() {
@@ -122,10 +144,10 @@ $("th").click(function() {
 	let column = $(this).index()
 	let table = $("#IDHistoryTableBody")
 
-	let start = new Date().getTime()
+	//let start = new Date().getTime()
 	insertionSort(table[0], column, direction)
-	let stop  = new Date().getTime()
-	console.log(stop-start + " ms")
+	//let stop  = new Date().getTime()
+	//console.log(stop-start + " ms")
 
 	direction = !direction
 })
@@ -172,25 +194,25 @@ function insertionSort(table, column, dir){
 }
 
 
-function listHistoryProduction(dryers){
+function listHistoryProduction(dryers, timeStart, timeEnd){
 	$("#IDHistoryTableBody").empty()
 	dryers.array.forEach((dryer, d) =>{
 		let dryer_name = dryer.entityName.split(".")
 		dryer_name = dryer_name[4] + " " + dryer_name[5]
 		// Recupera lo storico delle lavorazioni effettuate dalla cella
-		tw.service_03_getDryerHistoryProductions(dryer.entityName, timeStartHistory, timeEndHistory)
+		tw.service_03_getDryerHistoryProductions(dryer.entityName, timeStart, timeEnd)
 		.then(productions => {
 			// Per ogni ricetta trovata genera una nuova riga nella tabella
 			productions.rows.forEach((el, i) => {
 				// Converte il timestamp in Date
-				let timeStart = new Date(el.timeStart).toLocaleString();
-				let timeEnd = new Date(el.timeEnd).toLocaleString();
+				let start = new Date(el.timeStart).toLocaleString();
+				let end = new Date(el.timeEnd).toLocaleString();
 				// Definisce l'id della riga della tabella
 				let id = "IDHistoryTableRow" + i + d;
 				// Definisce l'html della riga da aggiungere
 				let row = '<tr id=' + id + ' class="hover_tr" style="border-style: none;background: var(--bs-table-bg);">'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + timeStart  + '</td>'
-				row    += '    <td style="font-size: 12px;border-style: none;">' + timeEnd    + '</td>'
+				row    += '    <td style="font-size: 12px;border-style: none;">' + start  + '</td>'
+				row    += '    <td style="font-size: 12px;border-style: none;">' + end    + '</td>'
 				row    += '    <td style="font-size: 12px;border-style: none;">' + el.ricetta + '</td>'
 				row    += '    <td style="font-size: 12px;border-style: none;">' + el.durata  + '</td>'
 				row    += '    <td style="font-size: 12px;border-style: none;">' + dryer_name  + '</td>'
@@ -216,7 +238,7 @@ function listHistoryProduction(dryers){
 
 					tw.service_05_getDryerStartEnd(dryer.entityName, timestampStart, timestampEnd)
 					.then(result => {
-						console.log(result)
+						//console.log(result)
 						let range = chartHistoryProduction.xAxes.values[0].axisRanges.values[0]
 						range.date = new Date(result.array[0].start)
 						range.grid.stroke = am4core.color("#396478");
