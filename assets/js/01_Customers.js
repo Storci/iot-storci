@@ -2,6 +2,7 @@
 import * as tw from "./Global/Thingworx/thingworx_api_module.js"
 import * as fb from "./Global/Firebase/firebase_auth_module.js"
 import * as lang from "./Global/Common/Translation.js"
+import { Octokit, App } from "https://cdn.skypack.dev/octokit";
 
 // Recupera il nome dell'utente da firebase, controlla che sia loggato.
 // Nel caso non fosse loggato richiama la pagina di login
@@ -22,6 +23,59 @@ tw.getCustomersList()
     localStorage.setItem('customerList', JSON.stringify(customerList))
 })
 .catch(e => console.error(e))
+
+const octokit = new Octokit({ auth: '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'})
+/* NON PRE RELEASE VERSION
+octokit.request('GET /repos/{owner}/{repo}/releases/latest', {
+  owner: 'Storci',
+  repo: 'pwa-dev'
+})
+.then(data => {
+  console.log(data)
+})
+*/
+let release = localStorage.getItem("GITHUB_show_release_news")
+let release_name = localStorage.getItem("GITHUB_last_release_name")
+
+octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci', repo: 'pwa-dev', tag: 'Latest'})
+.then((resp) => {
+  console.log(!release && resp.data.name != release_name)
+  if(!release && resp.data.name != release_name){
+    let url = 'https://github.com/Storci/pwa-dev/commits/' + resp.data.name
+    let url_html = '<a href="' + url + '">' + url + '</a>'
+    let s = resp.data.body.replace(/\r\n/g,"<br />").replace('**:',":</strong>").replace('**',"<strong>").replace(url, url_html).replace(/\- /g, "\u2022\t")
+    console.log(resp.data)
+    console.log(resp.data.body.toString())
+    $('#modal1').modal("show")
+    $("#modalTitle").html("NEW VERSION RELEASE - " + resp.data.name)
+    $("#modalSpan").html(s)
+    if(resp.data.prerelease){
+      console.log("is a pre release tag")
+      $("#pre-release-tag").removeClass("d-none");
+    }
+  }
+})
+
+
+
+/*
+if(!release){
+  $("#modalCheckShow").prop('checked', false)
+  octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci', repo: 'pwa-dev', tag: 'Latest'})
+  .then((resp) => {
+    console.log(resp.data)
+    $('#modal1').modal("show")
+    let s = resp.data.body.replace(/\r\n/g,"<br />")
+    $("#modalSpan").html(s)
+    $("#modalTitle").html(resp.data.name)
+    localStorage.setItem('global_last_release_name', resp.data.name)
+  })
+}
+*/
+$("#modalCheckShow").click(function(){
+  localStorage.setItem('GITHUB_show_release_news', true)
+  localStorage.setItem('GITHUB_last_release_name', resp.data.name)
+})
 
 // ******************** FUNCTION ********************
 // La funzione crea il codice html per aggiungere una card alla row.
