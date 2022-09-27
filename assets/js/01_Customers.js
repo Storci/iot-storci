@@ -25,15 +25,7 @@ tw.getCustomersList()
 .catch(e => console.error(e))
 
 const octokit = new Octokit({ auth: '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'})
-/* NON PRE RELEASE VERSION
-octokit.request('GET /repos/{owner}/{repo}/releases/latest', {
-  owner: 'Storci',
-  repo: 'pwa-dev'
-})
-.then(data => {
-  console.log(data)
-})
-*/
+
 let release = localStorage.getItem("GITHUB_show_release_news")
 let release_name = localStorage.getItem("GITHUB_last_release_name")
 
@@ -56,22 +48,6 @@ octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci
   }
 })
 
-
-
-/*
-if(!release){
-  $("#modalCheckShow").prop('checked', false)
-  octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci', repo: 'pwa-dev', tag: 'Latest'})
-  .then((resp) => {
-    console.log(resp.data)
-    $('#modal1').modal("show")
-    let s = resp.data.body.replace(/\r\n/g,"<br />")
-    $("#modalSpan").html(s)
-    $("#modalTitle").html(resp.data.name)
-    localStorage.setItem('global_last_release_name', resp.data.name)
-  })
-}
-*/
 $("#modalCheckShow").click(function(){
   localStorage.setItem('GITHUB_show_release_news', true)
   localStorage.setItem('GITHUB_last_release_name', resp.data.name)
