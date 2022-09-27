@@ -24,9 +24,9 @@ tw.getCustomersList()
 })
 .catch(e => console.error(e))
 
-const octokit = new Octokit({ auth: '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'})
+const octokit = new Octokit({ auth: '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'})
 
-let release = localStorage.getItem("GITHUB_show_release_news")
+let release = localStorage.getItem("GITHUB_hide_release_news")
 let release_name = localStorage.getItem("GITHUB_last_release_name")
 
 octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci', repo: 'pwa-dev', tag: 'Latest'})
@@ -45,13 +45,20 @@ octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci
       console.log("is a pre release tag")
       $("#pre-release-tag").removeClass("d-none");
     }
+
+    $("#modalCheckShow").click(function(){
+      if(this.checked){
+        localStorage.setItem('GITHUB_hide_release_news', true)
+        localStorage.setItem('GITHUB_last_release_name', resp.data.name)
+      }else{
+        localStorage.setItem('GITHUB_hide_release_news', false)
+        localStorage.setItem('GITHUB_last_release_name', "")
+      }
+    })
   }
 })
 
-$("#modalCheckShow").click(function(){
-  localStorage.setItem('GITHUB_show_release_news', true)
-  localStorage.setItem('GITHUB_last_release_name', resp.data.name)
-})
+
 
 // ******************** FUNCTION ********************
 // La funzione crea il codice html per aggiungere una card alla row.
