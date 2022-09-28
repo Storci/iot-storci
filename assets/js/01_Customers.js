@@ -24,6 +24,30 @@ tw.getCustomersList()
 })
 .catch(e => console.error(e))
 
+
+// Definisce l'url da richiamare per la REST API
+var url = "https://github.com/login/oauth/authorize"
+// Imposta i settings da utilizzare nelle REST API.
+// Nel campo data vengono inseriti i parametri di ingresso del servizio di TW.
+let settings = {
+  "url"     : url,
+  "method"  : "GET",
+  "timeout" : 0,
+  //"crossDomain": true,
+  "dataType": 'jsonp',
+  "headers" : {
+    "Accept"	  : "text/html",
+    "Content-Type": "text/html",
+    //"Access-Control-Allow-Origin":"http://127.0.0.1:40000/"
+  },
+  "data":  JSON.stringify({"client_id": "2b93985b9d93f36d34ae",})
+}
+
+// Esegue la chiamata REST API.
+$.ajax(settings).done(resp => console.log(resp))
+
+
+/*
 const octokit = new Octokit({ auth: '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'})
 
 let release = localStorage.getItem("GITHUB_hide_release_news")
@@ -58,7 +82,7 @@ octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci
   }
 })
 
-
+*/
 
 // ******************** FUNCTION ********************
 // La funzione crea il codice html per aggiungere una card alla row.
