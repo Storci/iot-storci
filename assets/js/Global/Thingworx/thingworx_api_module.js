@@ -74,6 +74,19 @@ function service_03_getDryerHistoryProductions(entityName, startTime, endTime){
 }
 
 /*
+	service_04_getLineHistoryProductions
+	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
+	recupera la lista di produzione di una linea.
+*/
+function service_04_getLineHistoryProductions(entityName, startTime, endTime){
+	// Definisce l'url da richiamare per la REST API
+	settings.url  = baseUrl + bootstrapThing + 'service_04_getLineHistoryProductions'
+	settings.data = JSON.stringify({"entityName":entityName, "startTime":startTime, "endTime":endTime})
+	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
+	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
+}
+
+/*
 	service_05_getDryerStartEnd
 	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
 	recupera i timestamp di inizio e fine essiccazione.
@@ -746,6 +759,7 @@ export{
 	service_01_getDryersGeneralInfo,
 	service_02_getLinesGeneralInfo,
 	service_03_getDryerHistoryProductions,
+	service_04_getLineHistoryProductions,
 	service_05_getDryerStartEnd,
 	service_90_sidebar,
 	service_97_addNewUser,
