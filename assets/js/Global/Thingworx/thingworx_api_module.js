@@ -87,6 +87,20 @@ function service_05_getDryerStartEnd(entityName, startTime, endTime){
 }
 
 /*
+	service_80_githubAPI
+	Il servizio effettua le chiamate rest api verso github.
+	Si è preferito utilizzare thingworx come intermediario perchè github revoca il personal access token
+	se lo trova nel codice nel repository. Quindi è impossibile usare un qualsiasi codice dentro a questa applicazione.
+*/
+function service_80_githubAPI(url){
+	// Definisce l'url da richiamare per la REST API
+	settings.url  = baseUrl + bootstrapThing + 'service_80_githubAPI'
+	settings.data = JSON.stringify({"url":url})
+	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
+	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
+}
+
+/*
 	service_90_sidebar
 	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
 	recupera i dati generali di tutte le macchine installate dal cliente.
@@ -747,6 +761,7 @@ export{
 	service_02_getLinesGeneralInfo,
 	service_03_getDryerHistoryProductions,
 	service_05_getDryerStartEnd,
+	service_80_githubAPI,
 	service_90_sidebar,
 	service_97_addNewUser,
 	service_98_setFirebaseToken,

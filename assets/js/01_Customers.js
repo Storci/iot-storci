@@ -25,64 +25,37 @@ tw.getCustomersList()
 .catch(e => console.error(e))
 
 
-// Definisce l'url da richiamare per la REST API
-var url = "https://github.com/login/oauth/authorize"
-// Imposta i settings da utilizzare nelle REST API.
-// Nel campo data vengono inseriti i parametri di ingresso del servizio di TW.
-let settings = {
-  "url"     : url,
-  "method"  : "GET",
-  "timeout" : 0,
-  //"crossDomain": true,
-  "dataType": 'jsonp',
-  "headers" : {
-    "Accept"	  : "text/html",
-    "Content-Type": "text/html",
-    //"Access-Control-Allow-Origin":"http://127.0.0.1:40000/"
-  },
-  "data":  JSON.stringify({"client_id": "2b93985b9d93f36d34ae",})
-}
-
-// Esegue la chiamata REST API.
-$.ajax(settings).done(resp => console.log(resp))
-
-
-/*
-const octokit = new Octokit({ auth: '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'})
-
+/* RECUPERA LE INFORMAZIONI DA GITHUB */
+let baseURL = window.location.protocol + "//" + window.location.host
+let url = "https://api.github.com/repos/Storci/pwa-dev/releases/tags/Latest"
+if(baseURL.includes("pwa-prod")){ url = "https://api.github.com/repos/Storci/pwa-prod/releases/tags/Latest" }
 let release = localStorage.getItem("GITHUB_hide_release_news")
 let release_name = localStorage.getItem("GITHUB_last_release_name")
 
-octokit.request('GET /repos/{owner}/{repo}/releases/tags/{tag}', {owner: 'Storci', repo: 'pwa-dev', tag: 'Latest'})
+tw.service_80_githubAPI(url)
 .then((resp) => {
-  console.log(!release && resp.data.name != release_name)
-  if(!release && resp.data.name != release_name){
-    let url = 'https://github.com/Storci/pwa-dev/commits/' + resp.data.name
+  if(release == "false" && resp.name != release_name){
+    let url = 'https://github.com/Storci/pwa-dev/commits/' + resp.name
     let url_html = '<a href="' + url + '">' + url + '</a>'
-    let s = resp.data.body.replace(/\r\n/g,"<br />").replace('**:',":</strong>").replace('**',"<strong>").replace(url, url_html).replace(/\- /g, "\u2022\t")
-    console.log(resp.data)
-    console.log(resp.data.body.toString())
+    let s = resp.body.replace(/\r\n/g,"<br />").replace('**:',":</strong>").replace('**',"<strong>").replace(url, url_html).replace(/\- /g, "\u2022\t")
     $('#modal1').modal("show")
-    $("#modalTitle").html("NEW VERSION RELEASE - " + resp.data.name)
+    $("#modalTitle").html("NEW VERSION RELEASE - " + resp.name)
     $("#modalSpan").html(s)
-    if(resp.data.prerelease){
-      console.log("is a pre release tag")
+    if(resp.prerelease){
       $("#pre-release-tag").removeClass("d-none");
     }
-
     $("#modalCheckShow").click(function(){
       if(this.checked){
-        localStorage.setItem('GITHUB_hide_release_news', true)
-        localStorage.setItem('GITHUB_last_release_name', resp.data.name)
+        localStorage.setItem('GITHUB_hide_release_news', "true")
+        localStorage.setItem('GITHUB_last_release_name', resp.name)
       }else{
-        localStorage.setItem('GITHUB_hide_release_news', false)
+        localStorage.setItem('GITHUB_hide_release_news', "false")
         localStorage.setItem('GITHUB_last_release_name', "")
       }
     })
   }
 })
 
-*/
 
 // ******************** FUNCTION ********************
 // La funzione crea il codice html per aggiungere una card alla row.
