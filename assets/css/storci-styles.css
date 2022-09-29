@@ -408,3 +408,16 @@ thead {
 .cursor-pointer {
     cursor: pointer;
 }
+
+@media (min-width :1024px ) {
+  .col-sx-padding{
+    padding-right: 6px;
+  }
+  .col-padding{
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+  .col-dx-padding{
+    padding-left: 6px;
+  }
+}

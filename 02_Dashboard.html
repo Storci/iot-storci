@@ -48,7 +48,7 @@
         <!-- CUSTOM SCRIPT -->         
         <script src="./assets/js/sidebar.js" type="module"></script>         
         <script defer src="assets/js/02_Dashboard.js" type="module"></script>         
-        <script src="./assets/js/Global/Common/Theme.js" type="module"></script>
+        <script src="./assets/js/Global/Common/Theme.js" type="module"></script>         
     </head>     
     <body class="sidebar-scroll-hidden" style="background-color: var(--bs-body-bg);"> 
         <script> $('body').addClass('d-none')</script>         
@@ -174,8 +174,7 @@
                             </li>                             
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">history</span> <span class="ms-3" translate_id="alarms_history">Alarms History</span> </a> 
                             </li>                             
-                            <li class="nav-item" id="triggerIssue">
-                                <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a> 
+                            <li class="nav-item" id="triggerIssue"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a> 
                             </li>                             
                         </ul>                         
                         <h6 class="align-items-center d-flex justify-content-between mb-1 mt-4 px-3 sidebar-heading text-secondary"> <span id="id-username">Utente</span><span class="material-icons-outlined md-24">person</span> </h6> 
@@ -189,8 +188,8 @@
                     </div>                     
                 </nav>                 
                 <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master"> 
-                    <div class="mb-5 pg-empty-placeholder row" id="IDdivLinee"></div>                     
-                    <div class="mb-5 pg-empty-placeholder row" id="IDdivDryers"></div>
+                    <div class="mb-5  pg-empty-placeholder row" id="IDdivLinee"></div>                     
+                    <div class="mb-5 pg-empty-placeholder row" id="IDdivDryers"></div>                     
                 </main>                 
             </div>             
         </div>         
