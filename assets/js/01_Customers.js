@@ -26,18 +26,15 @@ tw.getCustomersList()
 
 
 /* RECUPERA LE INFORMAZIONI DA GITHUB */
-let baseURL = window.location.protocol + "//" + window.location.host
-let url = "https://api.github.com/repos/Storci/pwa-dev/releases/tags/Latest"
-if(baseURL.includes("pwa-prod")){ url = "https://api.github.com/repos/Storci/pwa-prod/releases/tags/Latest" }
+let url = "https://api.github.com/repos/Storci/pwa/releases/latest"
 let release = localStorage.getItem("GITHUB_hide_release_news")
 let release_name = localStorage.getItem("GITHUB_last_release_name")
 
 tw.service_80_githubAPI(url)
 .then((resp) => {
-  if(release == "false" && resp.name != release_name){
-    let url = 'https://github.com/Storci/pwa-dev/commits/' + resp.name
-    let url_html = '<a href="' + url + '">' + url + '</a>'
-    let s = resp.body.replace(/\r\n/g,"<br />").replace('**:',":</strong>").replace('**',"<strong>").replace(url, url_html).replace(/\- /g, "\u2022\t")
+  console.log(resp)
+  if(release !== "true" && resp.name != release_name){
+    let s = convertText(resp.body)
     $('#modal1').modal("show")
     $("#modalTitle").html("NEW VERSION RELEASE - " + resp.name)
     $("#modalSpan").html(s)
@@ -233,4 +230,52 @@ function getConnectionStatus(customerList){
 		})
 		.catch(error => console.error(error))
 	})
+}
+
+// La funzione converte alcuni caratteri speciali utilizzati in github
+// per formattare correttamente il testo.
+function convertText(text){
+  let ul = false;
+  let s = "";
+  text = text.split(/\r\n/g)
+
+  for(let i=0; i<text.length; i++){
+    if(text[i].search("##") != -1){
+      text[i] = text[i].replace(/## /g, "<strong><h5>")
+      text[i] = text[i] + "</h5></strong>\r\n\r\n"
+    }
+
+    if(text[i].search(/\*\*/g) != -1){
+      text[i] = text[i].replace(/\*\*/, "<strong>")
+      text[i] = text[i].replace(/\*\*/, "</strong>")
+    }
+
+    if(text[i].search(/@/g) != -1){
+      let sub = text[i].substr(text[i].search(/@/g),)
+      sub = sub.substr(0,sub.search(" "))
+      let subBold = "<strong><mark>" + sub + "</mark></strong>"
+      text[i] = text[i].replace(sub, subBold)
+    }
+
+    if(text[i].search(/\*/g) == 0){
+      if(!ul){
+        text[i] = "<ul><li>" + text[i].replace("\* ", "") + "</li>"
+        ul = true
+      }else{
+        text[i] = "<li>" + text[i].replace("\* ", "") + "</li>"
+      }
+    }
+
+    if(ul && text[i].length == 0){
+      text[i] = "/<ul>\r\n";
+      ul = false
+    }
+
+    if(text[i].length == 0){
+      text[i] = "\r\n";
+    }
+
+    s += text[i]
+  }
+  return s
 }
