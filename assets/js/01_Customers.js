@@ -33,7 +33,7 @@ let release_name = localStorage.getItem("GITHUB_last_release_name")
 tw.service_80_githubAPI(url)
 .then((resp) => {
   console.log(resp)
-  if(release !== "true" && resp.name != release_name){
+  if(release !== "true" || resp.name != release_name){
     let s = convertText(resp.body)
     $('#modal1').modal("show")
     $("#modalTitle").html("NEW VERSION RELEASE - " + resp.name)
@@ -239,7 +239,6 @@ function convertText(text){
   let ul = false;
   let s = "";
   text = text.split(/\r\n/g)
-
   for(let i=0; i<text.length; i++){
     if(text[i].search("##") != -1){
       text[i] = text[i].replace(/## /g, "<strong><h5>")
@@ -268,7 +267,7 @@ function convertText(text){
     }
 
     if(ul && text[i].length == 0){
-      text[i] = "/<ul>\r\n";
+      text[i] = "</ul>\r\n";
       ul = false
     }
 
