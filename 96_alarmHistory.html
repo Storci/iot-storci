@@ -7,31 +7,19 @@
         <meta name="description" content=""/> 
         <meta name="author" content=""/> 
         <link rel="icon" href="./assets/img/icon_round_storci.svg" type="image/x-icon"/> 
-        <title>Dashboard Linea</title>         
-        <!-- MANIFEST -->         
-        <link rel="manifest" href="./manifest.webmanifest"/> 
-        <!-- carica l'immagine da usare nell'icona dell'iphone -->         
-        <link rel="apple-touch-icon" href="./assets/img/Storci_Logo_1024_1024.png"/> 
-        <meta name="theme-color" media="(prefers-color-scheme: light)" content="white"/> 
-        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="black"/> 
-        <!-- PRELOAD -->         
-        <link rel="preload" as="script" href="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"/> 
-        <link rel="preload" as="script" href="https://cdn.amcharts.com/lib/4/core.js"/> 
-        <link rel="preload" as="script" href="https://cdn.amcharts.com/lib/4/charts.js"/> 
-        <link rel="preload" as="script" href="https://cdn.amcharts.com/lib/4/themes/animated.js"/> 
-        <link rel="preload" as="script" href="https://cdn.amcharts.com/lib/4/themes/dark.js"/> 
-        <link rel="preload" as="script" href="//cdn.amcharts.com/lib/4/plugins/rangeSelector.js"/> 
-        <!-- GOOGLE STYLE -->         
+        <title>Dashboard Cella</title>         
+        <!-- GOOGLE ICON -->         
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"/> 
         <!-- JQUERY -->         
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>         
         <!-- Bootstrap core -->         
         <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css"/> 
-        <!-- <link rel="stylesheet" href="bootstrap_theme/bootstrap.css" type="text/css" media="print" onload="this.media='all'"/> -->         
         <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>         
         <!-- Custom styles for this template -->         
-        <link rel="stylesheet" href="assets/css/dashboard.css" media="print" onload="this.media='all'"/> 
-        <link rel="stylesheet" href="assets/css/storci-styles.css" media="print" onload="this.media='all'"/> 
+        <link href="./assets/css/dashboard.css" rel="stylesheet"/> 
+        <!-- <link href="./assets/css/table-style.css" rel="stylesheet"/> -->         
+        <link href="./assets/css/storci-styles.css" rel="stylesheet"/> 
+        <!-- <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/> -->         
         <!-- AM4CORE CHART -->         
         <script defer src="https://cdn.amcharts.com/lib/4/core.js"></script>         
         <script defer src="https://cdn.amcharts.com/lib/4/charts.js"></script>         
@@ -47,9 +35,17 @@
         <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js" type="module"></script>  -->         
         <script defer src="./assets/js/Global/Firebase/firebase_config.js"></script>         
         <!-- CUSTOM SCRIPT -->         
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/> 
         <script src="./assets/js/sidebar.js" type="module"></script>         
-        <script src="./assets/js/51_line_predryer.js" type="module"></script>         
-        <script src="./assets/js/Global/Common/Theme.js" type="module"></script>
+        <script src="./assets/js/Global/Common/Theme.js" type="module"></script>         
+        <script defer type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>         
+        <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>         
+        <script defer src="./assets/js/sidebar.js" type="module"></script>         
+        <script defer src="./assets/js/Global/Common/Theme.js" type="module"></script>         
+        <script defer src="./assets/js/Global/Common/Translation.js" type="module"></script>         
+        <script defer src="https://unpkg.com/bootstrap-table/dist/bootstrap-table.min.js"></script>         
+        <script defer src="./assets/js/96_alarmHistory.js" type="module"></script>         
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>         
     </head>     
     <body class="sidebar-scroll-hidden" style="background-color: var(--bs-body-bg);"> 
         <script> $('body').addClass('d-none')</script>         
@@ -187,102 +183,50 @@
                             </li>                             
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="#" id="id-user-logout"><span class="material-icons-outlined">logout</span><span class="ms-3">Logout</span> </a> 
                             </li>                             
-                        </ul>
-                        <span style="font-size: 10px;" id="github-version" class="p-2">Version</span> 
+                        </ul>                         <span style="font-size: 10px;" id="github-version" class="p-2">Version</span> 
                     </div>                     
                 </nav>                 
                 <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master"> 
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"> 
-                        <h1 class="h2 card-result">Dashboard Trabatto</h1> 
+                        <h2 class="card-result" translate_id="list_clients_connected">List of Previous Alarms</h2> 
                         <div class="btn-toolbar mb-2 mb-md-0"> 
                             <div class="btn-group me-2"> 
 </div>                             
                         </div>                         
                     </div>                     
-                    <div class="gy-3 mb-5 row"> 
-                        <div class="col-md-4"> 
-                            <div class="card"> 
-                                <div class="card-body pb-1"> 
-                                    <h6 class="card-subtitle mb-2 text-muted card_heading_label" translate_id="recipe_in_use">Ricetta in uso</h6> 
-                                    <div class="align-items-end mb-0 row row-cols-2"> 
-                                        <div class="align-items-end col-md-auto d-flex h-25"> 
-                                            <h4 class="mb-0"><span propertyname="Impasto_Ricetta_Numero_Ricetta" class="card-result" decimals="0">0</span><span class="ms-2 card-result" propertyname="Impasto_Ricetta_Nome_Ricetta">Ricetta</span></h4> 
-                                        </div>                                         
-                                    </div>                                     
-                                </div>                                 
-                            </div>                             
-                        </div>                         
-                        <div class="col-md-4"> 
-                            <div class="card"> 
-                                <div class="card-body pb-1"> 
-                                    <h6 class="card-subtitle mb-2 text-muted card_heading_label" translate_id="pre_dryer_temperature">Temperatura trabatto</h6> 
-                                    <div class="align-items-end mb-0 row row-cols-2"> 
-                                        <div class="align-items-end col-md-auto d-flex h-25"> 
-                                            <h4 class="mb-0"><span propertyname="Trabatto_PV_Temperatura_Trabatto" class="card-result" decimals="2">0.00</span><span class="ms-2 card-result">°C</span></h4> 
-                                        </div>                                         
-                                        <div class="col-md h-25"> 
-                                            <div class="pg-empty-placeholder" id="IDDivChart1" style="max-height: 50px;"></div>                                             
-                                        </div>                                         
-                                    </div>                                     
-                                    <h6 class="card-subtitle mt-3 text-muted"><span class="card-result">set point: </span><span class="ms-2 card-result" propertyname="Trabatto_SP_Temperatura_Trabatto" class="card-result" decimals="2">0.00</span><span class="ms-2 card-result">°C</span></h6> 
-                                </div>                                 
-                            </div>                             
-                        </div>                         
-                        <div class="w-100"></div>                         
-                        <div class="col-md h-100"> 
-                            <div class="card"> 
-                                <div class="card-body"> 
-                                    <h6 class="card-subtitle mb-2 text-muted card_heading_label" translate_id="actual_production">Produzione Attuale</h6> 
-                                    <div class="pg-empty-placeholder" id="IDLegendActualProduzione"></div>                                     
-                                    <div class="pg-empty-placeholder" id="IDTrendActualProduction" style="height: 50vh;"></div>                                     
-                                </div>                                 <span type="button" class="bg-white btn btn-light d-inline text-end text-primary" id="fullscreen">Fullscreen</span> 
-                            </div>                             
+                    <div style="height: 50px;"> 
+                        <div class="input-group mb-3"> <span class="material-icons-outlined input-group-text"> 
+                                                    date_range </span> 
+                            <input type="text" id="dateFilter" class="form-control" placeholder="datePicker" aria-label="datePicker" aria-describedby="basic-addon1"/> 
                         </div>                         
                     </div>                     
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"> 
-                        <h1 class="h2" translate_id="pre_dryer_history card-result">Storico Trabatto</h1> 
-                        <div class="btn-toolbar mb-2 mb-md-0"> 
-                            <div class="btn-group me-2"> 
-</div>                             
+                    <div style="height: 50px;"> 
+                        <div class="input-group mb-5 mt-3"> <span class="input-group-text material-icons-outlined">search</span> 
+                            <input type="text" class="form-control" placeholder="filter" aria-label="date_range" aria-describedby="basic-addon1" id="filter"/> 
                         </div>                         
                     </div>                     
-                    <div class="mb-5 row"> 
-                        <div class="col-lg-5"> 
+                    <ul id="alert_container" class="list-group"> 
+                        <!--<li class="alert_list g-2 list-group-item"> 
                             <div class="card"> 
-                                <div class="card-body"> 
-                                    <h6 class="card-subtitle mb-2 text-muted card_heading_label" translate_id="production_list">Lista Produzioni Storiche</h6> 
-                                    <div class="pb-3 pt-3 text-muted" data-pg-name="date"> 
-                                        <input type="date" placeholder="gg/mm/aaaa" class="bg-gradient bg-transparent border-0 border-2 border-bottom text-muted w-100" id="IDTimeStart"/> 
+                                <div class="alert_body card-body"> 
+                                    <div class="align-items-center d-flex me-5"> <span class="material-icons-outlined"> notifications</span> 
                                     </div>                                     
-                                    <div class="pb-3 pt-3" data-pg-name="date"> 
-                                        <input type="date" placeholder="gg/mm/aaaa" class="bg-transparent border-0 border-2 border-bottom text-muted w-100" id="IDTimeEnd"/> 
-                                    </div>                                     
-                                    <div class="tableDiv"> 
-                                        <table id="IDHistoryTable" class="table table-hover table-responsive"> 
-                                            <thead> 
-                                                <tr> 
-                                                    <th class="fw-light text-muted card_heading_label" translate_id="start_production">Inizio Produzione</th> 
-                                                    <th class="fw-light text-muted card_heading_label" translate_id="end_production">Fine Produzione</th> 
-                                                    <th class="fw-light text-muted card_heading_label" translate_id="recipe_name">Nome Ricetta</th> 
-                                                    <th class="fw-light text-muted card_heading_label" translate_id="duration">Durata</th> 
-                                                </tr>                                                 
-                                            </thead>                                             
-                                            <tbody class="h-50 pg-empty-placeholder card-result" id="IDHistoryTableBody"></tbody>                                             
-                                        </table>                                         
+                                    <div class="row row-cols-4 w-100"> 
+                                        <div> timesStart</div>                                         
+                                        <div>Machine</div>                                         
+                                        <div>Gravity</div>                                         
+                                        <div>CustomerName</div>                                         
+                                        <div class="col-12">Message</div>                                         
                                     </div>                                     
                                 </div>                                 
                             </div>                             
+                        </li>     -->                     
+                    </ul>                        
+                    <div class="modal fade pg-show-modal" id="modal1" tabindex="-1" role="dialog" aria-hidden="true" data-bs-keyboard="false"> 
+                        <div class="modal-dialog modal-dialog-centered modal-sm"> 
+                            <lottie-player src="https://assets9.lottiefiles.com/private_files/lf30_bU3Dr6.json" background="transparent" speed="1" style="width: 100px; height: 100px;" loop autoplay></lottie-player>                             
                         </div>                         
-                        <div class="col-lg-7 h-100"> 
-                            <div class="card"> 
-                                <div class="card-body"> 
-                                    <h6 class="card-subtitle mb-2 text-muted card_heading_label" translate_id="history_chart">Produzione Attuale</h6> 
-                                    <div class="pg-empty-placeholder" id="IDLegendHistoryProduction"></div>                                     
-                                    <div class="pg-empty-placeholder" id="IDTrendHistoryProduction" style="height: 50vh;"></div>                                     
-                                </div>                                 <span type="button" class="bg-white btn btn-light d-inline text-end text-primary" id="fullscreenHistoryPreDryer">Fullscreen</span> 
-                            </div>                             
-                        </div>                         
-                    </div>
+                    </div>                     
                 </main>                 
             </div>             
         </div>         

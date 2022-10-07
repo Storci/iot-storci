@@ -17,7 +17,7 @@ am4core.options.minPolylineStep = 5
 // Set di colori per le series dei grafici
 let colorChart = [
 	[
-		// colori grafici per le celle 
+		// colori grafici per le celle
 		am4core.color("#b70b0b"),// color for room temperature
 		am4core.color("#e06b59"),// color light red for temperature PV
 		am4core.color("#f70202"),// color red for temperature Sp
@@ -25,55 +25,55 @@ let colorChart = [
 	  	am4core.color("#5e73e0"),// color light blue for humidity PV
 		am4core.color("#1031ed"),// color blue for humidity set point
 		am4core.color("#EEA700"),// colore per la calorie arancione
-	// 	am4core.color("#2e7d32") 
+	// 	am4core.color("#2e7d32")
 	],
-	//colori per Dashbord cliente e dashboard linea 
+	//colori per Dashbord cliente e dashboard linea
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#0288d1"),// verde chiaro PV Impasto
+		am4core.color("#512da8"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 	],
 	// colori per il Impasto
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#fb8c00"),// verde chiaro PV Impasto
+		am4core.color("#fdd835"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 		am4core.color("#d3f3fc"),// colore per portata acqua PV
 		am4core.color("#cde9f4"),// colore per portata acqua SP
 		am4core.color("#e06b59"),// colore per temperatura acqua PV
 		am4core.color("#f70202"),// colore per temperatura acqua SP
 		am4core.color("#EEA700"),// colore per la calorie arancione
-		
+
 	],
 	// colori per la pressa
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#fb8c00"),// verde chiaro PV Impasto
+		am4core.color("#fdd835"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 		am4core.color("#e06b59"),// colore per temperatura cilindro PV
 		am4core.color("#f70202"),// colore per temperatura cilindro SP
 		am4core.color("#8C2F39"),// colore per temperatura testata PV
 		am4core.color("#BD2C3D"),// colore per temperatura testata SP
 		am4core.color("#EEA700"),// colore per la calorie arancione
-	], 
-	// colori per la Avanzamento telai 
+	],
+	// colori per la Avanzamento telai
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#fb8c00"),// verde chiaro PV Impasto
+		am4core.color("#fdd835"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 	],
 	// colori per la Pasta Instant
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#fb8c00"),// verde chiaro PV Impasto
+		am4core.color("#fdd835"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 		am4core.color("#8C2F39"),// colore per temperatura testata PV
 		am4core.color("#BD2C3D"),// colore per temperatura testata SP
 	],
 	// colori per Omnidryer
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#fb8c00"),// verde chiaro PV Impasto
+		am4core.color("#fdd835"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 		am4core.color("#e06b59"),// colore per temperatura 1 PV
 		am4core.color("#e06b59"),// colore per temperatura 2 PV
@@ -90,17 +90,17 @@ let colorChart = [
 	],
 	//	colori per Trabatto
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#fb8c00"),// verde chiaro PV Impasto
+		am4core.color("#fdd835"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 		am4core.color("#e06b59"),// colore per temperatura 1 PV
 		am4core.color("#9B1321"),// colore per temperatura 2 SP
-		
+
 	],
 	// colori per avanzamento telai
 	[
-		am4core.color("#2BC962"),// verde chiaro PV Impasto
-		am4core.color("#02BB53"),// verde scuro SP Impasto
+		am4core.color("#fb8c00"),// verde chiaro PV Impasto
+		am4core.color("#fdd835"),// verde scuro SP Impasto
 		am4core.color("#8105E1"),//  viola chiaro per pressione
 		am4core.color("#C25012"),//  viola chiaro per pressione
 		am4core.color("#9B3802"),//  viola chiaro per pressione
@@ -118,7 +118,7 @@ let colorChart = [
 // typeColor   = indice per la scelta della colorazione del grafico [colorChart]
 // numYAxis 	 = numero di assi Y
 // YAxisUnits  = array con le unità di misura da visualizzare nei tooltip
-function createXYChart(IDdivChart, IDdivLegend='', typeColor, numYAxis=1, YAxisUnits=[]){
+function createXYChart(IDdivChart, IDdivLegend='', typeColor, numYAxis=1, YAxisUnits=[], axisRange=false){
 
 	// Instanzia il grafico di am4core
 	let chart = am4core.create(IDdivChart, am4charts.XYChart);
@@ -155,7 +155,7 @@ function createXYChart(IDdivChart, IDdivLegend='', typeColor, numYAxis=1, YAxisU
 	// ***** Settaggio impostazioni ASSE X
 	let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 	dateAxis.groupData = true;
-	dateAxis.groupCount = 3061;
+	dateAxis.groupCount = 1000;
 	dateAxis.renderer.minGridDistance = 50;
 	dateAxis.renderer.grid.template.strokeOpacity = 0;
 	dateAxis.renderer.labels.template.fill = am4core.color("#698ca7BF");
@@ -168,6 +168,10 @@ function createXYChart(IDdivChart, IDdivLegend='', typeColor, numYAxis=1, YAxisU
 	dateAxisTooltip.background.pointerLength = 0;
 	dateAxisTooltip.label.fontSize = 10;
 	dateAxisTooltip.dy = 5;
+	// ***** Creazione axis range
+	let event = dateAxis.axisRanges.create();
+	let event1 = dateAxis.axisRanges.create();
+	let event2 = dateAxis.axisRanges.create();
 
 	// Crea tanti assi quanti ne sono stati impostati, di default 1
 	for(let i=0; i<numYAxis; i++){
@@ -364,6 +368,7 @@ function setChartData(chart, query, ringclass) {
 
 	tw.influxQuery(query)
 	.then(response => {
+		console.log(response.results[0].series[0].values)
 		// Aggiunge una riga all'array data
 		response.results[0].series[0].values.forEach(el => {
 			// Definisce la variabile come json object

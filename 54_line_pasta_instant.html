@@ -60,7 +60,7 @@
         <div class="container-fluid"> 
             <div class="row"> 
                 <nav id="sidebarMenu" class="bg-light col-lg-2 col-md-3 collapse d-md-block sidebar sidebar-scroll sidebar-scroll-hidden"> 
-                    <div class="h-100 pt-3"> 
+                    <div class="align-content-start d-flex flex-column h-100 pt-3"> 
                         <ul class="nav flex-column" id="IDNavPrimary"> 
                             <li class="d-none nav-item" id="id-nav-customers-list"> <a class="align-items-center d-flex nav-link" aria-current="page" href="01_Customers.html" id="id-nav-customers-list"> <span class="material-icons-outlined">group</span><span class="ms-3" translate_id="clients_list">List of Clients</span> </a> 
                             </li>                             
@@ -171,14 +171,15 @@
                         </ul>                         
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"> <span>reports</span> <span class="material-icons-outlined">summarize</span></h6> 
                         <ul class="nav flex-column mb-2"> 
-                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">notifications</span> <span class="ms-3" translate_id="alarms">Alarms</span> </a> 
+                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="95_actualAlarms.html"> <span class="material-icons-outlined">notifications</span> <span class="ms-3" translate_id="alarms">Alarms</span> </a> 
                             </li>                             
-                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">history</span> <span class="ms-3" translate_id="alarms_history">Alarms History</span> </a> 
+                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="96_alarmHistory.html"> <span class="material-icons-outlined">history</span> <span class="ms-3" translate_id="alarms_history">Alarms History</span> </a> 
                             </li>                             
-                            <li class="nav-item" id="triggerIssue">
-                                <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a> 
+                            <li class="nav-item" id="triggerIssue"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a> 
                             </li>                             
                         </ul>                         
+                    </div>                     
+                    <div class="align-content-end bg-light d-flex fixed-bottom flex-column position-absolute"> 
                         <h6 class="align-items-center d-flex justify-content-between mb-1 mt-4 px-3 sidebar-heading text-secondary"> <span id="id-username">Utente</span><span class="material-icons-outlined md-24">person</span> </h6> 
                         <ul class="flex-column mb-2 nav"> 
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="94_accountSettings.html" id=""> <span class="material-icons-outlined">settings</span> <span class="ms-3" translate_id="profile_settings">Profile Settings</span> </a> 
@@ -186,7 +187,7 @@
                             </li>                             
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="#" id="id-user-logout"><span class="material-icons-outlined">logout</span><span class="ms-3">Logout</span> </a> 
                             </li>                             
-                        </ul>                         <span style="font-size: 10px;" class="p-1">Version</span> 
+                        </ul><span style="font-size: 10px;" id="github-version" class="p-2">Version</span> 
                     </div>                     
                 </nav>                 
                 <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master"> 

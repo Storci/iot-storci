@@ -46,16 +46,16 @@ jobs:
         run: git branch
       - name: checkout branch develop
         run: git checkout develop
-      - name: change app version on file
-        run: sed -e 's/Version/${{ github.sha }}/' 01_Customers.html > 01_Customers.html.tmp && mv 01_Customers.html.tmp 01_Customers.html
-      - name: controlla il file modificato
-        run: cat 01_Customers.html
-      - name: controlla lo stato del branch
-        run: git status
-      - name: aggiunge il file modificato in stage
-        run: git add 01_Customers.html
-      - name: controlla lo stato del branch
-        run: git status
+      #- name: change app version on file
+      #  run: sed -e 's/Version/${{ github.sha }}/' 01_Customers.html > 01_Customers.html.tmp && mv 01_Customers.html.tmp 01_Customers.html
+      #- name: controlla il file modificato
+      #  run: cat 01_Customers.html
+      #- name: controlla lo stato del branch
+      #  run: git status
+      #- name: aggiunge il file modificato in stage
+      #  run: git add 01_Customers.html
+      #- name: controlla lo stato del branch
+      #  run: git status
       #- name: commit
         #run: git commit -m "update version 01_Customers.html"
       - name: rimuove i files

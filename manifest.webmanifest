@@ -3,9 +3,8 @@
   "name": "Storci IoT Monitoring System",
   "icons": [
     {
-      "src": "./assets/img/Storci_Logo_1024_1024.png",
-      "type": "image/png",
-      "sizes": "1024x1024"
+      "src": "./assets/img/icon_round_storci.svg",
+      "sizes": "any"
     }
   ],
   "start_url": "./index.html",

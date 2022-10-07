@@ -3170,12 +3170,14 @@ input[type="button"].btn-block {
   display: none;
 }
 
+
 .collapsing {
   position: relative;
   height: 0;
   overflow: hidden;
-  transition: height 0.35s ease;
+  transition: height 0.2s linear;
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   .collapsing {

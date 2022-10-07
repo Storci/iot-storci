@@ -206,7 +206,8 @@ a {
 }
 
 .card_cells,
-.card-hover {
+
+.card-hover {
     cursor: pointer;
 }
 
@@ -407,4 +408,36 @@ thead {
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+@media (min-width :1024px ) {
+  .col-sx-padding{
+    padding-right: 6px;
+  }
+  .col-padding{
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+  .col-dx-padding{
+    padding-left: 6px;
+  }
+}
+
+.alarmthead{
+    position: sticky !important;
+    top: 0px !important;
+    z-index: 999;
+}
+.tableAlert{
+    height: 80vh;
+}
+.CurrentAlarmList{
+    list-style-type: none;
+}
+.alert_list{
+    padding: 0;
+
+}
+.alert_body{
+    display: inline-flex;
 }

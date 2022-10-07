@@ -2,6 +2,7 @@
 import * as tw from "./Global/Thingworx/thingworx_api_module.js"
 import * as fb from "./Global/Firebase/firebase_auth_module.js"
 import * as lang from "./Global/Common/Translation.js"
+import { Octokit, App } from "https://cdn.skypack.dev/octokit";
 
 // Recupera il nome dell'utente da firebase, controlla che sia loggato.
 // Nel caso non fosse loggato richiama la pagina di login
@@ -23,6 +24,36 @@ tw.getCustomersList()
 })
 .catch(e => console.error(e))
 
+
+/* RECUPERA LE INFORMAZIONI DA GITHUB */
+let url = "https://api.github.com/repos/Storci/pwa/releases/latest"
+let release = localStorage.getItem("GITHUB_hide_release_news")
+let release_name = localStorage.getItem("GITHUB_last_release_name")
+
+tw.service_80_githubAPI(url)
+.then((resp) => {
+  console.log(resp)
+  if(release !== "true" || resp.name != release_name){
+    let s = convertText(resp.body)
+    $('#modal1').modal("show")
+    $("#modalTitle").html("NEW VERSION RELEASE - " + resp.name)
+    $("#modalSpan").html(s)
+    if(resp.prerelease){
+      $("#pre-release-tag").removeClass("d-none");
+    }
+    $("#modalCheckShow").click(function(){
+      if(this.checked){
+        localStorage.setItem('GITHUB_hide_release_news', "true")
+        localStorage.setItem('GITHUB_last_release_name', resp.name)
+      }else{
+        localStorage.setItem('GITHUB_hide_release_news', "false")
+        localStorage.setItem('GITHUB_last_release_name', "")
+      }
+    })
+  }
+})
+
+
 // ******************** FUNCTION ********************
 // La funzione crea il codice html per aggiungere una card alla row.
 // Viene anche aggiunta la funzione di click su ogni card.
@@ -35,6 +66,7 @@ function createCard(customerList){
 		// Toglie le prime due stringhe 'Storci' e 'Thing'.
 		// es. EntityName: Storci.Thing.Antiche_Tradizioni_Di_Gragnano
 		let customerName = el.name.split('.')[2]
+		console.log(customerName)
 		// Recupera l'immagine del cliente
 		let image = "./assets/img/Loghi/" + customerName + "." + "svg"
 		// Carica un'immagine base nel caso l'immagine del cliente non venga trovata
@@ -199,4 +231,51 @@ function getConnectionStatus(customerList){
 		})
 		.catch(error => console.error(error))
 	})
+}
+
+// La funzione converte alcuni caratteri speciali utilizzati in github
+// per formattare correttamente il testo.
+function convertText(text){
+  let ul = false;
+  let s = "";
+  text = text.split(/\r\n/g)
+  for(let i=0; i<text.length; i++){
+    if(text[i].search("##") != -1){
+      text[i] = text[i].replace(/## /g, "<strong><h5>")
+      text[i] = text[i] + "</h5></strong>\r\n\r\n"
+    }
+
+    if(text[i].search(/\*\*/g) != -1){
+      text[i] = text[i].replace(/\*\*/, "<strong>")
+      text[i] = text[i].replace(/\*\*/, "</strong>")
+    }
+
+    if(text[i].search(/@/g) != -1){
+      let sub = text[i].substr(text[i].search(/@/g),)
+      sub = sub.substr(0,sub.search(" "))
+      let subBold = "<strong><mark>" + sub + "</mark></strong>"
+      text[i] = text[i].replace(sub, subBold)
+    }
+
+    if(text[i].search(/\*/g) == 0){
+      if(!ul){
+        text[i] = "<ul><li>" + text[i].replace("\* ", "") + "</li>"
+        ul = true
+      }else{
+        text[i] = "<li>" + text[i].replace("\* ", "") + "</li>"
+      }
+    }
+
+    if(ul && text[i].length == 0){
+      text[i] = "</ul>\r\n";
+      ul = false
+    }
+
+    if(text[i].length == 0){
+      text[i] = "\r\n";
+    }
+
+    s += text[i]
+  }
+  return s
 }
