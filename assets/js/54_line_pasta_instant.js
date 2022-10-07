@@ -24,20 +24,20 @@ fb.onAuthStateChanged_2()
 // - Numero di assi Y associate al GRAFICO
 // - Array con le unità di misura
 let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
-let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 5, 6, arrayUM)
-let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 5, 6, arrayUM)
+let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 5, 2, arrayUM)
+let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 5, 2, arrayUM)
 // Crea le series da visualizzare sul grafico
-am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 5, false, true, true)
-am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 5, false, true)
-am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 5, false, false)
-am.createLineSeries(chartActualProduction, "PV - Temperatura Camera", "time", "PV_Temp_Camera", "°C", 5, false, false)
-am.createLineSeries(chartActualProduction, "PV - Portata Vapore", "time", "PV_Portata_Vapore", "°C", 5, false, false)
+am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true, true)
+am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartActualProduction, "PV - Temperatura Camera", "time", "PV_Temp_Camera", "°C", 1, false, false)
+am.createLineSeries(chartActualProduction, "PV - Portata Vapore", "time", "PV_Portata_Vapore", "°C", 1, false, false)
 // Crea le series da visualizzare nel grafico
-am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 5, false, true, true)
-am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 5, false, true)
-am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 5, false, false)
-am.createLineSeries(chartHistoryProduction, "PV - Temperatura Camera", "time", "PV_Temp_Camera", "°C", 5, false, false)
-am.createLineSeries(chartHistoryProduction, "PV - Portata Vapore", "time", "PV_Portata_Vapore", "°C", 5, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true, true)
+am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Temperatura Camera", "time", "PV_Temp_Camera", "°C", 1, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Portata Vapore", "time", "PV_Portata_Vapore", "°C", 1, false, false)
 
 // Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
 setInterval(am.refreshLegendSize, 1000, chartActualProduction, 'IDLegendActualProduzione')
@@ -60,7 +60,7 @@ $('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActual
 $('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function(){
-	let url ='./machineGraph/78_pastaInstantGraph.html?'+'entityName='+ entityName 
+	let url ='./machineGraph/78_pastaInstantGraph.html?'+'entityName='+ entityName
 	window.open(url, '_blank')
 })
 

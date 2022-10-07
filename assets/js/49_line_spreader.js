@@ -29,19 +29,19 @@ let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLeg
 // Crea le series da visualizzare sul grafico
 am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true, true)
 am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
-am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 0, false, false)
-am.createLineSeries(chartActualProduction, "PV - Canne al Minuto", "time", "PV_Canne_Minuto", "Canne/min", 0, false, true)
-am.createLineSeries(chartActualProduction, "SP - Canne Prodotte", "time", "PV_Canne_Prodotte", "", 0, false, true)
-am.createLineSeries(chartActualProduction, "PV - Peso Canna", "time", "PV_Peso_Canna", "kg", 0, false, true)
-am.createLineSeries(chartActualProduction, "SP - Tempo Canna", "time", "PV_Tempo_Canna", "sec", 0, false, true)
+am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartActualProduction, "PV - Canne al Minuto", "time", "PV_Canne_Minuto", "Canne/min", 1, false, true)
+am.createLineSeries(chartActualProduction, "SP - Canne Prodotte", "time", "PV_Canne_Prodotte", "", 1, false, true)
+am.createLineSeries(chartActualProduction, "PV - Peso Canna", "time", "PV_Peso_Canna", "kg", 1, false, true)
+am.createLineSeries(chartActualProduction, "SP - Tempo Canna", "time", "PV_Tempo_Canna", "sec", 1, false, true)
 // Crea le series da visualizzare nel grafico
 am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true, true)
 am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
-am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 0, false, false)
-am.createLineSeries(chartHistoryProduction, "PV - Canne al Minuto", "time", "PV_Canne_Minuto", "Canne/min", 0, false, true)
-am.createLineSeries(chartHistoryProduction, "SP - Canne Prodotte", "time", "PV_Canne_Prodotte", "", 0, false, true)
-am.createLineSeries(chartHistoryProduction, "PV - Peso Canna", "time", "PV_Peso_Canna", "kg", 0, false, true)
-am.createLineSeries(chartHistoryProduction, "SP - Tempo Canna", "time", "PV_Tempo_Canna", "sec", 0, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Canne al Minuto", "time", "PV_Canne_Minuto", "Canne/min", 1, false, true)
+am.createLineSeries(chartHistoryProduction, "SP - Canne Prodotte", "time", "PV_Canne_Prodotte", "", 1, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Peso Canna", "time", "PV_Peso_Canna", "kg", 1, false, true)
+am.createLineSeries(chartHistoryProduction, "SP - Tempo Canna", "time", "PV_Tempo_Canna", "sec", 1, false, true)
 
 // Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
 setInterval(am.refreshLegendSize, 1000, chartActualProduction, 'IDLegendActualProduzione')
@@ -66,7 +66,7 @@ $('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActual
 $('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function(){
-	let url ='./machineGraph/74_spreaderGraph.html?'+'entityName='+ entityName 
+	let url ='./machineGraph/74_spreaderGraph.html?'+'entityName='+ entityName
 	window.open(url, '_blank')
 })
 
