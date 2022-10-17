@@ -47,6 +47,9 @@
         <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js" type="module"></script>  -->         
         <script defer src="./assets/js/Global/Firebase/firebase_config.js"></script>         
         <!-- CUSTOM SCRIPT -->         
+        <script defer type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>   
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/> 
+        <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>       
         <script src="./assets/js/sidebar.js" type="module"></script>         
         <script src="./assets/js/52_line_omnidryer.js" type="module"></script>         
         <script src="./assets/js/Global/Common/Theme.js" type="module"></script>
@@ -361,12 +364,16 @@
                             <div class="card"> 
                                 <div class="card-body"> 
                                     <h6 class="card-subtitle mb-2 text-muted card_heading_label" translate_id="production_list">Lista Produzioni Storiche</h6> 
-                                    <div class="pb-3 pt-3 text-muted" data-pg-name="date"> 
+                                    <div class="input-group mb-3"> <span class="material-icons-outlined input-group-text"> 
+                                        date_range </span> 
+                                        <input type="text" id="dateTimePicker" class="form-control" placeholder="datePicker" aria-label="datePicker" aria-describedby="basic-addon1"/> 
+                                    </div>    
+                                   <!-- <div class="pb-3 pt-3 text-muted" data-pg-name="date"> 
                                         <input type="date" placeholder="gg/mm/aaaa" class="bg-gradient bg-transparent border-0 border-2 border-bottom text-muted w-100" id="IDTimeStart"/> 
                                     </div>                                     
                                     <div class="pb-3 pt-3" data-pg-name="date"> 
                                         <input type="date" placeholder="gg/mm/aaaa" class="bg-transparent border-0 border-2 border-bottom text-muted w-100" id="IDTimeEnd"/> 
-                                    </div>                                     
+                                    </div>      -->                               
                                     <div class="tableDiv"> 
                                         <table id="IDHistoryTable" class="table table-hover table-responsive"> 
                                             <thead> 

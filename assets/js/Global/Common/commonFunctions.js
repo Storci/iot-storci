@@ -42,9 +42,12 @@ function actualDryerProduction(chart, query, entityName){
 	})
 	.catch(e => console.error(e))
 }
+
+
+
 // La funzione recupera i dati da thingworx e li visualizza sul grafico
 // della produzione storica.
-function historyDryerProduction(chart, query, entityName){
+/*function historyDryerProduction(chart, query, entityName){
 	// Visualizza il widget che indica il valore in aggiornamento
 	$('.lds-dual-ring.history-production-list').show()
 
@@ -55,9 +58,60 @@ function historyDryerProduction(chart, query, entityName){
 	let timeEndZoom = new Date()
 
 
+	timeStartHistory.setDate(timeStartHistory.getDate() - 5)
+	// Imposta i 2 data picker con le date calcolate prima
+	// La funzione getDate ritorna solamente l'anno, il mese e il giorno
+	// yyyy-MM-dd
+	let disp_timeStart = getDate(timeStartHistory)
+	let disp_timeEnd = getDate(timeEndHistory)
+
+	$('#dateFilter').daterangepicker({
+		"locale": {
+			"format": "YYYY/MM/DD",
+			"separator": " - ",
+			"applyLabel": "Apply",
+			"cancelLabel": "Cancel",
+			"fromLabel": "From",
+			"toLabel": "To",
+			"customRangeLabel": "Custom",
+			"weekLabel": "W",
+			"daysOfWeek": [
+				"Su",
+				"Mo",
+				"Tu",
+				"We",
+				"Th",
+				"Fr",
+				"Sa"
+			],
+			"monthNames": [
+				"January",
+				"February",
+				"March",
+				"April",
+				"May",
+				"June",
+				"July",
+				"August",
+				"September",
+				"October",
+				"November",
+				"December"
+			],
+			"firstDay": 1
+		},
+		"startDate": disp_timeStart,
+		"endDate": disp_timeEnd
+	}, function(start, end, label) {*/
+		//$('#modal1').modal("show")
+	//getAlarmsNotifications('#IDHistoryTable',start.format('YYYY-MM-DD'),end.format('YYYY-MM-DD'),"*",true, customerName)*/
+	/*tw_chart.getDryerHistoryProduction('#IDHistoryTableBody', entityName, start.format('YYYY-MM-DD'),end.format('YYYY-MM-DD'), "*",chart, query)
+	timeStartZoom = timeStartHistory
+	timeEndZoom = timeEndHistory
+	
 
 	// Imposta X giorni prima della data odierna
-	timeStartHistory.setDate(timeStartHistory.getDate() - 14)
+	/*timeStartHistory.setDate(timeStartHistory.getDate() - 14)
 	// Imposta i 2 data picker con le date calcolate prima
 	// La funzione getDate ritorna solamente l'anno, il mese e il giorno
 	// yyyy-MM-dd
@@ -97,11 +151,11 @@ function historyDryerProduction(chart, query, entityName){
 	  // Per default viene visualizzata la prima produzione dell'elenco. (l'ultima produzione effettuata in ordine cronologico)
 		tw_chart.getDryerHistoryProduction('#IDHistoryTableBody', entityName, timeStartHistory, timeEndHistory, chart, query, )
 		timeStartZoom = timeStartHistory
-		timeEndZoom = timeEndHistory
-	});
+		timeEndZoom = timeEndHistory*/
+	//})
 
 	// Abilita onclick sulla card
-	$('tr').click(() => {
+	/*$('tr').click(() => {
 		console.log('click')
 		// Aggiunge la classe table-primary alla riga seleziona e la rimuove dalle altre righe
 		$(this).addClass('table-primary').siblings().removeClass('table-primary')
@@ -120,7 +174,7 @@ function historyDryerProduction(chart, query, entityName){
 		let url ='60_cellGrapHistory.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
 		window.open(url, '_blank')
 	})
-}
+}*/
 
 
 // ********** FUNZIONI COMUNI PER LA LINEA **********
@@ -311,7 +365,7 @@ function cardLineTrend(IDdivTrend, entityName, s1, s2='', um){
 export{
   getDate,
 	actualDryerProduction,
-	historyDryerProduction,
+	//historyDryerProduction,
 	actualLineProduction,
 	historyLineProduction,
 	cardLineTrend
