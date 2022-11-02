@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head data-pgc-field="head">
+<html lang="en" class="bg-white">
+    <head>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="description" content=""/>
         <meta name="author" content=""/>
         <link rel="icon" href="./assets/img/icon_round_storci.svg" type="image/x-icon"/>
-        <title> Graph Fullscreen</title>
+        <title>Zoom dryer history trend</title>
         <!-- MANIFEST -->
         <link rel="manifest" href="./manifest.webmanifest"/>
         <!-- carica l'immagine da usare nell'icona dell'iphone -->
@@ -38,23 +38,24 @@
         <script defer src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
         <script defer src="https://cdn.amcharts.com/lib/4/themes/dark.js"></script>
         <script defer src="//cdn.amcharts.com/lib/4/plugins/rangeSelector.js"></script>
-        <!--<script src="./assets/js/sidebar.js" type="module"></script>-->
-        <script defer src="./assets/js/.js" type="module"></script>         
-        <!--<script src="./assets/js/Global/Common/Theme.js" type="module"></script>-->
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js" type="module"></script>
+        <!-- <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js" type="module"></script>  -->
+        <script defer src="./assets/js/Global/Firebase/firebase_config.js"></script>
+        <!-- CUSTOM SCRIPT -->
+        <script src="./assets/js/sidebar.js" type="module"></script>
+        <script defer src="./assets/js/61_actualCellGraph.js" type="module"></script>
+        <script src="./assets/js/Global/Common/Theme.js" type="module"></script>
     </head>
     <body>
-        <div class="container">
-            <div class="card mb-5 vh-100">
-                <div class="card-body d-flex flex-column">
-                    <div data-pg-name="Title">
-                        <h6 class="text-muted">Trend Essicazione</h6>
-                    </div>
-                    <div class="pg-empty-placeholder" data-pg-name="legend" id="IDLegendActualProduzione"></div>
-                    <div class="flex-grow-1 flex-shrink-1 pg-empty-placeholder" data-pg-name="chart" id="IDTrendActualProduction"></div>
-                    <div class="pg-empty-placeholder"></div>
-
-                </div>
-            </div>
+        <div class="container min-vh-100 min-vw-100 p-2">
+            <h3 class="m-2">Trend Essicazione</h3>
+            <div class="pg-empty-placeholder" id="IDLegendActualProduzione"></div>
+            <div class="pg-empty-placeholder" id="IDTrendActualProduction" style="height: 90vh;"></div>
         </div>
     </body>
 </html>

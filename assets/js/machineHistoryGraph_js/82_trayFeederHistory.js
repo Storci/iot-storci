@@ -9,23 +9,25 @@ const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 // Recupera l'entity name della thing
 // Recupera l'entity name della thing
+// Recupera l'entity name della thing
 let entityName = urlParams.get('entityName')
-let timeStartZoom = new Date(urlParams.get('timeStart'))
+let timeStartZoom = urlParams.get('timeStart')
 console.log(timeStartZoom)
-let timeEndZoom = new Date(urlParams.get ('timeEnd'))
+let timeEndZoom = urlParams.get ('timeEnd')
 console.log(timeEndZoom)
+// Istanzia i grafici dell'attuale e d
 
 let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
-let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 8, 9, arrayUM)
+let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 8, 2, arrayUM)
 
 // Crea le series da visualizzare nel grafico
-am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 8, false, true)
-am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 8, false, true)
-am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 8, false, false)
-am.createLineSeries(chartHistoryProduction, 'PV - Telai/min', 'time', 'PV_Telai_Minuto', 'T/min', 8, false, false, true)
-am.createLineSeries(chartHistoryProduction, 'SP - Corrente', 'time', 'PV_Corrente', 'A', 8, false, true)
-am.createLineSeries(chartHistoryProduction, 'PV - Velocità', 'time', 'PV_Velocita', 'hz', 8, false, true)
-am.createLineSeries(chartHistoryProduction, 'SP - Velocità', 'time', 'SP_Velocita', 'hz', 8, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartHistoryProduction, 'PV - Telai/min', 'time', 'PV_Telai_Minuto', 'T/min', 1, false, false, true)
+am.createLineSeries(chartHistoryProduction, 'SP - Corrente', 'time', 'PV_Corrente', 'A', 1, false, true)
+am.createLineSeries(chartHistoryProduction, 'PV - Velocità', 'time', 'PV_Velocita', 'hz', 1, false, true)
+am.createLineSeries(chartHistoryProduction, 'SP - Velocità', 'time', 'SP_Velocita', 'hz', 1, false, true)
 
 // Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
 setInterval(am.refreshLegendSize, 1000, chartHistoryProduction, 'IDLegendHistoryProduction')
@@ -42,7 +44,7 @@ query += 'mean("Avanzamento_Telai_Motori_Catena_PV_Telai_Minuto") as "PV_Telai_M
 query += 'mean("Avanzamento_Telai_Motori_Catena_PV_Velocita") as "PV_Velocita", '
 query += 'mean("Avanzamento_Telai_Motori_Catena_SP_Velocita") as "SP_Velocita" '
 query += 'FROM "' + entityName + '" '
-query += 'WHERE time > '+ timeStartZoom.getTime() + 'ms and time < '+ timeEndZoom.getTime() + 'ms GROUP BY time(10s) fill(previous)'
+query += 'WHERE time > '+ timeStartZoom + 'ms and time < '+ timeEndZoom + 'ms GROUP BY time(10s) fill(previous)'
 
 // ******************** STORICO PRODUZIONI ********************
 common.actualLineProduction(chartHistoryProduction, query, entityName)

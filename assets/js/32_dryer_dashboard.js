@@ -34,7 +34,7 @@ fb.onAuthStateChanged_2()
 // Recupera la lingua utilizzata dall'utente e sostituisce tutti i testi
 // ATTENZIONE - Questa istruzione traduce solamente i testi statici e non
 // i testi caricati dalle funzioni.
-// funzione per la traduzione 
+// funzione per la traduzione
 lang.getLanguage()
 
 // Definisce le variabili come date
@@ -97,11 +97,7 @@ $('#dateTimePicker').daterangepicker({
 	timeEndZoom = timeEndHistory
 });
 
-// pulsante per aprire il grafico storico delle celle in un'altro tab
-$('#fullscreenHistory').click(function(){
-	let url ='60_cellGrapHistory.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
-	window.open(url, '_blank')
-})
+
 
 // Istanzia i grafici dell'attuale e dello storico
 // I grafici devono essere istanziati una volta solamente
@@ -166,7 +162,8 @@ $('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActual
 $('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function(){
-	let url ='61_actualCellGraph.html?'+'entityName='+ entityName 
+	//let url ='61_actualCellGraph.html?'+'entityName='+ entityName
+  let url ='./61_dryers_actual_zoom.html?'+'entityName='+ entityName
 	window.open(url, '_blank')
 })
 
@@ -370,7 +367,12 @@ function listHistoryProduction(dryers, timeStart, timeEnd){
 					am.setChartData(chartHistoryProduction, subquery, '')
 					timeStartZoom = timestampStart
 					timeEndZoom = timestampEnd
-
+					// pulsante per aprire il grafico storico delle celle in un'altro tab
+					$('#fullscreenHistory').click(function(){
+						//let url ='60_cellGrapHistory.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+						let url ='60_dryers_history_zoom.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+						window.open(url, '_blank')
+					})
 					tw.service_05_getDryerStartEnd(dryer.entityName, timestampStart, timestampEnd)
 					.then(result => {
 						//console.log(result)

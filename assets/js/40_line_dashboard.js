@@ -133,17 +133,12 @@ $("body").ready(async function(){
 	$('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartProduction) })
 
 
-	// pulsante per aprire il grafico quotidiano in un'altra tab
-$('#daily_graph').click(function(){
-	let url ='./machineGraph/dashboard_dailyGraph.html?'+'entityName='+ entityName 
-	window.open(url, '_blank')
-})
-
-// pulsante per aprire il grafico attuale in un'altra tab
-$('#actual_graph').click(function(){
-	let url ='./machineGraph/dashboard_actualGraph.html?'+'entityName='+ entityName 
-	window.open(url, '_blank')
-})
+	// pulsante per aprire il grafico attuale in un'altra tab
+	$('#fullscreen').click(function(){
+		//let url ='./machineGraph/dashboard_actualGraph.html?'+'entityName='+ entityName
+		let url ='./machineGraph/79_dashboard_actual_zoom.html?'+'entityName='+ entityName 
+		window.open(url, '_blank')
+	})
 })
 
 

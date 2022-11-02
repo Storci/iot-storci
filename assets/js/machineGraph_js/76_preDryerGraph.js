@@ -18,14 +18,17 @@ let entityName = urlParams.get('entityName')
 // - Numero di assi Y associate al GRAFICO
 // - Array con le unità di misura
 let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
-let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 7, 8, arrayUM)
-let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 7, 8, arrayUM)
+let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 7, 2, arrayUM)
+
 // Crea le series da visualizzare sul grafico
-am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 7, false, true, true)
-am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 7, false, true)
-am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 7, false, false)
-am.createLineSeries(chartActualProduction, "PV - Temperatura", "time", "PV_Temp_Trabatto", "°C", 7, false, false)
-am.createLineSeries(chartActualProduction, "SP - Temperatura", "time", "SP_Temp_Trabatto", "°C", 7, false, false)
+am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true, true)
+am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartActualProduction, "PV - Temperatura", "time", "PV_Temp_Trabatto", "°C", 1, false, false)
+am.createLineSeries(chartActualProduction, "SP - Temperatura", "time", "SP_Temp_Trabatto", "°C", 1, false, false)
+
+setInterval(am.refreshLegendSize, 1000, chartActualProduction, 'IDLegendActualProduzione')
+
 // Definisce la query da inviare a influxdb
 // I parametri da sostituire sono indicati da {1}, {2}, ecc...
 // Invece l'entityName è sempre comune per tutte le query

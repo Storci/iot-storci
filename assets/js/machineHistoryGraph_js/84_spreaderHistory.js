@@ -9,40 +9,36 @@ const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 
 // Recupera l'entity name della thing
-// Recupera l'entity name della thing
 let entityName = urlParams.get('entityName')
-let timeStartZoom = new Date(urlParams.get('timeStart'))
-console.log(timeStartZoom)
-let timeEndZoom = new Date(urlParams.get ('timeEnd'))
-console.log(timeEndZoom)
+let timeStartZoom = urlParams.get('timeStart')
+let timeEndZoom = urlParams.get ('timeEnd')
 
 let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
-let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 0, 2, arrayUM)
 let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 0, 2, arrayUM)
+
 // Crea le series da visualizzare nel grafico
-am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true, true)
 am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
-am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 0, false, false)
-am.createLineSeries(chartHistoryProduction, 'PV - Telai/min', 'time', 'PV_Telai_Minuto', 'T/min', 1, false, false, true)
-am.createLineSeries(chartHistoryProduction, 'SP - Corrente', 'time', 'PV_Corrente', 'A', 0, false, true)
-am.createLineSeries(chartHistoryProduction, 'PV - Velocità', 'time', 'PV_Velocita', 'hz', 0, false, true)
-am.createLineSeries(chartHistoryProduction, 'SP - Velocità', 'time', 'SP_Velocita', 'hz', 0, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Canne al Minuto", "time", "PV_Canne_Minuto", "Canne/min", 1, false, true)
+am.createLineSeries(chartHistoryProduction, "SP - Canne Prodotte", "time", "PV_Canne_Prodotte", "", 1, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Peso Canna", "time", "PV_Peso_Canna", "kg", 1, false, true)
+am.createLineSeries(chartHistoryProduction, "SP - Tempo Canna", "time", "PV_Tempo_Canna", "sec", 1, false, true)
 
 // Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
 setInterval(am.refreshLegendSize, 1000, chartHistoryProduction, 'IDLegendHistoryProduction')
-
 
 let query  = 'SELECT '
 query += 'mean("Impasto_PV_Impasto_Totale") as "PV_Impasto", '
 query += 'mean("Impasto_SP_Impasto_Totale") as "SP_Impasto", '
 query += 'mean("Pressa_Motori_Estrusore_PV_Pressione") as "PV_Pressione", '
-query += 'mean("Pressa_Termostatazione_Cilindro_PV_Temperatura") as "PV_Temp_Cilindro", '
-query += 'mean("Pressa_Termostatazione_Cilindro_SP_Temperatura") as "SP_Temp_Cilindro", '
-query += 'mean("Pressa_Termostatazione_Testata_PV_Temperatura") as "PV_Temp_Testata", '
-query += 'mean("Pressa_Termostatazione_Testata_SP_Temperatura") as "SP_Temp_Testata", '
-query += 'mean("Pressa_Motori_Estrusore_PV_Calorie") as "PV_Consumi" '
+query += 'mean("Stenditrice_PV_Canne_Minuto") as "PV_Canne_Minuto", '
+query += 'mean("Stenditrice_PV_Canne_Prodotto") as "PV_Canne_Prodotte", '
+query += 'mean("Stenditrice_PV_Peso_Canna") as "PV_Peso_Canna", '
+query += 'mean("Stenditrice_PV_Tempo_Canna") as "PV_Tempo_Canna" '
 query += 'FROM "' + entityName + '" '
-query += 'WHERE time > '+ timeStartZoom.getTime() + 'ms and time < '+ timeEndZoom.getTime() + 'ms GROUP BY time(10s) fill(previous)'
+query += 'WHERE time > '+ timeStartZoom + 'ms and time < '+ timeEndZoom + 'ms GROUP BY time(1m) fill(previous)'
+
 
 // ******************** STORICO PRODUZIONI ********************
 common.actualLineProduction(chartHistoryProduction, query, entityName)

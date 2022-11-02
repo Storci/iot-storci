@@ -9,9 +9,9 @@ const queryString = window.location.search
 const urlParams = new URLSearchParams(queryString)
 // Recupera l'entity name della thing
 let entityName = urlParams.get('entityName')
-let timeStartZoom = new Date(urlParams.get('timeStart'))
+let timeStartZoom = urlParams.get('timeStart')
 console.log(timeStartZoom)
-let timeEndZoom = new Date(urlParams.get ('timeEnd'))
+let timeEndZoom = urlParams.get ('timeEnd')
 console.log(timeEndZoom)
 // Istanzia i grafici dell'attuale e dello storico
 // I grafici devono essere istanziati una volta solamente
@@ -22,15 +22,16 @@ console.log(timeEndZoom)
 // - Numero di assi Y associate al GRAFICO
 // - Array con le unità di misura
 let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
-let chartHistoryProduction 		 = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 2, 3, arrayUM)
+let chartHistoryProduction 		 = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 2, 3, arrayUM)
 
 // Crea le series da visualizzare sul graficoam.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 2, false, false, true)
-am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 2, false, false)
-am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 2, false, false)
-am.createLineSeries(chartHistoryProduction, 'PV - Portata Acqua', 'time', 'PV_Portata_Acqua', '°C', 2, false, true)
-am.createLineSeries(chartHistoryProduction, 'SP - Portata Acqua', 'time', 'SP_Portata_Acqua', '°C', 2, false, true)
-am.createLineSeries(chartHistoryProduction, 'PV - Temperatura Acqua', 'time', 'PV_Temp_Acqua', '°C', 2, false, true)
-am.createLineSeries(chartHistoryProduction, 'SP - Temperatura Acqua', 'time', 'SP_Temp_Acqua', '°C', 2, false, true)
+am.createLineSeries(chartHistoryProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, false, true)
+am.createLineSeries(chartHistoryProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, false)
+am.createLineSeries(chartHistoryProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false)
+am.createLineSeries(chartHistoryProduction, 'PV - Portata Acqua', 'time', 'PV_Portata_Acqua', '°C', 1, false, true)
+am.createLineSeries(chartHistoryProduction, 'SP - Portata Acqua', 'time', 'SP_Portata_Acqua', '°C', 1, false, true)
+am.createLineSeries(chartHistoryProduction, 'PV - Temperatura Acqua', 'time', 'PV_Temp_Acqua', '°C', 1, false, true)
+am.createLineSeries(chartHistoryProduction, 'SP - Temperatura Acqua', 'time', 'SP_Temp_Acqua', '°C', 1, false, true)
 am.createLineSeries(chartHistoryProduction, "PV - kcal/h", "time", "PV_Consumi", "kcal/h", 2, false, true)
 
 // Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
@@ -49,8 +50,7 @@ query += 'mean("Impasto_PV_Temperatura_Acqua") as "PV_Temp_Acqua", '
 query += 'mean("Impasto_SP_Temperatura_Acqua") as "SP_Temp_Acqua", '
 query += 'mean("Pressa_Motori_Estrusore_PV_Calorie") as "PV_Consumi" '
 query += 'FROM "' + entityName + '" '
-query += 'WHERE time > '+ timeStartZoom.getTime() + 'ms and time < '+ timeEndZoom.getTime() + 'ms GROUP BY time(10s) fill(previous)'
-console.log(query)
+query += 'WHERE time > '+ timeStartZoom + 'ms and time < '+ timeEndZoom + 'ms GROUP BY time(10s) fill(previous)'
 
 // ******************** STORICO PRODUZIONI ********************
 //common.historyLineProduction(chartHistoryProduction, query, entityName)

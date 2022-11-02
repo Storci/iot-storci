@@ -18,6 +18,8 @@ fb.onAuthStateChanged_2()
 // Definisce le variabili come date
 let timeStartHistory = new Date()
 let timeEndHistory   = new Date()
+let timeStartZoom = new Date()
+let timeEndZoom = new Date()
 // Imposta X giorni prima della data odierna
 timeStartHistory.setDate(timeStartHistory.getDate() - 14)
 // Imposta i 2 data picker con le date calcolate prima
@@ -65,6 +67,8 @@ $('#dateTimePicker').daterangepicker({
     "endDate": disp_timeEnd
 }, function(start, end, label) {
   listHistoryProduction(entityName, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))
+  timeStartZoom = timeStartHistory
+  timeEndZoom = timeEndHistory
 });
 
 
@@ -235,6 +239,14 @@ function listHistoryProduction(entityName, timeStart, timeEnd){
 				// Recupera i dati da influxdb e li visualizza sul grafico
 				am.setChartData(chartHistoryProduction, subquery, '')
 				// Recupera la prima riga della tabella
+				timeStartZoom = timestampStart
+				timeEndZoom = timestampEnd
+				// pulsante per aprire il grafico storico delle celle in un'altro tab
+				$('#fullscreenHistoryPastaInstant').click(function(){
+					let url ='./machineHistoryGraph/89_pasta_instant_history_zoom.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+					window.open(url, '_blank')
+					console.log('me')
+				})
 			})
 			/*let elem = document.getElementById('firstColumn')
 			// Definisce la variabile come click event
@@ -242,7 +254,7 @@ function listHistoryProduction(entityName, timeStart, timeEnd){
 			// Esegue l'evento dell'elemento, in questo modo simula il click
 			// sulla prima riga della tabella, e viene caricato il grafico
 				elem.dispatchEvent(clickEvent)*/
-	
+
 			})
 		})
 	}
@@ -252,17 +264,7 @@ $('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActual
 $('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function(){
-	let url ='./machineGraph/70_doughGraph.html?'+'entityName='+ entityName
-	window.open(url, '_blank')
-})
-
-
-// Pulsanti per l'esportazione del grafico in png
-$('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActualProduction) })
-$('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
-
-$('#fullscreen').click(function(){
-	let url ='./machineGraph/78_pastaInstantGraph.html?'+'entityName='+ entityName
+	let url ='./machineGraph/78_pasta_instant_actual_zoom.html?'+'entityName='+ entityName
 	window.open(url, '_blank')
 })
 

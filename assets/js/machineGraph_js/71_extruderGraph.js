@@ -21,18 +21,20 @@ let entityName = urlParams.get('entityName')
 // - Numero di assi Y associate al GRAFICO
 // - Array con le unità di misura
 let arrayUM = ['Produzione (kg/h)', 'Pressione Estrusore (Bar)']
-let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 3, 4, arrayUM)
-let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 3, 4, arrayUM)
-// Crea le series da visualizzare sul grafico
-am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 3, false, true)
-am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 3, false, true)
-am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 3, false, false, true)
-am.createLineSeries(chartActualProduction, 'PV - Temperatura Cilindro', 'time', 'PV_Temp_Cilindro', '°C', 3, false, false)
-am.createLineSeries(chartActualProduction, 'SP - Temperatura Cilindro', 'time', 'SP_Temp_Cilindro', '°C', 3, false, false)
-am.createLineSeries(chartActualProduction, 'PV - Temperatura Testata', 'time', 'PV_Temp_Testata', '°C', 3, false, true)
-am.createLineSeries(chartActualProduction, 'PV - Temperatura Testata', 'time', 'SP_Temp_Testata', '°C', 3, false, true)
-am.createLineSeries(chartActualProduction, "PV - kcal/h", "time", "PV_Consumi", "kcal/h", 3, false, true)
+let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 3, 3, arrayUM)
 
+// Crea le series da visualizzare sul grafico
+am.createLineSeries(chartActualProduction, "PV - Impasto", "time", "PV_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartActualProduction, "SP - Impasto", "time", "SP_Impasto", "kg/h", 0, false, true)
+am.createLineSeries(chartActualProduction, "PV - Pressione", "time", "PV_Pressione", "Bar", 1, false, false, true)
+am.createLineSeries(chartActualProduction, 'PV - Temperatura Cilindro', 'time', 'PV_Temp_Cilindro', '°C', 1, false, false)
+am.createLineSeries(chartActualProduction, 'SP - Temperatura Cilindro', 'time', 'SP_Temp_Cilindro', '°C', 1, false, false)
+am.createLineSeries(chartActualProduction, 'PV - Temperatura Testata', 'time', 'PV_Temp_Testata', '°C', 1, false, true)
+am.createLineSeries(chartActualProduction, 'PV - Temperatura Testata', 'time', 'SP_Temp_Testata', '°C', 1, false, true)
+am.createLineSeries(chartActualProduction, "PV - kcal/h", "time", "PV_Consumi", "kcal/h", 2, false, true)
+
+// Ricalcola la dimensione del div della legenda - viene eseguito ogni secondo
+setInterval(am.refreshLegendSize, 1000, chartActualProduction, 'IDLegendActualProduzione')
 
 // Definisce la query da inviare a influxdb
 // I parametri da sostituire sono indicati da {1}, {2}, ecc...

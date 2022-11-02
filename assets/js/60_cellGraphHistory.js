@@ -26,11 +26,8 @@ let selectedLine 		 = localStorage.getItem("global_selected_cell")
 
 
 let entityName = urlParams.get('entityName')
-console.log(entityName)
-let timeStartZoom = new Date(urlParams.get('timeStart'))
-console.log(timeStartZoom)
-let timeEndZoom = new Date(urlParams.get ('timeEnd'))
-console.log(timeEndZoom)
+let timeStartZoom = urlParams.get('timeStart')
+let timeEndZoom = urlParams.get ('timeEnd')
 
 
 let arrayUM = ['Essicazione', 'Calorie']
@@ -59,7 +56,7 @@ query += 'mean("Dati_Ciclo_Umidita_PV") as "PV_Umidita_Cella", '
 query += 'mean("Dati_Ciclo_Umidita_SP") as "SP_Umidita_Cella", '
 query += 'mean("Dati_Aggiuntivi_Kcal_Ciclo") as "PV_Consumo_Ciclo" '
 query += 'FROM "' + entityName + '" '
-query += 'WHERE time > '+ timeStartZoom.getTime() + 'ms and time < '+ timeEndZoom.getTime() + 'ms GROUP BY time(10s) fill(previous)'
+query += 'WHERE time > '+ timeStartZoom + 'ms and time < '+ timeEndZoom + 'ms GROUP BY time(10s) fill(previous)'
 console.log(query)
 
 // ******************** STORICO PRODUZIONI ********************

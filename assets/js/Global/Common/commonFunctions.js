@@ -266,10 +266,7 @@ function historyLineProduction(chart, query, entityName){
 	})
 
 	// pulsante per aprire il grafico storico dell' impasto
-	$('#fullscreenHistoryDough').click(function(){
-		let url ='./machineHistoryGraph/80_doughHistoryGraph.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
-		window.open(url, '_blank')
-	})
+	
 
 	// pulsante per aprire il grafico storico dell' estusore
 	$('#fullscreenHistoryExtruder').click(function(){

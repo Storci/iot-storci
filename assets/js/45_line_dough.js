@@ -13,10 +13,11 @@ let entityName = urlParams.get('entityName')
 // Recupera il nome dell'utente da firebase, controlla che sia loggato.
 // Nel caso non fosse loggato richiama la pagina di login
 fb.onAuthStateChanged_2()
-
 // Definisce le variabili come date
 let timeStartHistory = new Date()
 let timeEndHistory   = new Date()
+let timeStartZoom = new Date()
+let timeEndZoom = new Date()
 // Imposta X giorni prima della data odierna
 timeStartHistory.setDate(timeStartHistory.getDate() - 14)
 // Imposta i 2 data picker con le date calcolate prima
@@ -64,6 +65,8 @@ $('#dateTimePicker').daterangepicker({
     "endDate": disp_timeEnd
 }, function(start, end, label) {
   listHistoryProduction(entityName, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))
+  timeStartZoom = timeStartHistory
+	timeEndZoom = timeEndHistory
 });
 
 // Istanzia i grafici dell'attuale e dello storico
@@ -120,7 +123,7 @@ query += 'FROM "' + entityName + '" '
 query += 'WHERE time > {1}ms and time < {2}ms GROUP BY time(10s) fill(previous)'
 
 // Cancella tutte le righe della tabella
-$("#IDHistoryTableBody").empty()
+//$("#IDHistoryTableBody").empty()
 
 // Recupera tutte le celle installate dal cliente
 listHistoryProduction(entityName, timeStartHistory, timeEndHistory)
@@ -246,6 +249,45 @@ function listHistoryProduction(entityName, timeStart, timeEnd){
 				// Recupera i dati da influxdb e li visualizza sul grafico
 				am.setChartData(chartHistoryProduction, subquery, '')
 				// Recupera la prima riga della tabella
+				timeStartZoom = timestampStart
+				timeEndZoom = timestampEnd
+					// pulsante per aprire il grafico storico delle celle in un'altro tab
+				$('#fullscreenHistoryDough').click(function(){
+					let url ='./machineHistoryGraph/80_dough_history_zoom.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+					window.open(url, '_blank')
+					console.log('me')
+				})
+
+				tw.service_05_getDryerStartEnd(entityName, timestampStart, timestampEnd)
+				.then(result => {
+					//console.log(result)
+					let range = chartHistoryProduction.xAxes.values[0].axisRanges.values[0]
+					range.date = new Date(result.array[0].start)
+					range.grid.stroke = am4core.color("#396478");
+					range.grid.strokeWidth = 2;
+					range.grid.strokeOpacity = 0.6;
+					range.label.inside = true;
+					range.label.text = "Inizio Essicazione";
+
+					let range1 = chartHistoryProduction.xAxes.values[0].axisRanges.values[1]
+					range1.date = new Date(result.array[0].stop)
+					range1.grid.stroke = am4core.color("#396478");
+					range1.grid.strokeWidth = 2;
+					range1.grid.strokeOpacity = 0.6;
+					range1.label.inside = true;
+					range1.label.text = "Fine Essicazione";
+
+					if(result.array[0].endLoad){
+						let range2 = chartHistoryProduction.xAxes.values[0].axisRanges.values[2]
+						range2.date = new Date(result.array[0].endLoad)
+						range2.grid.stroke = am4core.color("#396478");
+						range2.grid.strokeWidth = 2;
+						range2.grid.strokeOpacity = 0.6;
+						range2.label.inside = true;
+						range2.label.text = "Fine Carico";
+					}
+				})
+				.catch(e => {console.log(e)})
 			})
 			/*let elem = document.getElementById('firstColumn')
 			// Definisce la variabile come click event
@@ -253,7 +295,7 @@ function listHistoryProduction(entityName, timeStart, timeEnd){
 			// Esegue l'evento dell'elemento, in questo modo simula il click
 			// sulla prima riga della tabella, e viene caricato il grafico
 				elem.dispatchEvent(clickEvent)*/
-	
+
 			})
 		})
 	}
@@ -263,7 +305,7 @@ $('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActual
 $('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function(){
-	let url ='./machineGraph/70_doughGraph.html?'+'entityName='+ entityName
+  let url ='./machineGraph/70_dough_actual_zoom.html?'+'entityName='+ entityName
 	window.open(url, '_blank')
 })
 
