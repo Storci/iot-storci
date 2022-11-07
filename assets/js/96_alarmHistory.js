@@ -185,7 +185,7 @@ function insertionSort(table, column, dir){
 
 // Funzione per recuperare i dati da tw per mettere nella tabella
 function getAlarmsNotifications(idTable, startDate, endDate, filter, getHistory, customerName){
-	tw.getListAlert(startDate, endDate, filter, getHistory,customerName)
+	tw.service_10_getAlerts(startDate, endDate, filter, getHistory,customerName)
 	.then((list)=>{
     setTimeout(function() {	$('#modal1').modal("hide") }, 500);
 		//$(idTable).empty()

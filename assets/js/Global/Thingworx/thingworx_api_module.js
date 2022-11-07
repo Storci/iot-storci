@@ -22,17 +22,13 @@ let settings = {
 };
 
 
-/*
-	service_01_getDryersGeneralInfo
-	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
-	recupera i dati generali di tutte le celle installate dal cliente.
-	i dati recuperati sono:
-		- celle totali installate
-		- celle attive
-		- temperatura ambiente
-		- umidità ambiente
-		- allarmi attivi
-*/
+/**
+ * It takes an entity name as input, calls the REST API, and returns a promise that resolves to the
+ * response
+ * recupera i dati generali di tutte le celle installate dal cliente.
+ * @param entityName - l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa).
+ * @returns A promise.
+ */
 function service_01_getDryersGeneralInfo(entityName){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_01_getDryersGeneralInfo'
@@ -41,17 +37,12 @@ function service_01_getDryersGeneralInfo(entityName){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_02_getLinesGeneralInfo
-	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
-	recupera i dati generali di tutte le celle installate dal cliente.
-	i dati recuperati sono:
-		- celle totali installate
-		- celle attive
-		- temperatura ambiente
-		- umidità ambiente
-		- allarmi attivi
-*/
+/**
+ * It takes an entity name as input, calls a REST API, and returns a promise
+ * recupera i dati generali di tutte le celle installate dal cliente.
+ * @param entityName - l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
+ * @returns A promise.
+ */
 function service_02_getLinesGeneralInfo(entityName){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_02_getLinesGeneralInfo'
@@ -60,11 +51,14 @@ function service_02_getLinesGeneralInfo(entityName){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_03_getDryerHistoryProductions
-	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
-	recupera la lista di produzione di una cella.
-*/
+/**
+ * It takes three parameters, it calls a REST API, and it returns a promise
+ * recupera la lista di produzione di una cella.
+ * @param entityName - l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa).
+ * @param startTime - "2019-01-01T00:00:00.000Z"
+ * @param endTime - "2019-11-01T00:00:00.000Z"
+ * @returns A promise.
+ */
 function service_03_getDryerHistoryProductions(entityName, startTime, endTime){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_03_getDryerHistoryProductions'
@@ -73,11 +67,14 @@ function service_03_getDryerHistoryProductions(entityName, startTime, endTime){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_04_getLineHistoryProductions
-	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
-	recupera la lista di produzione di una linea.
-*/
+/**
+ * It takes three parameters, it calls a REST API, and it returns a promise
+ * recupera la lista di produzione di una linea.
+ * @param entityName - l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa).
+ * @param startTime - "2019-01-01T00:00:00.000Z"
+ * @param endTime - "2019-11-01T00:00:00.000Z"
+ * @returns A promise.
+ */
 function service_04_getLineHistoryProductions(entityName, startTime, endTime){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_04_getLineHistoryProductions'
@@ -86,12 +83,18 @@ function service_04_getLineHistoryProductions(entityName, startTime, endTime){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_05_getDryerStartEnd
-	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
-	recupera i timestamp di inizio e fine essiccazione.
-*/
-function service_05_getDryerStartEnd(entityName, startTime, endTime){
+/**
+ * It takes in a start date, end date, filter, getHistory, and customerName, and returns a promise that
+ * resolves to a response from the REST API.
+ * recupera i timestamp di inizio e fine essiccazione.
+ * @param startDate - the start date of the data you want to retrieve
+ * @param endDate - "2019-01-01T00:00:00.000Z"
+ * @param filter - 
+ * @param getHistory - true/false
+ * @param customerName - The name of the customer
+ * @returns A promise.
+ */
+function service_05_getDryerStartEnd(startDate, endDate, filter,getHistory,customerName){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_05_getDryerStartEnd'
 	settings.data = JSON.stringify({"entityName":entityName, "startTime":startTime, "endTime":endTime})
@@ -99,12 +102,48 @@ function service_05_getDryerStartEnd(entityName, startTime, endTime){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_80_githubAPI
-	Il servizio effettua le chiamate rest api verso github.
-	Si è preferito utilizzare thingworx come intermediario perchè github revoca il personal access token
-	se lo trova nel codice nel repository. Quindi è impossibile usare un qualsiasi codice dentro a questa applicazione.
-*/
+/**
+ * It takes in a start date, end date, filter, getHistory, and customerName, and returns a promise that
+ * resolves to the response from the REST API.
+ * Recupera gli allarmi attivi della linea
+ * @param startDate - The start date of the time period you want to get alerts for.
+ * @param endDate - "2019-01-01T00:00:00.000Z"
+ * @param filter - "all"
+ * @param getHistory - true/false
+ * @param customerName - The name of the customer you want to get alerts for.
+ * @returns A promise.
+ */
+function service_10_getAlerts(startDate, endDate, filter,getHistory,customerName){
+	// Definisce l'url da richiamare per la REST API
+	settings.url  = baseUrl + bootstrapThing + 'service_10_getAlerts'
+	settings.data = JSON.stringify({"startDate":startDate, "endDate":endDate, "filter":filter, "getHistory":getHistory, "customerName":customerName})
+	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
+	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
+}
+
+/**
+ * It takes a query as input, calls the REST API, and returns the response
+ * Recupera gli allarmi attivi della linea
+ * @param query - The query to send to the REST API.
+ * @returns A promise.
+ */
+function service_11_AlertsReport(query){
+	// Definisce l'url da richiamare per la REST API
+	settings.url  = baseUrl + bootstrapThing + 'service_11_AlertsReport'
+	settings.data = JSON.stringify({"query":query})
+	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
+	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
+}
+
+/**
+ * It takes a URL as an argument, and returns a promise that resolves to the response from the GitHub
+ * API.
+ * Il servizio effettua le chiamate rest api verso github.
+ * Si è preferito utilizzare thingworx come intermediario perchè github revoca il personal access token
+ * se lo trova nel codice nel repository. Quindi è impossibile usare un qualsiasi codice dentro a questa applicazione.
+ * @param url - The URL of the GitHub API to call.
+ * @returns A promise.
+ */
 function service_80_githubAPI(url){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_80_githubAPI'
@@ -113,13 +152,11 @@ function service_80_githubAPI(url){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_90_sidebar
-	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
-	recupera i dati generali di tutte le macchine installate dal cliente.
-	i dati recuperati sono:
-		- centityName
-*/
+/**
+ * It takes an entity name as input, calls a REST API, and returns the response
+ * @param entityName - l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa).
+ * @returns A promise.
+ */
 function service_90_sidebar(entityName){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_90_sidebar'
@@ -128,11 +165,13 @@ function service_90_sidebar(entityName){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_97_addNewUser
-	passsare l'email dell'utente che si vuole aggiungere
-	passare il codice customer per indicare sotto quale customer appartiene l'utente
-*/
+/**
+ * It takes two parameters, username and customerCode, and returns a promise that resolves to the
+ * response from the REST API.
+ * @param username - The username of the user you want to add
+ * @param customerCode - This is the customer code that you want to add the user to.
+ * @returns A promise.
+ */
 function service_97_addNewUser(username, customerCode){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_97_addNewUser'
@@ -141,13 +180,13 @@ function service_97_addNewUser(username, customerCode){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
-/*
-	service_98_setFirebaseToken
-	l'entityName da passare deve corrispondere alla thing customer (es. Storci.Thing.Canossa)
-	recupera i dati generali di tutte le macchine installate dal cliente.
-	i dati recuperati sono:
-		- centityName
-*/
+/**
+ * It takes a username and a firebase token, and sends it to the server
+ * Associa il token di firebase all'username su tw.
+ * @param username - the username of the user
+ * @param token - the token that you get from the Firebase API
+ * @returns A promise.
+ */
 function service_98_setFirebaseToken(username, token){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_98_setFirebaseToken'
@@ -157,6 +196,10 @@ function service_98_setFirebaseToken(username, token){
 }
 
 
+
+
+
+// ** FUNZIONI DA SISTEMARE COME SOPRA, SIA SU TW CHE QUI**
 
 
 
@@ -688,31 +731,6 @@ function getLineAlertsActive(entityName){
 	})
 }
 
-// Recupera gli allarmi attivi della linea
-function getListAlert(startDate, endDate, filter,getHistory,customerName){
-	// Definisce l'url da richiamare per la REST API
-	let url = baseUrl + "Things/Storci.Thing.Manage.Bootstrap/Services/service_10_getAlerts";
-
-	// Imposta i settings da utilizzare nelle REST API.
-	// Nel campo data vengono inseriti i parametri di ingresso del servizio di TW.
-	let settings = {
-		"url"     : url,
-		"method"  : "POST",
-		"timeout" : 0,
-		"headers" : {
-			"appKey"	  : appKey,
-			"Accept"	  : "application/json",
-			"Content-Type": "application/json"
-		},
-		"data": JSON.stringify({"startDate":startDate, "endDate":endDate, "filter":filter, "getHistory":getHistory, "customerName":customerName})
-	};
-	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
-	return new Promise(function(resolve){
-		// Esegue la chiamata REST API.
-		$.ajax(settings).done(response => resolve(response));
-	})
-}
-
 // COMMON FUNCTIONS
 
 // Viene effettuata una query verso thingworx per recuperare
@@ -800,6 +818,8 @@ export{
 	service_03_getDryerHistoryProductions,
 	service_04_getLineHistoryProductions,
 	service_05_getDryerStartEnd,
+	service_10_getAlerts,
+	service_11_AlertsReport,
 	service_80_githubAPI,
 	service_90_sidebar,
 	service_97_addNewUser,
@@ -826,6 +846,5 @@ export{
 	getLineDoughHistoryProduction,
 	getLineAlertsActive,
 	getDryerTimeRange,
-	getLineTimeRange,
-	getListAlert
+	getLineTimeRange
 }

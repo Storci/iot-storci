@@ -45,7 +45,7 @@
         <script defer src="./assets/js/Global/Common/Translation.js" type="module"></script>         
         <script defer src="https://unpkg.com/bootstrap-table/dist/bootstrap-table.min.js"></script>         
         <script defer src="./assets/js/96_alarmHistory.js" type="module"></script>         
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>         
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </head>     
     <body class="sidebar-scroll-hidden" style="background-color: var(--bs-body-bg);"> 
         <script> $('body').addClass('d-none')</script>         
@@ -170,6 +170,8 @@
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="95_actualAlarms.html"> <span class="material-icons-outlined">notifications</span> <span class="ms-3" translate_id="alarms">Alarms</span> </a> 
                             </li>                             
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="96_alarmHistory.html"> <span class="material-icons-outlined">history</span> <span class="ms-3" translate_id="alarms_history">Alarms History</span> </a> 
+                            </li>
+                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="97_reportAlarms.html"> <span class="material-icons-outlined">summarize</span> <span class="ms-3">Alarms Report</span> </a> 
                             </li>                             
                             <li class="nav-item" id="triggerIssue"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a> 
                             </li>                             
@@ -183,7 +185,8 @@
                             </li>                             
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="#" id="id-user-logout"><span class="material-icons-outlined">logout</span><span class="ms-3">Logout</span> </a> 
                             </li>                             
-                        </ul>                         <span style="font-size: 10px;" id="github-version" class="p-2">Version</span> 
+                        </ul>
+                        <span style="font-size: 10px;" id="github-version" class="p-2">Version</span> 
                     </div>                     
                 </nav>                 
                 <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master"> 
@@ -208,17 +211,11 @@
                         </div>                         
                         <div style="height: 40px;" class="d-flex d-lg-flex flex-lg-wrap flex-wrap gap-3 justify-content-lg-start justify-content-start mb-3"> 
                             <button type="button" class="active btn btn-light filter-btn " style="width: 150px; background: #C2DAFF;" data-filter="All">All</button>                             
-                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Message">
-                                <span class="material-icons-outlined">info</span>
-                                <span>Message</span> 
+                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Message"> <span class="material-icons-outlined">info</span> <span>Message</span> 
                             </button>                             
-                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Warning">
-                                <span class="material-icons-outlined">warning_amber</span>
-                                <span>Warning</span> 
+                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Warning"> <span class="material-icons-outlined">warning_amber</span> <span>Warning</span> 
                             </button>                             
-                            <button class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Alarm" type="button">
-                                <span class="material-icons-outlined">error_outline</span>
-                                <span>Alarms</span> 
+                            <button class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Alarm" type="button"> <span class="material-icons-outlined">error_outline</span> <span>Alarms</span> 
                             </button>                             
                         </div>                         
                         <ul id="alert_container" class="list-group mt-5 mt-lg-2"> 
@@ -243,7 +240,7 @@
                         <div class="align-items-center d-flex justify-content-center modal-dialog modal-dialog-centered modal-sm"> 
                             <lottie-player src="https://assets9.lottiefiles.com/private_files/lf30_bU3Dr6.json" background="transparent" speed="1" style="width: 100px; height: 100px;" loop autoplay></lottie-player>                             
                         </div>                         
-                    </div>                     
+                    </div>
                 </main>                 
             </div>             
         </div>         

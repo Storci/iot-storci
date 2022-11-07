@@ -38,6 +38,7 @@
         <script defer src="./assets/js/userAccountSettings.js" type="module"></script>         
         <script src="./assets/js/Global/Common/Theme.js" type="module"></script>         
         <script src="./assets/js/Global/Common/Translation.js" type="module"></script>         
+        <script src="./assets/js/97_reportAlarms.js" type="module"></script>
     </head>     
     <body class="sidebar-scroll-hidden" style="background-color: var(--bs-body-bg);"> 
         <script> $('body').addClass('d-none')</script>         
@@ -162,6 +163,8 @@
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="95_actualAlarms.html"> <span class="material-icons-outlined">notifications</span> <span class="ms-3" translate_id="alarms">Alarms</span> </a> 
                             </li>                             
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="96_alarmHistory.html"> <span class="material-icons-outlined">history</span> <span class="ms-3" translate_id="alarms_history">Alarms History</span> </a> 
+                            </li>
+                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="97_reportAlarms.html"> <span class="material-icons-outlined">summarize</span> <span class="ms-3">Alarms Report</span> </a> 
                             </li>                             
                             <li class="nav-item" id="triggerIssue"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a> 
                             </li>                             
@@ -179,28 +182,50 @@
                         <span style="font-size: 10px;" id="github-version" class="p-2">Version</span> 
                     </div>                     
                 </nav>                 
-                <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master">
+                <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master"> 
                     <div class="align-items-center border-bottom d-flex flex-md-nowrap flex-wrap justify-content-between mb-5 pb-2 pt-3"> 
                         <h2 class="card-result" translate_id="list_clients_connected">Report Alarms</h2> 
                         <div class="btn-toolbar mb-2 mb-md-0"> 
                             <div class="btn-group me-2"> 
 </div>                             
                         </div>                         
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h3>Column title</h3> 
-                            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
-                        </div>
-                        <div class="col-md-4">
-                            <h3>Column title</h3> 
-                            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
-                        </div>
-                        <div class="col-md-4">
-                            <h3>Column title</h3> 
-                            <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p> 
-                        </div>
                     </div>                     
+                    <div class="align-items-start d-flex gy-3 justify-content-center mb-5 row"> 
+                        <div class="col-12 col-lg-5 col-sm-5 col-xl-3">
+                            <div class="card"> 
+                                <div class="card-body"> 
+                                    <h4 class="card-title" id="totalCount">0</h4> 
+                                    <h6 class="card-subtitle mb-2 text-muted">Total Alarms</h6> 
+                                </div>                                 
+                            </div>                             
+                        </div>
+                        <div class="col-12 col-lg-5 col-sm-5 col-xl-3">
+                            <div class="card"> 
+                                <div class="card-body" style="background: #F2B8B5 !important;"> 
+                                    <h4 class="card-title" style="color: #601410;" id="alarmCount">0</h4> 
+                                    <h6 class="card-subtitle mb-2 text-muted">Alerts Summary</h6> 
+                                </div>                                 
+                            </div>                             
+                        </div>
+                        <div class="col-12 col-lg-5 col-sm-5 col-xl-3">
+                            <div class="card"> 
+                                <div class="card-body" style="background: #fb8c0066 !important;"> 
+                                    <h4 class="card-title" style="color: #4c2700;" id="warningCount">0</h4> 
+                                    <h6 class="card-subtitle mb-2 text-muted">Warning Summary</h6> 
+                                </div>                                 
+                            </div>                             
+                        </div>
+                        <div class="col-12 col-lg-5 col-sm-5 col-xl-3">
+                            <div class="card"> 
+                                <div class="card-body" style="background: #fdd83566 !important;"> 
+                                    <h4 class="card-title" style="color: #3a3000;" id="messaggesCount">0</h4> 
+                                    <h6 class="card-subtitle mb-2 text-muted">Messagges Summary</h6> 
+                                </div>                                 
+                            </div>                             
+                        </div>                         
+                    </div>
+                    <div class="accordion accordion-flush" id="accordion"> 
+</div>
                 </main>                 
             </div>             
         </div>         
