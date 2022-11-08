@@ -43,6 +43,10 @@ fb.onAuthStateChanged()
 // alla pressione del tasto, l'utente viene reindirizzato alla pagina di login
 $('#id-user-logout').click(() => { fb.signOut() })
 
+let dashboard_href = '02_Dashboard.html?entityName=' + entityName
+$('#id-nav-dashboard').attr('href', dashboard_href)
+
+
 // Recupera i nomi delle macchine installate dal cliente.
 // vengono recuperate sia le celle che le linee.
 if(customer != "Storci"){
