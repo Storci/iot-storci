@@ -41,16 +41,12 @@
         firebase.analytics();
         </script>         
     </head>     
-    <body class="text-center" style="background-image: url('assets/img/Background%20(1).svg'); background-repeat: repeat-y; background-position: right top;"> 
-        <div class="container" style="
-/* background: #ffffff */
-opacity: 0.8;"> 
+    <body class="pe-3 ps-3 text-center" style="background-image: url('assets/img/Background%20(1).svg'); background-repeat: repeat-y; background-position: right top;"> 
+        <div class="container"> 
             <div class="row d-flex" style="justify-content: center;"> 
-                <div class="card col-md-6 shadow-lg p-3 mb-5 bg-white rounded"> 
-                    <div class="card-body"> 
-                        <h4 class="card-title">STORCI IOT MONITORING SYSTEM</h4> 
-                        <h5>Create New User</h5> 
-                    </div>                     
+                <div class="card col-md-6 glass mb-5 p-3 rounded">                      
+                    <h5 class="mb-5">Storci IoT Monitoring System</h5>
+                    <h5>Create New User</h5>
                     <form id="signUpForm" role="form"> 
                         <div class="row row-cols-1 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-xxl-2"> 
                             <div class="mb-3"> 
@@ -100,12 +96,12 @@ opacity: 0.8;">
                         <div class="row row-cols-1 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-xxl-2"> 
                             <div class="mb-3"> 
                                 <label for="exampleInputEmail1">Password</label>                                 
-                                <input type="password" class="form-control" id="IDPassword" placeholder="Password" aria-describedby="emailHelp" required/>
+                                <input type="password" class="form-control" id="IDPassword" placeholder="Password" aria-describedby="emailHelp" required/> 
                                 <div id="invalid-mess-11" class="invalid-feedback">Please enter your new password.</div>                                 
                             </div>                             
                             <div class="mb-3"> 
                                 <label for="exampleInputPassword1">Confirm Password</label>                                 
-                                <input type="password" class="form-control" id="IDPassword_repeat" placeholder=" Repeat Password" required/>
+                                <input type="password" class="form-control" id="IDPassword_repeat" placeholder=" Repeat Password" required/> 
                                 <div id="invalid-mess-12" class="invalid-feedback">Please confirm your new password.</div>                                 
                             </div>                             
                             <div> 
@@ -134,9 +130,9 @@ opacity: 0.8;">
                         <p style="color: var(--bs-red); font-weight: bold; font-size: 14px;
 
                         /* background: #3b3838 */
-                        padding: 5px; display: block;" id="IDErrorMessageSignUp"></p> 
-                    </form>                     
-                    <button id="IDButtonSignUp" class="btn btn-contrast btn-primary">Submit</button>                     
+                        padding: 5px; display: block;" id="IDErrorMessageSignUp"></p>
+                        <button id="IDButtonSignUp" class="btn btn-contrast btn-primary w-100">Submit</button>                         
+                    </form>                                          
                 </div>                 
             </div>             
         </div>         
