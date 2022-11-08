@@ -207,6 +207,9 @@ a {
 
 .card_cells,
 
+
+
+
 .card-hover {
     cursor: pointer;
 }
@@ -326,7 +329,6 @@ a {
   display: none;
 } */
 .card-body {
-    background-color: var(--bs-card-background-default-hover) !important;
 }
 
 .card {
@@ -411,43 +413,59 @@ thead {
 }
 
 @media (min-width :1024px ) {
-  .col-sx-padding{
-    padding-right: 6px;
-  }
-  .col-padding{
-    padding-right: 6px;
-    padding-left: 6px;
-  }
-  .col-dx-padding{
-    padding-left: 6px;
-  }
+    .col-sx-padding {
+        padding-right: 6px;
+    }
+
+    .col-padding {
+        padding-right: 6px;
+        padding-left: 6px;
+    }
+
+    .col-dx-padding {
+        padding-left: 6px;
+    }
 }
 
-.alarmthead{
+.alarmthead {
     position: sticky !important;
     top: 0px !important;
     z-index: 999;
 }
-.tableAlert{
+
+.tableAlert {
     height: 80vh;
 }
-.CurrentAlarmList{
+
+.CurrentAlarmList {
     list-style-type: none;
 }
-.alert_list{
-    padding: 0;
 
+.alert_list {
+    padding: 0;
 }
-.alert_body{
+
+.alert_body {
     display: inline-flex;
 }
 
-.keep-scroll::-webkit-scrollbar{
+.keep-scroll::-webkit-scrollbar {
     width: 0 !important;
 }
-.keep-scroll::-webkit-scrollbar{
+
+.keep-scroll::-webkit-scrollbar {
     overflow: -moz-scrollbars-none;
 }
-.keep-scroll::-webkit-scrollbar{
+
+.keep-scroll::-webkit-scrollbar {
     -ms-overflow-style: none;
+}
+
+.glass{
+    background: rgba( 255, 255, 255, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 11px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
