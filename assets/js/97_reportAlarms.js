@@ -125,7 +125,7 @@ function getAlertsReport(query){
             const idCollapse     = machine
             const idCollapseBody = machine + '-collapse'
             const idAccordion    = machine + '-accordion'
-            
+
             let accordion = ''
             accordion += '<div class="accordion-item">'
             accordion +=     '<h2 class="accordion-header" id="' + idCollapse + '">'
@@ -138,16 +138,16 @@ function getAlertsReport(query){
             accordion +=     '</h2>'
             accordion +=     '<div id="' + idCollapseBody + '" class="accordion-collapse collapse" aria-labelledby="' + idCollapse + '" data-bs-parent="#accordion">'
             accordion +=         '<div class="accordion-body pt-0 pb-0 pe-0">'
-            accordion +=             '<div class="accordion accordion-flush" id="' + idAccordion + '"></div>' 
-            accordion +=         '</div>'                                       
-            accordion +=     '</div>'                             
-            accordion += '</div>'  
+            accordion +=             '<div class="accordion accordion-flush" id="' + idAccordion + '"></div>'
+            accordion +=         '</div>'
+            accordion +=     '</div>'
+            accordion += '</div>'
 
             $('#accordion').append(accordion)
 
             customers.forEach(customer => {
                 const customerAlertCount = machineAlertCount.filter(el => el.CustomerName === customer)
-                const alarms = [...new Set(customerAlertCount.map(x => x.ID_AlertTable))]              
+                const alarms = [...new Set(customerAlertCount.map(x => x.ID_AlertTable))]
 
                 if(alarms.length > 0){
                     const idCustomerCollapse     = idCollapse + '-' + customer.replace(/ /g, '_')
@@ -167,10 +167,10 @@ function getAlertsReport(query){
                     accordionCustomer +=     '</h2>'
                     accordionCustomer +=     '<div id="' + idCustomerCollapseBody + '" class="accordion-collapse collapse" aria-labelledby="' + idCustomerCollapse + '" data-bs-parent="' + idCustomerAccordion + '">'
                     accordionCustomer +=         '<div class="accordion-body pt-0 pb-0 pe-0">'
-                    accordionCustomer +=             '<ul id="' + idCustomerList + '" class="list-group list-group-flush"></ul>' 
-                    accordionCustomer +=         '</div>'                                       
-                    accordionCustomer +=     '</div>'                             
-                    accordionCustomer += '</div>'  
+                    accordionCustomer +=             '<ul id="' + idCustomerList + '" class="list-group list-group-flush"></ul>'
+                    accordionCustomer +=         '</div>'
+                    accordionCustomer +=     '</div>'
+                    accordionCustomer += '</div>'
 
                     $(idCustomerAccordion).append(accordionCustomer)
 
@@ -187,8 +187,8 @@ function getAlertsReport(query){
                         $(id).append(list)
                     })
                 }
-                    
+
             })
-        })       
+        })
     })
 }
