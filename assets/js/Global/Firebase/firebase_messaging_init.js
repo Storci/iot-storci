@@ -10,9 +10,17 @@ navigator.serviceWorker.register('./firebase-messaging-sw.js').then(registration
   .then(function() {
     console.log("permission granted")
     messaging.getToken().then(function(token) {
-      console.log(token)
+
+      let deviceId = localStorage.getItem("device_id")
+      if (localStorage.getItem("device_id") === null) {
+        deviceId = crypto.randomUUID()
+        localStorage.setItem('device_id', deviceId)
+      }
+
+      console.log("deviceId: " + deviceId + " | token firebase: " + token)
+      
       firebase.auth().onAuthStateChanged(user => {
-        tw.service_98_setFirebaseToken(user.email, token)
+        tw.service_98_setFirebaseToken(user.email, token, deviceId)
       })
     })
   })

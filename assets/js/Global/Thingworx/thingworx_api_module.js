@@ -94,7 +94,7 @@ function service_04_getLineHistoryProductions(entityName, startTime, endTime){
  * @param customerName - The name of the customer
  * @returns A promise.
  */
-function service_05_getDryerStartEnd(startDate, endDate, filter,getHistory,customerName){
+function service_05_getDryerStartEnd(entityName, startTime, endTime){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_05_getDryerStartEnd'
 	settings.data = JSON.stringify({"entityName":entityName, "startTime":startTime, "endTime":endTime})
@@ -187,10 +187,10 @@ function service_97_addNewUser(username, customerCode){
  * @param token - the token that you get from the Firebase API
  * @returns A promise.
  */
-function service_98_setFirebaseToken(username, token){
+function service_98_setFirebaseToken(username, token, deviceId){
 	// Definisce l'url da richiamare per la REST API
 	settings.url  = baseUrl + bootstrapThing + 'service_98_setFirebaseToken'
-	settings.data = JSON.stringify({username:username, firebaseToken:token})
+	settings.data = JSON.stringify({username:username, firebaseToken:token, deviceId:deviceId})
 	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
