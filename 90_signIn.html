@@ -40,17 +40,22 @@
                     <h5 class="mb-5">Storci IoT Monitoring System</h5>
                     <h5 class="">Login</h5> 
                     <form role="form" class="mb-4 mt-4"> 
-                        <div class="input-group mb-4"> <span class="align-items-center bg-white d-flex input-group-text material-icons-outlined" style="position: relative;">alternate_email</span> 
+                        <div class="input-group mb-4">
+                            <span class="align-items-center bg-white d-flex input-group-text material-icons-outlined" style="position: relative;">alternate_email</span> 
                             <input type="email" class="border-start-0 form-control rounded-end user-info" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1" required name="email" invalid-messagge="invalid-mess-3" id="field-email"/> 
                             <div id="invalid-mess-3" class="invalid-feedback">Please enter your email.</div>                             
                         </div>
                         <div class="input-group mb-4"> 
-                            <input name="oldPassword" type="password" class="border-end-0 form-control password-field" id="field-password" placeholder="Password" aria-describedby="togglePassword1" autocomplete="on"/> <span id="togglePassword1" class="align-items-center bg-white border-start-0 cursor-pointer d-flex input-group-text material-icons-outlined rounded-end toggle-password" style="position: relative;" passwordField="field-password">visibility</span> 
+                            <span id="togglePassword1" class="align-items-center bg-white border-end-0 cursor-pointer d-flex input-group-text material-icons-outlined toggle-password" style="position: relative;" passwordField="field-password">visibility</span> 
+                            <input name="oldPassword" type="password" class="border-start-0 form-control password-field rounded-end" id="field-password" placeholder="Password" aria-describedby="togglePassword1" autocomplete="on"/>
                             <div id="invalid-mess-10" class="invalid-feedback">Please enter your password.</div>                             
                         </div>                         
                         <p style="color: var(--bs-red); font-weight: bold; font-size: 14px; padding: 5px; display: block;" id="IDErrorMessage" class="d-none">Errore Message</p>
+                        
                         <button id="IDButtonLogin" class="btn btn-contrast btn-primary mb-2  pe-4 ps-4 w-100" type="button">Sign In</button>                         
-                    </form><a href="91_passwordRecovery.html" class="p-2 text-contrast text-start">forgot Password</a> <a href="92_signUp.html" class="p-2 text-contrast text-start">Not registered? Create an account</a>                      
+                    </form>
+                    <a href="91_passwordRecovery.html" class="p-2 text-contrast text-start">forgot Password</a>
+                    <a href="92_signUp.html" class="p-2 text-contrast text-start">Not registered? Create an account</a>                      
                 </div>                 
             </div>             
         </div>         
