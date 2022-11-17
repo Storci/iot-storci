@@ -195,7 +195,34 @@ function service_98_setFirebaseToken(username, token, deviceId){
 	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
 }
 
+/**
+ * It takes two parameters, username and notificationPermission, and returns a promise that resolves to
+ * the response from the REST API
+ * @param username - the username of the user
+ * @param notificationPermission - true/false
+ * @returns A promise.
+ */
+function service_99_setNotificationPermission(username, notificationPermission){
+	// Definisce l'url da richiamare per la REST API
+	settings.url  = baseUrl + bootstrapThing + 'service_99_setNotificationPermission'
+	settings.data = JSON.stringify({username:username, notificationPermission:notificationPermission})
+	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
+	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
+}
 
+/**
+ * It takes a username as an argument, and returns a promise that resolves to the response from the
+ * REST API.
+ * @param username - The username of the user you want to get the information of.
+ * @returns A promise.
+ */
+function service_100_getUser(username){
+	// Definisce l'url da richiamare per la REST API
+	settings.url  = baseUrl + bootstrapThing + 'service_100_getUser'
+	settings.data = JSON.stringify({username:username})
+	// Ritorna una promise, in questo modo il valore ritorna solamente quando la REST API è conclusa.
+	return new Promise(function(resolve){ $.ajax(settings).done(response => resolve(response)) })
+}
 
 
 
@@ -824,6 +851,8 @@ export{
 	service_90_sidebar,
 	service_97_addNewUser,
 	service_98_setFirebaseToken,
+	service_99_setNotificationPermission,
+	service_100_getUser,
 	getPropertyName,
 	getCustomersList,
 	influxQuery,
