@@ -7,7 +7,7 @@
         <meta name="description" content=""/>
         <meta name="author" content=""/>
         <link rel="icon" href="./assets/img/icon_round_storci.svg" type="image/x-icon"/>
-        <title>Storico Celle</title>
+        <title>IoT Storci</title>
         <!-- MANIFEST -->
         <link rel="manifest" href="./manifest.webmanifest"/>
         <!-- carica l'immagine da usare nell'icona dell'iphone -->
@@ -63,7 +63,7 @@
         <div class="container-fluid">
             <div class="row">
                 <nav id="sidebarMenu" class="bg-light col-lg-2 col-md-3 collapse d-md-block sidebar sidebar-scroll sidebar-scroll-hidden">
-                    <div class="align-content-start d-flex flex-column h-100 pt-3">
+                    <div class="align-content-start d-flex flex-column keep-scroll overflow-auto pt-3" style="height: 80%;">
                         <ul class="nav flex-column" id="IDNavPrimary">
                             <li class="d-none nav-item" id="id-nav-customers-list"> <a class="align-items-center d-flex nav-link" aria-current="page" href="01_Customers.html" id="id-nav-customers-list"> <span class="material-icons-outlined">group</span><span class="ms-3" translate_id="clients_list">List of Clients</span> </a>
                             </li>
@@ -72,7 +72,7 @@
                         </ul>
                         <h6 class="align-items-center d-flex justify-content-between mb-1 mt-4 px-3 sidebar-heading text-secondary"> <span translate_id="machines">Machine</span><span class="material-icons-outlined">settings</span> </h6>
                         <ul class="nav flex-column" id="IDNavSecondary">
-                            <div class="accordion" id="panels1">
+                            <div class="accordion" id="panels1"> 
                                 <div class="accordion-item bg-light border-bottom-0 border-top-0 d-none" id="id-accordion-dryers">
                                     <h2 class="accordion-header bg-light" id="id-header-accordion-dryers"> <button class="accordion-button bg-light collapsed pb-2 pe-3 ps-3 pt-2 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#id-collapse-panel-dryers" aria-controls="id-collapse-panel-dryers" id="id-btn-accordion-dryers" aria-expanded="false" translate_id="dryers">Dryer</button> </h2>
                                     <div id="id-collapse-panel-dryers" class="accordion-collapse collapse ps-3" aria-labelledby="collapse2" data-bs-parent="#panels1">
@@ -178,6 +178,8 @@
                             </li>
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="96_alarmHistory.html"> <span class="material-icons-outlined">history</span> <span class="ms-3" translate_id="alarms_history">Alarms History</span> </a>
                             </li>
+                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="97_reportAlarms.html"> <span class="material-icons-outlined">summarize</span> <span class="ms-3" translate_id="report_alarms">Alarms Report</span> </a>
+                            </li>
                             <li class="nav-item" id="triggerIssue"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a>
                             </li>
                         </ul>
@@ -190,7 +192,7 @@
                             </li>
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="#" id="id-user-logout"><span class="material-icons-outlined">logout</span><span class="ms-3">Logout</span> </a>
                             </li>
-                        </ul><span style="font-size: 10px;" id="github-version" class="p-2">Version</span>
+                        </ul>                         <span style="font-size: 10px;" id="github-version" class="p-2">Version</span>
                     </div>
                 </nav>
                 <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master">
@@ -202,7 +204,7 @@
                                     <div style="height: 50px;">
                                         <div class="input-group mb-5 mt-3"> <span class="input-group-text material-icons-outlined">date_range</span>
                                             <input type="text" class="form-control" placeholder="date picker" aria-label="date_range" aria-describedby="basic-addon1" id="dateTimePicker"/>
-                                        </div>                                         
+                                        </div>
                                     </div>
                                     <div style="height: 50px;">
                                         <div class="input-group mb-5 mt-3"> <span class="input-group-text material-icons-outlined">search</span>
