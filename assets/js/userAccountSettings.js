@@ -153,39 +153,53 @@ firebase.auth().onAuthStateChanged(user => {
   let data = db.collection('users').doc(user.email)
 
   data.get()
-    .then((doc) => {
-      if (doc.exists) {
-            console.log("Document data:", doc.data());
+  .then((doc) => {
+    if (doc.exists) {
+          console.log("Document data:", doc.data());
 
-            $("#field-firstname").val(doc.data().firstName)
-            $("#field-lastname").val(doc.data().lastName)
-            $("#field-email").val(doc.data().email)
-            $("#field-company").val(doc.data().company)
-            $("#field-state").val(doc.data().state)
-            $("#field-zip").val(doc.data().zip)
-            $("#field-mobile").val(doc.data().mobile)
+          $("#field-firstname").val(doc.data().firstName)
+          $("#field-lastname").val(doc.data().lastName)
+          $("#field-email").val(doc.data().email)
+          $("#field-company").val(doc.data().company)
+          $("#field-state").val(doc.data().state)
+          $("#field-zip").val(doc.data().zip)
+          $("#field-mobile").val(doc.data().mobile)
 
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    })
-    .catch((error) => {
-        console.log("Error getting document:", error);
-    })
+      } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+      }
+  })
+  .catch((error) => {
+      console.log("Error getting document:", error);
+  })
+
+  tw.service_100_getUser(user.email)
+  .then(usertw => {
+    console.log(usertw)
+    if (usertw.rows[0].notificationEnabled){
+      $("#notification-toggle").prop('checked', true)
+    }else{
+      $("#notification-toggle").prop('checked', false)
+    }
+  })
 })
 
 
-
-// Recupera lo stato del permesso di notifiche e comanda il toggle della pagination
-if (Notification.permission === "granted"){
-  $("#notification-toggle").prop('checked', true)
-}else{
-  $("#notification-toggle").prop('checked', false)
-}
-
-
 $("#notification-toggle").click(function(){
-  console.log("clicked")
-  Notification.requestPermission()
+  let user = firebase.auth().currentUser;
+
+  tw.service_99_setNotificationPermission(user.email, $(this).prop('checked'))
+
+  setTimeout(()=>{
+    tw.service_100_getUser(user.email)
+    .then(usertw => {
+      console.log(usertw)
+      if (usertw.rows[0].notificationEnabled){
+        $("#notification-toggle").prop('checked', true)
+      }else{
+        $("#notification-toggle").prop('checked', false)
+      }
+    })
+  }, 2000)
 })

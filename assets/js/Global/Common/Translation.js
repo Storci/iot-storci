@@ -249,6 +249,12 @@ const array_translate_id = {
   'connection_status'         : {'en' : 'Connection Status',           'it':'Stato Connessione'          },
   'dryers'                    : {'en' : 'Dryers',                      'it':'Celle'                      },
   'line'                      : {'en' : 'Line',                        'it':'Linea'                      },
+  // Pagina Alarm Report
+  'report_alarms'             : {'en': 'Report Alarms',                'it' : 'Report Allarmi'   },
+  'total_alarms'              : {'en': 'Total Alarms',                 'it' : 'Totale Allarmi'   },
+  'alerts_summary'            : {'en': 'Alerts Summary',               'it' : 'Totale Allarmi Gravi'   },
+  'warning_summary'           : {'en': 'Warnings Summary',             'it' : 'Totale Avvisi'   },
+  'messagges_summary'         : {'en': 'Messagges Summary',            'it' : 'Totale Messaggi'   },
   //pagine profilo
   'firsname'                  : {'en': 'firstname',                                  'it':'Nome'                             },
   'lastname'                  : {'en': 'lastname',                                   'it':'Cognome'                          },

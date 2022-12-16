@@ -7,7 +7,7 @@
         <meta name="description" content=""/> 
         <meta name="author" content=""/> 
         <link rel="icon" href="./assets/img/icon_round_storci.svg" type="image/x-icon"/> 
-        <title>Dashboard Cella</title>         
+        <title>IoT Storci</title>         
         <!-- GOOGLE ICON -->         
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"/> 
         <!-- JQUERY -->         
@@ -45,7 +45,7 @@
         <script defer src="./assets/js/Global/Common/Translation.js" type="module"></script>         
         <script defer src="https://unpkg.com/bootstrap-table/dist/bootstrap-table.min.js"></script>         
         <script defer src="./assets/js/96_alarmHistory.js" type="module"></script>         
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>         
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </head>     
     <body class="sidebar-scroll-hidden" style="background-color: var(--bs-body-bg);"> 
         <script> $('body').addClass('d-none')</script>         
@@ -56,7 +56,7 @@
         <div class="container-fluid"> 
             <div class="row"> 
                 <nav id="sidebarMenu" class="bg-light col-lg-2 col-md-3 collapse d-md-block sidebar sidebar-scroll sidebar-scroll-hidden"> 
-                    <div class="align-content-start d-flex flex-column h-100 pt-3"> 
+                    <div class="align-content-start d-flex flex-column keep-scroll overflow-auto pt-3" style="height: 80%;"> 
                         <ul class="nav flex-column" id="IDNavPrimary"> 
                             <li class="d-none nav-item" id="id-nav-customers-list"> <a class="align-items-center d-flex nav-link" aria-current="page" href="01_Customers.html" id="id-nav-customers-list"> <span class="material-icons-outlined">group</span><span class="ms-3" translate_id="clients_list">List of Clients</span> </a> 
                             </li>                             
@@ -171,6 +171,8 @@
                             </li>                             
                             <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="96_alarmHistory.html"> <span class="material-icons-outlined">history</span> <span class="ms-3" translate_id="alarms_history">Alarms History</span> </a> 
                             </li>                             
+                            <li class="nav-item"> <a class="align-items-center d-flex nav-link" href="97_reportAlarms.html"> <span class="material-icons-outlined">summarize</span> <span class="ms-3" translate_id="report_alarms">Alarms Report</span> </a> 
+                            </li>                             
                             <li class="nav-item" id="triggerIssue"> <a class="align-items-center d-flex nav-link" href="#"> <span class="material-icons-outlined">bug_report</span> <span class="ms-3" translate_id="issues">Report Issue</span> </a> 
                             </li>                             
                         </ul>                         
@@ -208,17 +210,11 @@
                         </div>                         
                         <div style="height: 40px;" class="d-flex d-lg-flex flex-lg-wrap flex-wrap gap-3 justify-content-lg-start justify-content-start mb-3"> 
                             <button type="button" class="active btn btn-light filter-btn " style="width: 150px; background: #C2DAFF;" data-filter="All">All</button>                             
-                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Message">
-                                <span class="material-icons-outlined">info</span>
-                                <span>Message</span> 
+                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Message"> <span class="material-icons-outlined">info</span> <span>Message</span> 
                             </button>                             
-                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Warning">
-                                <span class="material-icons-outlined">warning_amber</span>
-                                <span>Warning</span> 
+                            <button type="button" class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Warning"> <span class="material-icons-outlined">warning_amber</span> <span>Warning</span> 
                             </button>                             
-                            <button class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Alarm" type="button">
-                                <span class="material-icons-outlined">error_outline</span>
-                                <span>Alarms</span> 
+                            <button class="align-items-center btn btn-light d-flex filter-btn justify-content-between " style="background: #F0F1F2; width: 150px;" data-filter="Alarm" type="button"> <span class="material-icons-outlined">error_outline</span> <span>Alarms</span> 
                             </button>                             
                         </div>                         
                         <ul id="alert_container" class="list-group mt-5 mt-lg-2"> 
@@ -243,7 +239,7 @@
                         <div class="align-items-center d-flex justify-content-center modal-dialog modal-dialog-centered modal-sm"> 
                             <lottie-player src="https://assets9.lottiefiles.com/private_files/lf30_bU3Dr6.json" background="transparent" speed="1" style="width: 100px; height: 100px;" loop autoplay></lottie-player>                             
                         </div>                         
-                    </div>                     
+                    </div>
                 </main>                 
             </div>             
         </div>         

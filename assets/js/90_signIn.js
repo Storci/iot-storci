@@ -1,17 +1,52 @@
 import * as tw from "./Global/Thingworx/thingworx_api_module.js"
 import * as fb from "./Global/Firebase/firebase_auth_module.js"
 
-// Nasconde il messaggio di errore.
-$("#IDErrorMessage").addClass('d-none')
+
+
+
+// Convalida l'inserimento dell'email
+$('.user-info').keyup(function(){
+	let value = $(this).val()
+	let type = $(this).attr("type")
+
+	if(type == "email"){
+		// Criteri di controllo per il campo old password
+		switch(true){
+			case value == "": $(this).addClass("is-invalid").removeClass("is-valid"); break;
+			case !value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/): $(this).addClass("is-invalid").removeClass("is-valid"); break;
+			default: $(this).addClass("is-valid").removeClass("is-invalid"); break;
+		}
+	}
+})
+
+// Convalida l'inserimento della passwors
+$('.password-field').keyup(function(){
+	$("#field-password").addClass("is-valid").removeClass("is-invalid");
+})
+
+
+// Funzione per mostrare la password in chiaro.
+$(".toggle-password").click(function(){
+	let id = "#" + $(this).attr("passwordField")
+  
+	if($(id).attr("type") == "password"){
+	  $(this).text("visibility_off")
+	  $(id).attr("type", "text")
+	}else{
+	  $(this).text("visibility")
+	  $(id).attr("type", "password")
+	}
+  })
+
 
 // Esegue la funzione alla pressione del pulsante.
 $("#IDButtonLogin").click(function(){
 	//  Nasconde il messaggio di errore.
 	$("#IDErrorMessage").addClass('d-none')
 	// Recupera il valore inserito nel campo email.
-	let email = $("#IDEmail").val()
+	let email = $("#field-email").val()
 	// Recupera il valore inserito nel campo password.
-	let password = $("#IDPassword").val()
+	let password = $("#field-password").val()
 	// Effettua il logout dell'utente alla chiusura della sessione (pagina web)
 	fb.setPersistenceSession()
 	// Definisce l'utente

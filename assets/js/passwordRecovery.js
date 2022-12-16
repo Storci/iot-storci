@@ -7,78 +7,46 @@ import Cookies from './Global/Cookie/api.js'
 // baseURL verrà utilizzato come base per il cambio pagina.
 let baseURL = window.location.protocol + "//" + window.location.host
 
+// Convalida l'inserimento dell'email
+$('.user-info').keyup(function(){
+    $("#errorAlert2").addClass('d-none')
+    $("#errorAlert").addClass('d-none')
+
+	let value = $(this).val()
+	let type = $(this).attr("type")
+
+	if(type == "email"){
+		// Criteri di controllo per il campo old password
+		switch(true){
+			case value == "": $(this).addClass("is-invalid").removeClass("is-valid"); break;
+			case !value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/): $(this).addClass("is-invalid").removeClass("is-valid"); break;
+			default: $(this).addClass("is-valid").removeClass("is-invalid"); break;
+		}
+	}
+})
+
 $("#IDErrorMessage").hide()
- //var auth = firebase.auth();
-// funzione per il recupero della password
-/*$("#IDButtonResetPassword").click(function(){
-   
-    let email = $("#IDEmail").val();
-    console.log(email)
-    
-    // controllo sul campo input se non è vuoto prima di inviare il link per cambia password
-    if(email != ""){
-       firebase.auth().sendPasswordResetEmail(email)
-       .then(() =>{
-           alert("please check your email account a link has been sent");
-       })
-        .catch((error) => {
-           alert("insert a correct email address")
-       })
-    } else{
-        window.alert("Please write your email first");
-    }
-    
-    
-})*/
-
-/*let mailField = document.querySelector("#IDEmail");
-let resetButton = document.querySelector("#IDButtonResetPassword");
-
-
-
-const resetPasswordFunction = () =>{
-    let email = mailField.value
-    if(email != ""){
-        auth.sendPasswordResetEmail(email)
-        .then(() =>{
-            alert("email was sent successfully")
-        })
-        .catch(error =>{
-            conosle.error(error)
-        })
-    }else{
-        alert("This input cannot be empty")
-    }
-    
-}
-resetButton.addEventListener('click', resetPasswordFunction)*/
 let auth = firebase.auth()
 
 $('#IDButtonResetPassword').click(function(e){
-    let mailField = $('#IDEmail').val()
-    let email = mailField
+    e.preventDefault()
+    let email = $('#field-email').val()
 
     if(email != ""){
         auth.sendPasswordResetEmail(email)
         .then(() =>{
-            e.preventDefault();
-            $("#successAlert").css('display', 'block')
-            setTimeout(function(){
-                $("#successAlert").css('display', 'none')
-            },5000)
-               
+            $("#successAlert").removeClass('d-none')
+            setTimeout(function(){ $("#successAlert").css('display', 'none') },5000) 
             window.location.href = './90_signIn.html'
         })
         .catch(error =>{
-            console.error(error)
+            $("#errorAlert2").removeClass('d-none')
             $("#errorAlert2").fadeIn(3000);
         })
     }
     else{
+        $("#errorAlert").removeClass('d-none')
         $("#errorAlert").fadeIn(3000);
     }
 
 })
-
-
-

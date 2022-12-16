@@ -1,68 +1,63 @@
-<!doctype html> 
-<html lang="en"> 
-    <head> 
-        <meta charset="utf-8"/> 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/> 
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/> 
-        <meta name="description" content=""/> 
-        <meta name="author" content=""/> 
-        <link rel="icon" href="./assets/img/icon_round_storci.svg" type="image/x-icon"/> 
-        <title>Sign In</title>         
-        <!-- GOOGLE ICON -->         
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"/> 
-        <!-- JQUERY -->         
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>         
-        <!-- Bootstrap core -->         
-        <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css"/> 
-        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>         
-        <!-- Custom styles for this template -->         
-        <link href="assets/css/sign-in.css" rel="stylesheet"/> 
-        <link href="assets/css/storci-styles.css" rel="stylesheet"/> 
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        <link rel="icon" href="./assets/img/icon_round_storci.svg" type="image/x-icon"/>
+        <title>IoT Storci</title>
+        <!-- GOOGLE ICON -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet"/>
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Bootstrap core -->
+        <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <!-- Custom styles for this template -->
+        <link href="assets/css/sign-in.css" rel="stylesheet"/>
+        <link href="assets/css/storci-styles.css" rel="stylesheet"/>
         <!-- AM4CORE CHART -->         
-        <script defer src="https://cdn.amcharts.com/lib/4/core.js"></script>         
-        <script defer src="https://cdn.amcharts.com/lib/4/charts.js"></script>         
-        <script defer src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>         
-        <script defer src="https://cdn.amcharts.com/lib/4/themes/dark.js"></script>         
-        <script defer src="//cdn.amcharts.com/lib/4/plugins/rangeSelector.js"></script>         
-        <!-- The core Firebase JS SDK is always required and must be listed first -->         
-        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>         
-        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>         
-        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>         
-        <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>         
-        <script defer src="./assets/js/Global/Firebase/firebase_config.js"></script>         
-        <!-- CUSTOM SCRIPT -->         
-        <script defer src="./assets/js/90_signIn.js" type="module"></script>         
-    </head>     
-    <body class="text-center" style="background-image: url('assets/img/Background%20(1).svg'); background-size: contain; background-position: right top; background-repeat: no-repeat;"> 
-        <div class="container" style="/* background: #fff */opacity: 0.8;"> 
-            <div class="d-flex me-3 ps-3 row" style="justify-content: center;"> 
-                <div class="card col-md-6 m-5 p-3 rounded" style="background-color: rgba(255, 255, 255, 0.25); backdrop-filter: blur( 10px ); -webkit-backdrop-filter: blur( 4px ); border-radius: 10px; border: 1px solid rgba( 255, 255, 255, 0.18 ); box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ) !important;"> 
-                    <div class="card-body"> 
-                        <h4 class="card-title">STORCI IOT MONITORING SYSTEM  </h4> 
-                        <h5>User Sign In</h5> 
-                    </div>                     
-                    <form role="form"> 
-                        <div class="mb-3"> 
-                            <label for="exampleInputEmail1">Email address</label>                             
-                            <input type="email" class="form-control" id="IDEmail" placeholder="Enter email" aria-describedby="emailHelp" required/> 
-                        </div>                         
-                        <div class="mb-3"> 
-                            <label for="exampleInputEmail1">Password</label>                             
-                            <input type="password" class="form-control" id="IDPassword" placeholder="Enter Password" aria-describedby="emailHelp" required/> 
-                        </div>                         
-                        <p style="color: var(--bs-red); font-weight: bold; font-size: 14px;
+        <script defer src="https://cdn.amcharts.com/lib/4/core.js"></script>
+        <script defer src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+        <script defer src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+        <script defer src="https://cdn.amcharts.com/lib/4/themes/dark.js"></script>
+        <script defer src="//cdn.amcharts.com/lib/4/plugins/rangeSelector.js"></script>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+        <script defer src="./assets/js/Global/Firebase/firebase_config.js"></script>
+        <!-- CUSTOM SCRIPT -->
+        <script defer src="./assets/js/90_signIn.js" type="module"></script>
+    </head>
+    <body class="pe-3 ps-3 text-center" style="background-image: url('assets/img/Background%20(1).svg'); background-size: contain; background-position: right top; background-repeat: no-repeat;">
+        <div class="container ">
+            <div class="d-flex  row" style="justify-content: center; background-color: rgba(255, 255, 255, 0);">
+                <div class="card col-md-6 glass p-3 rounded">
+                    <h5 class="mb-5">Storci IoT Monitoring System</h5>
+                    <h5 class="">Login</h5>
+                    <form role="form" class="mb-4 mt-4">
+                        <div class="input-group mb-4">
+                            <span class="align-items-center bg-white d-flex input-group-text material-icons-outlined" style="position: relative;">alternate_email</span>
+                            <input type="email" class="border-start-0 form-control rounded-end user-info" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1" required name="email" invalid-messagge="invalid-mess-3" id="field-email"/>
+                            <div id="invalid-mess-3" class="invalid-feedback">Please enter your email.</div>
+                        </div>
+                        <div class="input-group mb-4">
+                            <span id="togglePassword1" class="align-items-center bg-white border-end-0 cursor-pointer d-flex input-group-text material-icons-outlined toggle-password" style="position: relative;" passwordField="field-password">visibility</span>
+                            <input name="oldPassword" type="password" class="border-start-0 form-control password-field rounded-end" id="field-password" placeholder="Password" aria-describedby="togglePassword1" autocomplete="on"/>
+                            <div id="invalid-mess-10" class="invalid-feedback">Please enter your password.</div>
+                        </div>
+                        <p style="color: var(--bs-red); font-weight: bold; font-size: 14px; padding: 5px; display: block;" id="IDErrorMessage" class="d-none">Errore Message</p>
 
-/* background: #3b3838 */
-padding: 5px; display: block;" id="IDErrorMessage">Errore Message</p> 
-                        <div class="mb-3 form-check" style="display: inline-block;"> 
-                            <input type="checkbox" class="form-check-input" id="showPassword"/> 
-                            <label class="form-check-label" for="formInput6">Show Password</label>                             
-                            <label class="form-check-label" for="formInput6"></label>                             
-                        </div>                         
-                    </form>                     <a href="91_passwordRecovery.html" class="p-2 text-contrast">forgot Password</a> <a href="92_signUp.html" class="p-2 text-contrast">Not registered? Create an account</a> 
-                    <button id="IDButtonLogin" class="btn btn-contrast btn-primary mb-2 mt-2">Sign In</button>                     
-                </div>                 
-            </div>             
-        </div>         
-    </body>     
+                        <button id="IDButtonLogin" class="btn btn-contrast btn-primary mb-2  pe-4 ps-4 w-100" type="button">Sign In</button>
+                    </form>
+                    <a href="91_passwordRecovery.html" class="p-2 text-contrast text-start">forgot Password</a>
+                    <a href="92_signUp.html" class="p-2 text-contrast text-start">Not registered? Create an account</a>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
