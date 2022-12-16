@@ -63,7 +63,7 @@ function getDryerHistoryProduction(idTable, entityName, timeStart, timeEnd, char
 // In base al range time impostato.
 function getLineHistoryProduction(idTable, entityName, timeStart, timeEnd, chart, query){
 	// Recupera lo storico delle lavorazioni effettuate dalla cella
-	tw.getLineDoughHistoryProduction('', entityName, timeStart, timeEnd)
+	tw.service_04_getLineHistoryProductions(entityName, timeStart, timeEnd, '')
 	.then(recipe => {
 		// Cancella tutte le righe della tabella
 		$(idTable).empty()

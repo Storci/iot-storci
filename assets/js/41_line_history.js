@@ -246,7 +246,7 @@ function listHistoryProduction(entityName, timeStart, timeEnd){
 				let subquery = query.replaceAll('{1}', timestampStart).replaceAll('{2}', timestampEnd).replaceAll('{3}', entityName)
 				// Recupera i dati da influxdb e li visualizza sul grafico
 				am.setChartData(chartHistoryProduction, subquery, '')
-        /*
+        
 				tw.service_05_getDryerStartEnd(entityName, timestampStart, timestampEnd)
 				.then(result => {
 					//console.log(result)
@@ -277,7 +277,7 @@ function listHistoryProduction(entityName, timeStart, timeEnd){
 					}
 				})
 				.catch(e => {console.log(e)})
-        */
+        
 			})
 
 			// Recupera la prima riga della tabella
@@ -291,3 +291,9 @@ function listHistoryProduction(entityName, timeStart, timeEnd){
 		})
 	})
 }
+
+$('#fullscreenHistory').click(function(){
+    //let url ='60_cellGrapHistory.html?'+'entityName='+ entityName  +'&timeStart=' + timeStartZoom  + '&timeEnd=' + timeEndZoom
+    let url ='../62_lines_history_zoom.html?'+'entityName='+ entityName  
+    window.open(url, '_blank')
+})
