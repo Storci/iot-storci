@@ -2,7 +2,7 @@
 import * as tw from "./Global/Thingworx/thingworx_api_module.js"
 import * as fb from "./Global/Firebase/firebase_auth_module.js"
 import * as lang from "./Global/Common/Translation.js"
-import { Octokit, App } from "https://cdn.skypack.dev/octokit";
+//import { Octokit, App } from "https://cdn.skypack.dev/octokit";
 
 // Recupera il nome dell'utente da firebase, controlla che sia loggato.
 // Nel caso non fosse loggato richiama la pagina di login
