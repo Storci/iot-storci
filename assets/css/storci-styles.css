@@ -532,10 +532,6 @@ thead {
   animation: loading 0.75s ease infinite;
 }
 
-/* .loader::after {
-    opacity: 0.83;
-    transform: rotate(60deg);
-} */
 @keyframes loading {
   from {
     transform: rotate(0turn);
@@ -586,7 +582,6 @@ thead {
   }
   .navbar-dark-customized,
   .navbar[data-bs-theme="dark"] {
-    --bs-navbar-toggle-border-color: none !important;
     border: none;
   }
   .navbar-toggler:focus {

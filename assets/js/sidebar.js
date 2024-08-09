@@ -252,34 +252,4 @@ window.ATL_JQ_PAGE_PROPS = {
   }
 };
 
-// Fetch the script
-/*fetch("https://thingworx-storci.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/azc3hx/b/7/b0105d975e9e59f24a3230a22972a71a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=7ab5f8ea", {
-    cache: "default"
-})
-.then(response => {
-    if (response.ok) {
-        return response.text();
-    } else {
-        throw new Error('Network response was not ok.');
-    }
-})
-.then(scriptText => {
-    let scriptElement = document.createElement("script");
-    scriptElement.text = scriptText;
-    document.body.appendChild(scriptElement);
-})
-.catch(error => {
-    console.error('There has been a problem with your fetch operation:', error);
-});
-
-// Define the ATL_JQ_PAGE_PROPS object
-window.ATL_JQ_PAGE_PROPS = {
-    "triggerFunction": function(showCollectorDialog) {
-        // Use standard JavaScript to add the click event listener
-        document.querySelector("#triggerIssue").addEventListener("click", function(e) {
-            e.preventDefault();
-            showCollectorDialog();
-        });
-    }
-};*/
 
