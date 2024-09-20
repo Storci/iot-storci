@@ -139,6 +139,8 @@ if (customer != "Storci") {
             let idAccordion = '#id-accordion-line-' + i
             let idBtnAccordion = '#id-btn-accordion-line-' + i
             let idCollapsePanel = '#id-collapse-panel-line-' + i
+            
+            $(idBtnAccordion).text(res.lines[i - 1].name)
 
             // Effettua un ciclo per ogni elemento 'li' contenuto nel div idCollapsePanel
             $(idCollapsePanel).children('li').each((j, elem) => {
@@ -199,8 +201,10 @@ function refreshStatus(entityName) {
 
       if (JSON.stringify(res.lines) !== '[]') {
         for (let i = 1; i <= res.lines.length; i++) {
+          let idBtnAccordion = '#id-btn-accordion-line-' + i
           let span_status = '#id-nav-dashboard-line-' + i + ' a > span:last-child'
           $(span_status).text(res.lines[i - 1].status)
+          $(idBtnAccordion).text(res.lines[i - 1].name)
         }
       }
     })
