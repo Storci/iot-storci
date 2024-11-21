@@ -71,7 +71,7 @@ function service_02_getLinesGeneralInfo(entityName) {
  * @returns A promise.
  */
 function service_03_getDryerHistoryProductions(entityName, startTime, endTime) {
-    let url = baseUrl + bootstrapThing + 'service_03_getDryerHistoryProductions';
+    let url = baseUrl + bootstrapThing + 'service_03_getDryerHistoryProductions_V2';
     let data = JSON.stringify({ "entityName": entityName ,"startTime":startTime, "endTime":endTime});
     /**fetch api */
     return fetch(url, {

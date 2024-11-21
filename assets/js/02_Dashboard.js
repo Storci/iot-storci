@@ -55,7 +55,7 @@ promises.push(
       res.array.forEach((item, i) => {
         createDivLine('#IDdivLinee', item.entityName);
         setLineCardsValue(entityName);
-        setInterval(setLineCardsValue, 10000, entityName);
+        setInterval(setLineCardsValue, 60000, entityName);
 
         let arrayUM = ['Produzione (kg)'];
         let id = 'ID' + item.entityName.replace(/\./g, '');
@@ -93,7 +93,7 @@ promises.push(
     if (JSON.stringify(res) !== '{}') {
       createDivDryers('#IDdivDryers', entityName);
       setDryersCardsValue(entityName);
-      setInterval(setDryersCardsValue, 10000, entityName);
+      setInterval(setDryersCardsValue, 60000, entityName);
 
       let arrayUM = ['Consumo Giornaliero (kcal)', 'Celle Attive'];
       let id = 'ID' + res.entityName.replace(/\./g, '');

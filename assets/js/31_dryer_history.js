@@ -26,18 +26,7 @@ lang.getLanguage()
 
 // funzione che carica lo spinner
 showSpinner()
-function showSpinner() {
-	$('.loader').show(); // Show the spinner
 
-	// Add click event listener to hide the spinner
-	document.body.addEventListener('click', hideSpinner);
-}
-
-function hideSpinner() {
-	$('.loader').hide(); // Show the spinner
-	// Remove click event listener to avoid multiple bindings
-	document.body.removeEventListener('click', hideSpinner);
-}
 
 // Definisce le variabili come date
 let timeStartHistory = new Date()
@@ -90,10 +79,13 @@ $('#dateTimePicker').daterangepicker({
 	"startDate": disp_timeStart,
 	"endDate": disp_timeEnd
 }, function (start, end, label) {
+	/*
 	// Recupera tutte le celle installate dal cliente
 	tw.getCustomerCells(selectedCustomer)
 		.then(dryers => { listHistoryProduction(dryers, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')) })
 		.catch(error => console.error(error))
+	*/
+	listHistoryProduction_new(selectedCustomer, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'))
 });
 
 // Istanzia i grafici dell'attuale e dello storico
@@ -135,17 +127,7 @@ query += 'WHERE time > {1}ms and time < {2}ms GROUP BY time(10s) fill(previous)'
 
 // Cancella tutte le righe della tabella
 $("#IDHistoryTableBody").empty()
-//richiamo della funzione spinner
-showSpinner()
-// Recupera tutte le celle installate dal cliente
-tw.getCustomerCells(selectedCustomer)
-	.then(dryers => {
-		console.log(dryers)
-		listHistoryProduction(dryers, timeStartHistory, timeEndHistory)
-		//setTimeout(function() {	$('#modal1').modal("hide") }, 500);
-		hideSpinner()
-	})
-	.catch(error => console.error(error))
+listHistoryProduction_new(selectedCustomer, timeStartHistory, timeEndHistory)
 
 let direction = true
 $("th").click(function () {
@@ -178,7 +160,7 @@ $("#filter").on("keyup", function () {
 		$(this).toggle($(this).text().indexOf(value) > -1)
 	})
 })
-
+hideSpinner()
 
 
 
@@ -227,115 +209,125 @@ function insertionSort(table, column, dir) {
 	}
 }
 
-//$('.spinner-border').spinner('show')
+function showSpinner() {
+	$('.loader').show(); // Show the spinner
+
+	// Add click event listener to hide the spinner
+	document.body.addEventListener('click', hideSpinner);
+}
+
+function hideSpinner() {
+	$('.loader').hide(); // Show the spinner
+	// Remove click event listener to avoid multiple bindings
+	document.body.removeEventListener('click', hideSpinner);
+}
+
 function showSpinnerTable() {
+	console.log("spinner on")
 	$('.spinner-border').show(); // Show the spinner
 	$('.tableDiv').css('opacity', '0.5'); // 
 }
 
 function hideSpinnerTable() {
+	console.log("spinner off")
 	$('.spinner-border').hide(); // Show the spinner
 	$('.tableDiv').css('opacity', '1'); // 
 }
 
-showSpinnerTable()
-function listHistoryProduction(dryers, timeStart, timeEnd) {
+function listHistoryProduction_new(customer, timeStart, timeEnd) {
+	showSpinnerTable()
 	$("#IDHistoryTableBody").empty()
-	dryers.array.forEach((dryer, d) => {
-		console.log(dryer)
-		let dryer_name = dryer.entityName.split(".")
-		dryer_name = dryer_name[4] + " " + dryer_name[5]
-		console.log(dryer_name)
-		// Recupera lo storico delle lavorazioni effettuate dalla cella
-		tw.service_03_getDryerHistoryProductions(dryer.entityName, timeStart, timeEnd)
-			.then(productions => {
-				// Per ogni ricetta trovata genera una nuova riga nella tabella
-				productions.rows.forEach((el, i) => {
-					// Converte il timestamp in Date
-					let start = new Date(el.timeStart).toLocaleString();
-					let end = new Date(el.timeEnd).toLocaleString();
-					// Definisce l'id della riga della tabella
-					let id = "IDHistoryTableRow" + i + d;
-					// Definisce l'html della riga da aggiungere
-					let row = '<tr id=' + id + ' class="hover_tr" style="border-style: none;background: var(--bs-table-bg);">'
-					row += '    <td style="font-size: 12px;border-style: none;">' + start + '</td>'
-					row += '    <td style="font-size: 12px;border-style: none;">' + end + '</td>'
-					row += '    <td style="font-size: 12px;border-style: none;">' + el.ricetta + '</td>'
-					row += '    <td style="font-size: 12px;border-style: none;">' + el.durata + '</td>'
-					row += '    <td style="font-size: 12px;border-style: none;">' + dryer_name + '</td>'
-					row += '</tr>'
-					// Aggiunge la riga alla tabella
-					$("#IDHistoryTableBody").append(row)
-					// Imposta i timestamp di inizio e fine essiccazione (il range temporale è allargato 30 min prima dell'inizio e 30 min dopo la fine)
-					let timestampStart = el.timeStart - 1800000
-					let timestampEnd = el.timeEnd + 1800000
-					// Controlla se la data è invalida, nel caso l'essiccazione è in corso e carica la data attuale
-					if (timestampEnd == undefined || timestampEnd == null || timestampEnd == '' || Number.isNaN(timestampEnd)) {
-						timestampEnd = Date.now() + 1800000
-					}
+	// Recupera lo storico delle lavorazioni effettuate dalla cella
+	tw.service_03_getDryerHistoryProductions("%" + customer + "%", timeStart, timeEnd)
+		.then(productions => {
+			// Per ogni ricetta trovata genera una nuova riga nella tabella
+			productions.rows.forEach((el, i) => {
+				// Converte il timestamp in Date
+				let start = new Date(el.timeStart).toLocaleString();
+				let end = new Date(el.timeEnd).toLocaleString();
 
-					id = "#" + id
-					$(id).click(function () {
-						entityName = dryer.entityName
-						// Aggiunge la classe table-primary alla riga seleziona e la rimuove dalle altre righe
-						$(this).addClass('table-primary').siblings().removeClass('table-primary')
-						// Definisce la query da inviare a influxdb
-						let subquery = query.replaceAll('{1}', timestampStart).replaceAll('{2}', timestampEnd).replaceAll('{3}', dryer.entityName)
-						// Recupera i dati da influxdb e li visualizza sul grafico
-						am.setChartData(chartHistoryProduction, subquery, '')
-						timeStartZoom = timestampStart
-						timeEndZoom = timestampEnd
+				let dryer_name = el.entityName.split(".")
+				dryer_name = dryer_name[4] + " " + dryer_name[5]
 
-						$('#fullscreenHistoryCell').click(function () {
-							let url = '60_dryers_history_zoom.html?' + 'entityName=' + entityName + '&timeStart=' + timeStartZoom + '&timeEnd=' + timeEndZoom
-							window.open(url, '_blank')
-							console.log(e)
-						})
+				// Definisce l'id della riga della tabella
+				let id = "IDHistoryTableRow" + i;
+				// Definisce l'html della riga da aggiungere
+				let row = '<tr id=' + id + ' class="hover_tr" style="border-style: none;background: var(--bs-table-bg);">'
+				row += '    <td style="font-size: 12px;border-style: none;">' + start + '</td>'
+				row += '    <td style="font-size: 12px;border-style: none;">' + end + '</td>'
+				row += '    <td style="font-size: 12px;border-style: none;">' + el.ricetta + '</td>'
+				row += '    <td style="font-size: 12px;border-style: none;">' + el.durata + '</td>'
+				row += '    <td style="font-size: 12px;border-style: none;">' + dryer_name + '</td>'
+				row += '</tr>'
+				// Aggiunge la riga alla tabella
+				$("#IDHistoryTableBody").append(row)
+				// Imposta i timestamp di inizio e fine essiccazione (il range temporale è allargato 30 min prima dell'inizio e 30 min dopo la fine)
+				let timestampStart = el.timeStart - 1800000
+				let timestampEnd = el.timeEnd + 1800000
+				// Controlla se la data è invalida, nel caso l'essiccazione è in corso e carica la data attuale
+				if (timestampEnd == undefined || timestampEnd == null || timestampEnd == '' || Number.isNaN(timestampEnd)) {
+					timestampEnd = Date.now() + 1800000
+				}
 
-						tw.service_05_getDryerStartEnd(dryer.entityName, timestampStart, timestampEnd)
-							.then(result => {
-								//console.log(result)
-								let range = chartHistoryProduction.xAxes.values[0].axisRanges.values[0]
-								range.date = new Date(result.array[0].start)
-								range.grid.stroke = am4core.color("#396478");
-								range.grid.strokeWidth = 2;
-								range.grid.strokeOpacity = 0.6;
-								range.label.inside = true;
-								range.label.text = "Inizio Essicazione";
+				id = "#" + id
+				$(id).click(function () {
+					entityName = el.entityName
+					// Aggiunge la classe table-primary alla riga seleziona e la rimuove dalle altre righe
+					$(this).addClass('table-primary').siblings().removeClass('table-primary')
+					// Definisce la query da inviare a influxdb
+					let subquery = query.replaceAll('{1}', timestampStart).replaceAll('{2}', timestampEnd).replaceAll('{3}', el.entityName)
+					// Recupera i dati da influxdb e li visualizza sul grafico
+					am.setChartData(chartHistoryProduction, subquery, '')
+					timeStartZoom = timestampStart
+					timeEndZoom = timestampEnd
 
-								let range1 = chartHistoryProduction.xAxes.values[0].axisRanges.values[1]
-								range1.date = new Date(result.array[0].stop)
-								range1.grid.stroke = am4core.color("#396478");
-								range1.grid.strokeWidth = 2;
-								range1.grid.strokeOpacity = 0.6;
-								range1.label.inside = true;
-								range1.label.text = "Fine Essicazione";
-
-								if (result.array[0].endLoad) {
-									let range2 = chartHistoryProduction.xAxes.values[0].axisRanges.values[2]
-									range2.date = new Date(result.array[0].endLoad)
-									range2.grid.stroke = am4core.color("#396478");
-									range2.grid.strokeWidth = 2;
-									range2.grid.strokeOpacity = 0.6;
-									range2.label.inside = true;
-									range2.label.text = "Fine Carico";
-								}
-							})
-							.catch(e => { console.log(e) })
+					$('#fullscreenHistoryCell').click(function () {
+						let url = '60_dryers_history_zoom.html?' + 'entityName=' + entityName + '&timeStart=' + timeStartZoom + '&timeEnd=' + timeEndZoom
+						window.open(url, '_blank')
+						console.log(e)
 					})
 
-					// Recupera la prima riga della tabella
-					let elem = document.getElementById('firstColumn')
-					// Definisce la variabile come click event
-					let clickEvent = new Event('click');
-					// Esegue l'evento dell'elemento, in questo modo simula il click
-					// sulla prima riga della tabella, e viene caricato il grafico
-					elem.dispatchEvent(clickEvent)
+					tw.service_05_getDryerStartEnd(el.entityName, timestampStart, timestampEnd)
+						.then(result => {
+							//console.log(result)
+							let range = chartHistoryProduction.xAxes.values[0].axisRanges.values[0]
+							range.date = new Date(result.array[0].start)
+							range.grid.stroke = am4core.color("#396478");
+							range.grid.strokeWidth = 2;
+							range.grid.strokeOpacity = 0.6;
+							range.label.inside = true;
+							range.label.text = "Inizio Essicazione";
 
+							let range1 = chartHistoryProduction.xAxes.values[0].axisRanges.values[1]
+							range1.date = new Date(result.array[0].stop)
+							range1.grid.stroke = am4core.color("#396478");
+							range1.grid.strokeWidth = 2;
+							range1.grid.strokeOpacity = 0.6;
+							range1.label.inside = true;
+							range1.label.text = "Fine Essicazione";
+
+							if (result.array[0].endLoad) {
+								let range2 = chartHistoryProduction.xAxes.values[0].axisRanges.values[2]
+								range2.date = new Date(result.array[0].endLoad)
+								range2.grid.stroke = am4core.color("#396478");
+								range2.grid.strokeWidth = 2;
+								range2.grid.strokeOpacity = 0.6;
+								range2.label.inside = true;
+								range2.label.text = "Fine Carico";
+							}
+						})
+						.catch(e => { console.log(e) })
 				})
-				//setTimeout(function() {	$('#modal1').modal("hide") }, 500);
-				hideSpinnerTable()
-
 			})
-	})
+			
+			// Recupera la prima riga della tabella
+			let elem = document.getElementById('IDHistoryTableRow0')
+			// Definisce la variabile come click event
+			let clickEvent = new Event('click');
+			// Esegue l'evento dell'elemento, in questo modo simula il click
+			// sulla prima riga della tabella, e viene caricato il grafico
+			elem.dispatchEvent(clickEvent)
+			
+			hideSpinnerTable()
+		})
 }

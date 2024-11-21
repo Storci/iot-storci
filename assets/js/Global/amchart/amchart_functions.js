@@ -157,7 +157,7 @@ function createXYChart(IDdivChart, IDdivLegend = '', typeColor, numYAxis = 1, YA
 	// ***** Settaggio impostazioni ASSE X
 	let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 	dateAxis.groupData = true;
-	dateAxis.groupCount = 1000;
+	dateAxis.groupCount = 3000;
 	dateAxis.renderer.minGridDistance = 50;
 	dateAxis.renderer.grid.template.strokeOpacity = 0;
 	dateAxis.renderer.labels.template.fill = am4core.color("#698ca7BF");

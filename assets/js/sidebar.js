@@ -184,7 +184,7 @@ if (customer != "Storci") {
 
 refreshStatus(entityName)
 // imposta il servizio refreshStatus in loop
-setInterval(refreshStatus, 10000, entityName)
+setInterval(refreshStatus, 60000, entityName)
 // il servizio recupera gli stati delle macchine installate.
 // gli stati sono visualizzati nella sidebar a fianco di ogni nome.
 function refreshStatus(entityName) {

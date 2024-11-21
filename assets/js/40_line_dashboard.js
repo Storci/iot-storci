@@ -15,20 +15,6 @@ fb.onAuthStateChanged_2()
 
 showSpinner()
 
-function showSpinner() {
-	$('.loader').show(); // Show the spinner
-
-	// Add click event listener to hide the spinner
-	document.body.addEventListener('click', hideSpinner);
-}
-
-function hideSpinner() {
-	$('.loader').hide(); // Show the spinner
-	// Remove click event listener to avoid multiple bindings
-	document.body.removeEventListener('click', hideSpinner);
-}
-
-
 // Esegue il codice principale al caricamento della pagina
 $("body").ready(async function () {
 	// Definisce la variabile
@@ -118,7 +104,7 @@ $("body").ready(async function () {
 
 
 	// ***** LISTA ALLARMI ATTIVI *****
-	getAlertsActive('#IDListAlertsActive', entityName)
+	//getAlertsActive('#IDListAlertsActive', entityName)
 
 	// ***** LISTA ALLARMI ATTIVI *****
 	//getListMachine('#IDListMachines', entityName)
@@ -139,6 +125,24 @@ $("body").ready(async function () {
 })
 
 showSpinner()
+
+// ************************************
+// ************ FUNCTIONS *************
+// ************************************
+
+function showSpinner() {
+	$('.loader').show(); // Show the spinner
+
+	// Add click event listener to hide the spinner
+	document.body.addEventListener('click', hideSpinner);
+}
+
+function hideSpinner() {
+	$('.loader').hide(); // Show the spinner
+	// Remove click event listener to avoid multiple bindings
+	document.body.removeEventListener('click', hideSpinner);
+}
+
 // Funzione che recupera i dati da thingworx e li visualizza nelle card della pagina.
 // Prerequisiti: le label che si vogliono popolare con i valori da thingworx devono avere
 // la seguente classe '.thingworx-property-value'.
@@ -167,31 +171,37 @@ async function setChartData(chart, query) {
 	let data = [];
 	// recupera li dati da influxdb
 	let response = await tw.influxQuery(query);
-	// Aggiunge una riga all'array data
-	response.results[0].series[0].values.forEach(el => {
-		// Definisce la variabile come json object
-		let obj = {};
-		// Aggiunge le chiavi-valore all'oggetto json obj
-		// Le chiavi sono le colonne della query di influxdb
-		response.results[0].series[0].columns.forEach((key, id) => {
-			// controllo che il valore ritornato sia un numero
-			if (typeof (el[id]) == "number") {
-				// Riduco la precisione a 2 valori decimali
-				el[id] = el[id].toFixed(2);
-			}
-			//Aggiungo il valore all'oggetto obj
-			obj[key] = el[id];
+	try{
+		// Aggiunge una riga all'array data
+		response.results[0].series[0].values.forEach(el => {
+			// Definisce la variabile come json object
+			let obj = {};
+			// Aggiunge le chiavi-valore all'oggetto json obj
+			// Le chiavi sono le colonne della query di influxdb
+			response.results[0].series[0].columns.forEach((key, id) => {
+				// controllo che il valore ritornato sia un numero
+				if (typeof (el[id]) == "number") {
+					// Riduco la precisione a 2 valori decimali
+					el[id] = el[id].toFixed(2);
+				}
+				//Aggiungo il valore all'oggetto obj
+				obj[key] = el[id];
+			});
+			// Aggiungi il json all'array
+			data.push(obj);
 		});
-		// Aggiungi il json all'array
-		data.push(obj);
-	});
-	// Inserisce i dati nel grafico
-	chart.data = data;
-	console.log(response.results[0].series[0].values.length)
+		// Inserisce i dati nel grafico
+		chart.data = data;
+	}catch(e){
+		console.warn("nessuna riga trovata. \nquery: " + query + "\n\nerror: " + e)
+	}
 }
+
 // Funzione che recupera tutti gli allarmi attivi della linea.
 // Effettua una chiamata a tw per il recupero degli allarmi,
 // poi inserisce gli allarmi all'interno di una lista.
+
+/*
 async function getAlertsActive(idList, entityName) {
 	let list
 	await tw.getLineAlertsActive(entityName)
@@ -216,3 +226,4 @@ async function getAlertsActive(idList, entityName) {
 		$(idList).append(row)
 	});
 }
+*/
