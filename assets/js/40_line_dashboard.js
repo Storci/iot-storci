@@ -40,7 +40,7 @@ $("body").ready(async function () {
 
 	setCardsValue(entityName)
 	// Funzioni cicliche
-	setInterval(setCardsValue, 10000, entityName);	// ogni 10 sec
+	setInterval(setCardsValue, 60000, entityName);	// ogni 10 sec
 
 	// Definisce le variabili come date
 	let timeStart = new Date()
@@ -112,7 +112,7 @@ $("body").ready(async function () {
 	// Recupera la lingua utilizzata dall'utente e sostituisce tutti i testi
 	lang.getLanguage()
 	// Pulsanti per l'esportazione del grafico in png
-	$('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartProduction) })
+	//$('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartProduction) })
 
 
 	// pulsante per aprire il grafico attuale in un'altra tab

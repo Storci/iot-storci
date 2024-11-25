@@ -64,7 +64,7 @@
         </header>         
         <div class="container-fluid"> 
             <div class="row"> 
-                <nav id="sidebarMenu" class="bg-light bg-light-customized col-lg-2 col-md-3 collapse d-md-block sidebar sidebar-scroll sidebar-scroll-hidden"> 
+                <nav id="sidebarMenu" class="bg-light bg-light-customized col-lg-2 col-md-3 collapse d-md-block sidebar sidebar-scroll sidebar-scroll-hidden" data-pg-collapsed> 
                     <div class="align-content-start d-flex flex-column keep-scroll overflow-auto pt-3" style="height: 80%"> 
                         <ul class="nav flex-column" id="IDNavPrimary"> 
                             <li class="d-none nav-item" id="id-nav-customers-list"> <a class="align-items-center d-flex nav-link" aria-current="page" href="01_Customers.html" id="id-nav-customers-list"> <span class="material-icons-outlined">group</span><span class="ms-3" translate_id="clients_list">List of Clients</span> </a> 
@@ -255,7 +255,7 @@
                         </ul>                         <span style="font-size: 10px" id="github-version" class="p-2">Version</span> 
                     </div>                     
                 </nav>                 
-                <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master"> 
+                <main class="col-lg-10 col-md-9 ms-sm-auto px-md-4 bg-white-customized" id="id-column-master" data-pgc-field="id-column-master" data-pg-collapsed> 
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"> 
                         <h1 class="h2 card-result" translate_id="dryers_info">Dati Cella</h1> 
                         <div class="btn-toolbar mb-2 mb-md-0"> 
@@ -321,9 +321,9 @@
                         </div>                         
                     </div>                     
                     <div class="card mb-5 actual_graph"> 
-                        <div class="card-body d-flex flex-column"> 
+                        <div class="card-body d-flex flex-column pe-0 ps-0"> 
                             <div data-pg-name="Title"> 
-                                <h6 class="text-muted card_heading_label" translate_id="">Trend Essicazione</h6> 
+                                <h6 class="card_heading_label ps-2 text-muted" translate_id="">Trend Essicazione</h6> 
                             </div>                             
                             <div class="pg-empty-placeholder" data-pg-name="legend" id="IDLegendActualProduzione"></div>                             
                             <div class="flex-grow-1 flex-shrink-1 pg-empty-placeholder" data-pg-name="chart" id="IDTrendActualProduction"></div>                             
@@ -368,17 +368,17 @@
                         </div>                         
                         <div class="col-lg-7 h-100"> 
                             <div class="card"> 
-                                <div class="card-body"> 
-                                    <h6 class="card-subtitle mb-2 text-muted card_heading_label" translate_id="history_chart">Grafico Storico</h6> 
+                                <div class="card-body pe-0 ps-0"> 
+                                    <h6 class="card-subtitle card_heading_label mb-2 ps-2 text-muted" translate_id="history_chart">Grafico Storico</h6> 
                                     <div class="pg-empty-placeholder" id="IDLegendHistoryProduction"></div>                                     
                                     <div class="pg-empty-placeholder" id="IDTrendHistoryProduction" style="height: 50vh;"></div>                                     
                                 </div>                                 <span type="button" class="bg-white btn btn-light d-inline text-end text-primary" id="fullscreenHistory">Fullscreen</span> 
                             </div>                             
                         </div>                         
-                    </div>                                    
-                    <div class="loader"></div>                     
+                    </div>                     
+                    <div class="loader" data-pg-hidden></div>                     
                 </main>                 
             </div>             
-        </div>              
+        </div>         
     </body>     
 </html>

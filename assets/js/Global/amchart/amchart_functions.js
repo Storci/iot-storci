@@ -134,6 +134,7 @@ function createXYChart(IDdivChart, IDdivLegend = '', typeColor, numYAxis = 1, YA
 	// imposta il grafico con una legenda separa in un atro div
 	//Questa funzione abilita l'export o il download del grafico in tutti formati
 	chart.exporting.menu = new am4core.ExportMenu();
+	chart.exporting.menu.verticalAlign = "bottom";
 
 	if (IDdivLegend !== '') {
 		let legendContainer = am4core.create(IDdivLegend, am4core.Container);
@@ -162,6 +163,7 @@ function createXYChart(IDdivChart, IDdivLegend = '', typeColor, numYAxis = 1, YA
 	dateAxis.renderer.grid.template.strokeOpacity = 0;
 	dateAxis.renderer.labels.template.fill = am4core.color("#698ca7BF");
 	dateAxis.renderer.labels.template.fontSize = 12;
+	dateAxis.renderer.inside = false;
 	// ***** Settaggio impostazioni ASSE X
 	let dateAxisTooltip = dateAxis.tooltip;
 	dateAxisTooltip.background.fill = am4core.color("#698ca7");
@@ -185,6 +187,9 @@ function createXYChart(IDdivChart, IDdivLegend = '', typeColor, numYAxis = 1, YA
 		if (i > 0) { valueAxis.renderer.opposite = true; }
 		valueAxis.renderer.labels.template.fill = am4core.color("#698ca7BF");
 		valueAxis.renderer.labels.template.fontSize = 12;
+		valueAxis.renderer.inside = true;
+		valueAxis.renderer.labels.template.dy = 10;
+		valueAxis.renderer.labels.template.dx = -10;
 		// ***** Settaggio impostazioni ASSE Y
 		let valueAxisTooltip = valueAxis.tooltip;
 		valueAxisTooltip.background.fill = am4core.color("#698ca7");
@@ -199,6 +204,8 @@ function createXYChart(IDdivChart, IDdivLegend = '', typeColor, numYAxis = 1, YA
 	// Dopo 3s di inattività il grafico viene disattivato nuovamente
 	chart.tapToActivate = true
 	chart.tapTimeout = 3000
+
+	chart.responsive.enabled = true;
 
 	// Ritorna il grafico
 	return chart
@@ -312,7 +319,8 @@ function createLineSeries(chart, seriesName, labelX, labelY, UM, yAxis = 0, Enab
 	series.tooltip.label.fontSize = 10;
 	series.minBulletDistance = 10;
 	series.name = seriesName;
-	series.tensionX = tension;
+	series.tensionX = 0.8;
+	series.tensionY = 1;
 	series.yAxis = chart.yAxes.values[yAxis];
 	series.hidden = hidden;
 
@@ -326,9 +334,54 @@ function createLineSeries(chart, seriesName, labelX, labelY, UM, yAxis = 0, Enab
 		var scrollbarX = new am4charts.XYChartScrollbar()
 		scrollbarX.series.push(series)
 		chart.scrollbarX = scrollbarX
+
+		customizeGrip(chart.scrollbarX.startGrip);
+		customizeGrip(chart.scrollbarX.endGrip);
+
+		chart.scrollbarX.showSystemTooltip = true;
+		chart.scrollbarX.minHeight = 40;
+		chart.scrollbarX.marginBottom = 40;
 	}
 
+	series.events.on("hidden", toggleAxes);
+  	series.events.on("shown", toggleAxes);
+
 	return series;
+}
+
+function customizeGrip(grip) {
+	grip.icon.disabled = true;
+	grip.background.disabled = true;
+	// grip.background.fill = am4core.color("#c00");
+	// grip.background.fillOpacity = 0.5;
+
+	var img = grip.createChild(am4core.Circle);
+	img.width = 15;
+	img.height = 15;
+	img.fill = am4core.color("#0077b6");
+	//img.rotation = 45;
+	img.align = "center";
+	img.valign = "middle";
+
+	// Add vertical bar
+	var line = grip.createChild(am4core.Rectangle);
+	line.height = 40;
+	line.width = 3;
+	line.fill = am4core.color("#0077b6");
+	line.align = "center";
+	line.valign = "middle";
+}
+  
+
+function toggleAxes(ev) {
+	var axis = ev.target.yAxis;
+	var disabled = true;
+	axis.series.each(function(series) {
+	  if (!series.isHiding && !series.isHidden) {
+		disabled = false;
+	  }
+	});
+	axis.disabled = disabled;
 }
 
 function createPieSeries(chart, seriesName, categoryName, unitName, totalUnit) {

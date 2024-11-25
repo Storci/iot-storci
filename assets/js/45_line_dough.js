@@ -320,9 +320,9 @@ function listHistoryProduction(entityName, timeStart, timeEnd) {
 }
 
 
-// Pulsanti per l'esportazione del grafico in png
-$('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActualProduction) })
-$('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
+// // Pulsanti per l'esportazione del grafico in png
+// $('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActualProduction) })
+// $('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function () {
 	let url = './machineGraph/70_dough_actual_zoom.html?' + 'entityName=' + entityName
@@ -340,7 +340,7 @@ common.actualLineProduction(chartActualProduction, query, entityName)
 // ******************** RECUPERO DATI TW ********************
 setCardsValue(entityName, chartPieSettingsProduction)
 // Funzioni cicliche
-setInterval(setCardsValue, 10000, entityName, chartPieSettingsProduction);	// ogni 10 sec
+setInterval(setCardsValue, 60000, entityName, chartPieSettingsProduction);	// ogni 10 sec
 
 // Funzione che recupera i dati da thingworx e li visualizza nelle card della pagina.
 // Prerequisiti: le label che si vogliono popolare con i valori da thingworx devono avere

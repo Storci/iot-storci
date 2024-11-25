@@ -96,7 +96,7 @@ $('#dateTimePicker').daterangepicker({
 // - ID per la colorazione delle series
 // - Numero di assi Y associate al GRAFICO
 // - Array con le unità di misura
-let arrayUM = ['Essicazione', 'Calorie']
+let arrayUM = ['', '']
 let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 0, 2, arrayUM, true)
 // Crea le series da visualizzare sul grafico
 am.createLineSeries(chartHistoryProduction, "PV - Temperature Ambient", "time", "PV_Temperatura_Ambiente", "°C", 0, false, true, 0.77)

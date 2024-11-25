@@ -333,7 +333,7 @@ common.actualLineProduction(chartActualProduction, query, entityName)
 // ******************** RECUPERO DATI TW ********************
 setCardsValue(entityName)
 // Funzioni cicliche
-setInterval(setCardsValue, 10000, entityName);	// ogni 10 sec
+setInterval(setCardsValue, 30000, entityName);	// ogni 10 sec
 
 
 // Funzione che recupera i dati da thingworx e li visualizza nelle card della pagina.

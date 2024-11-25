@@ -97,7 +97,7 @@ $('#dateTimePicker').daterangepicker({
 // - ID per la colorazione delle series
 // - Numero di assi Y associate al GRAFICO
 // - Array con le unità di misura
-let arrayUM = ['Essicazione', 'Calorie']
+let arrayUM = ['','']
 let chartActualProduction = am.createXYChart("IDTrendActualProduction", 'IDLegendActualProduzione', 0, 2, arrayUM)
 let chartHistoryProduction = am.createXYChart("IDTrendHistoryProduction", 'IDLegendHistoryProduction', 0, 2, arrayUM)
 // Crea le series da visualizzare sul grafico
@@ -150,9 +150,6 @@ setHistoryInfo(chartHistoryProduction)
 setInterval(setHistoryInfo, 1000, chartHistoryProduction)
 */
 
-// Pulsanti per l'esportazione del grafico in png
-$('#IDButtonExportTrendActualProduction').click(el => { am.getExport(chartActualProduction) })
-$('#IDButtonExportTrendHistoryProduction').click(el => { am.getExport(chartHistoryProduction) })
 
 $('#fullscreen').click(function () {
 	//let url ='61_actualCellGraph.html?'+'entityName='+ entityName
