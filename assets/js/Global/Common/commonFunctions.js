@@ -174,30 +174,34 @@ function historyLineProduction(chart, query, entityName){
 // La funzione recupera i dati da thingworx e li visualizza sul grafico
 // della relativa card.
 function cardLineTrend(IDdivTrend, entityName, s1, s2='', um){
-	let timestart = new Date()
-	let timestop = new Date()
+	try{
+		let timestart = new Date()
+		let timestop = new Date()
 
-	timestart = timestart.getTime() - 3600000
-	timestop = timestop.getTime()
-	// Instanzia il grafico di amchart, i parametri sono:
-	// - ID div dove viene visualizzato il grafico
-	// - Indice del colore del grafico
-	let chart = am.createXYChartNoLegend(IDdivTrend, 0);
-	// Aggiunge la serie al grafico
-	am.createLineSeries(chart, "PV", "time", "PV", um, 0, false, false, false, 0.7)
-	if(s2) am.createLineSeries(chart, "SP", "time", "SP", um, 0, false, false, false, 0.7)
-	// Definisce la query
-	let query = 'SELECT '
-	query += 'mean("' + s1 +'") as "PV" '
-	if(s2) query += ', mean("' + s2 +'") as "SP" '
-	query += 'FROM "' + entityName + '" '
-	query += 'WHERE time > ' + timestart + 'ms and time < ' + timestop + 'ms GROUP BY time(10s) fill(previous)'
+		timestart = timestart.getTime() - 3600000
+		timestop = timestop.getTime()
+		// Instanzia il grafico di amchart, i parametri sono:
+		// - ID div dove viene visualizzato il grafico
+		// - Indice del colore del grafico
+		let chart = am.createXYChartNoLegend(IDdivTrend, 0);
+		// Aggiunge la serie al grafico
+		am.createLineSeries(chart, "PV", "time", "PV", um, 0, false, false, false, 0.7)
+		if(s2) am.createLineSeries(chart, "SP", "time", "SP", um, 0, false, false, false, 0.7)
+		// Definisce la query
+		let query = 'SELECT '
+		query += 'mean("' + s1 +'") as "PV" '
+		if(s2) query += ', mean("' + s2 +'") as "SP" '
+		query += 'FROM "' + entityName + '" '
+		query += 'WHERE time > ' + timestart + 'ms and time < ' + timestop + 'ms GROUP BY time(10s) fill(previous)'
 
-	console.log(query)
-	// Setta i dati del grafico
-	am.setChartData(chart, query, '.lds-dual-ring.general-info')
-	// Funzioni cicliche
-	setInterval(am.setChartData, 120000, chart, query, '.lds-dual-ring.general-info')
+		//console.log(query)
+		// Setta i dati del grafico
+		am.setChartData(chart, query, '.lds-dual-ring.general-info')
+		// Funzioni cicliche
+		setInterval(am.setChartData, 120000, chart, query, '.lds-dual-ring.general-info')
+	}catch(e){
+		$(IDdivTrend).hide()
+	}
 }
 
 export{
