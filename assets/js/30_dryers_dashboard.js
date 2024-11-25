@@ -4,25 +4,7 @@ import * as fb from "./Global/Firebase/firebase_auth_module.js"
 import * as lang from "./Global/Common/Translation.js"
 
 $(document).ready(() => {
-
-
-
 	showSpinner()
-
-	function showSpinner() {
-		$('.loader').show(); // Show the spinner
-
-		// Add click event listener to hide the spinner
-		document.body.addEventListener('click', hideSpinner);
-	}
-
-	function hideSpinner() {
-		$('.loader').hide(); // Show the spinner
-		// Remove click event listener to avoid multiple bindings
-		document.body.removeEventListener('click', hideSpinner);
-	}
-
-
 	const queryString = window.location.search
 	const urlParams = new URLSearchParams(queryString)
 	// Recupera l'entity name della thing
@@ -37,27 +19,35 @@ $(document).ready(() => {
 	// i testi caricati dalle funzioni.
 	lang.getLanguage()
 
-	// Recupera tutte le celle installate dal cliente
-	tw.getCustomerCells(selectedCustomer)
-		.then(cellsGroup => {
-			// Genera html della card del gruppo celle
-			createCellCard(cellsGroup);
-			// Esegue la funzione dopo la creazione delle card.
-			// La funzione recupera i valori da TW da visualizzare nelle card
-			getCellInfo(cellsGroup, selectedCustomer)
-			// Esegue la funzione ogni 30 sec
-			setInterval(getCellInfo, 30000, cellsGroup, selectedCustomer);
-			//$('#modal1').modal("hide");
-			hideSpinner()
-		})
-		.catch(error => console.error(error))
 
-	// ******************** FUNCTION ********************
-	// Definisce il codice html delle card e le aggiunge all'elemento ROW
-	// Ad ogni card viene associata la funzoine onClick per aprire la pagina corrispondente
-	function createCellCard(cellsGroup) {
-		// Effettua un ciclo per ogni gruppo celle trovato [normalmente tutte le celle sono in un unico gruppo]
-		cellsGroup.array.forEach((el, i) => {
+	createCellCardNew(selectedCustomer)
+	setInterval(getCellInfoNew, 30000, selectedCustomer)
+})
+
+// ************************************
+// ************ FUNCTIONS *************
+// ************************************
+
+function showSpinner() {
+	$('.loader').show(); // Show the spinner
+
+	// Add click event listener to hide the spinner
+	document.body.addEventListener('click', hideSpinner);
+}
+
+function hideSpinner() {
+	$('.loader').hide(); // Show the spinner
+	// Remove click event listener to avoid multiple bindings
+	document.body.removeEventListener('click', hideSpinner);
+}
+
+// Definisce il codice html delle card e le aggiunge all'elemento ROW
+// Ad ogni card viene associata la funzoine onClick per aprire la pagina corrispondente
+function createCellCardNew(selectedCustomer) {
+	tw.getCustomerCells_V2(selectedCustomer)
+	.then(dryers => {
+		console.log(dryers)
+		dryers.rows.forEach((dryer,i) => {
 			// Genera un id per la singola card
 			let id = "IDCardCellGroup" + i;
 			// Definisce il codice html
@@ -105,70 +95,73 @@ $(document).ready(() => {
 			$("#IDRow").append(card)
 
 			document.getElementById(id).onclick = function () {
-				window.location.href = "./32_dryer_dashboard.html?entityName=" + el.entityName
+				window.location.href = "./32_dryer_dashboard.html?entityName=" + dryer.entityName
 			}
 			lang.getLanguage()
-		})
+
+			updateCardInfo(dryer, i)
+		});
+		hideSpinner()
+	})
+	.catch(error => console.error(error))
+}
+
+// Funzione che recupera i dati del cliente da TW
+function getCellInfoNew(selectedCustomer) {
+	tw.getCustomerCells_V2(selectedCustomer)
+	.then(dryers => {
+		dryers.rows.forEach((dryer,i) => {	updateCardInfo(dryer, i) });
+	})
+	.catch(error => console.error(error))
+}
+
+
+function updateCardInfo(dryer, i){			
+	// Genera l'id che identifica i campi della singola card da valorizzare
+	let ID = "#IDCardCellGroup" + i;
+	let ClassTitle = ".IDCardCellGroup" + i + "Title"
+	let ClassLabel = ".IDCardCellGroup" + i + "Label"
+	let ClassValue = ".IDCardCellGroup" + i + "Value"
+
+	let ID_Numero_Carrelli = "#IDCardCellGroup" + i + "Numero_Carrelli"
+	let IDnomeCella = "#IDCardCellGroup" + i + "Nome_Cella"
+	let IDstatoCella = "#IDCardCellGroup" + i + "Stato_Cella"
+	let IDricettaInUso = "#IDCardCellGroup" + i + "Ricetta_in_Uso"
+	let IDtempoPianificato = "#IDCardCellGroup" + i + "Tempo_Pianificato"
+	let IDtempoInLavorazione = "#IDCardCellGroup" + i + "Tempo_in_Lavorazione"
+
+	try{ $(ID_Numero_Carrelli).text(dryer.numero_carrelli) }catch(e){console.warn(e)}
+	try{ $(IDnomeCella).text(dryer.name) }catch(e){console.warn(e)}
+	try{ $(IDstatoCella).text(dryer.stato) }catch(e){console.warn(e)}
+	try{ $(IDricettaInUso).text(dryer.ricetta) }catch(e){console.warn(e)}
+	try{ $(IDtempoPianificato).text(dryer.durata) }catch(e){console.warn(e)}
+	try{ $(IDtempoInLavorazione).text(dryer.tempoLavoro) }catch(e){console.warn(e)}
+
+	//Bianco
+	$(ID).css("background-color", "var(--bs-card-background-default)")
+	$(ClassTitle).css("color", "var(--bs-primary-color-label)")
+	$(ClassLabel).css("color", "var(--bs-heading-medium-emphasis)")
+	$(ClassValue).css("color", "var(--bs-heading-high-emphasis)")
+
+	if (dryer.stato == "Running") {
+		// VERDE
+		$(ID).css("background-color", "var(--bs-card-background-green)")
+		$(ClassTitle).css("color", "var(--bs-card-title-green)")
+		$(ClassLabel).css("color", "var(--bs-card-label-green)")
+		$(ClassValue).css("color", "var(--bs-card-value-green)")
 	}
-	// Funzione che recupera i dati del cliente da TW
-	function getCellInfo(cellsGroup, selectedCustomer) {
-		// Esegue il ciclo per ogni cliente presente
-		cellsGroup.array.forEach((el, i) => {
-			// Genera l'id che identifica i campi della singola card da valorizzare
-			let ID = "#IDCardCellGroup" + i;
-			let ClassTitle = ".IDCardCellGroup" + i + "Title"
-			let ClassLabel = ".IDCardCellGroup" + i + "Label"
-			let ClassValue = ".IDCardCellGroup" + i + "Value"
-
-			let ID_Numero_Carrelli = "#IDCardCellGroup" + i + "Numero_Carrelli"
-			let IDnomeCella = "#IDCardCellGroup" + i + "Nome_Cella"
-			let IDstatoCella = "#IDCardCellGroup" + i + "Stato_Cella"
-			let IDricettaInUso = "#IDCardCellGroup" + i + "Ricetta_in_Uso"
-			let IDtempoPianificato = "#IDCardCellGroup" + i + "Tempo_Pianificato"
-			let IDtempoInLavorazione = "#IDCardCellGroup" + i + "Tempo_in_Lavorazione"
-
-
-			tw.getCustomerCells(selectedCustomer)
-				.then(cellInfo => {
-					$(ID_Numero_Carrelli).text(cellInfo.array[i].numero_carrelli)
-					$(IDnomeCella).text(cellInfo.array[i].name)
-					$(IDstatoCella).text(cellInfo.array[i].stato)
-					$(IDricettaInUso).text(cellInfo.array[i].ricetta)
-					$(IDtempoPianificato).text(cellInfo.array[i].durata)
-					$(IDtempoInLavorazione).text(cellInfo.array[i].tempoLavoro)
-
-					//Bianco
-					$(ID).css("background-color", "var(--bs-card-background-default)")
-					$(ClassTitle).css("color", "var(--bs-primary-color-label)")
-					$(ClassLabel).css("color", "var(--bs-heading-medium-emphasis)")
-					$(ClassValue).css("color", "var(--bs-heading-high-emphasis)")
-
-					if (cellInfo.array[i].stato == "Running") {
-						// VERDE
-						$(ID).css("background-color", "var(--bs-card-background-green)")
-						$(ClassTitle).css("color", "var(--bs-card-title-green)")
-						$(ClassLabel).css("color", "var(--bs-card-label-green)")
-						$(ClassValue).css("color", "var(--bs-card-value-green)")
-					}
-					if (cellInfo.array[i].stato == "Stand By") {
-						// Arancione
-						$(ID).css("background-color", "var(--bs-card-background-yellow)")
-						$(ClassTitle).css("color", "var(--bs-card-title-yellow)")
-						$(ClassLabel).css("color", "var(--bs-card-label-yellow)")
-						$(ClassValue).css("color", "var(--bs-card-value-yellow)")
-					}
-					if (cellInfo.array[i].stato == "undefined") {
-						// Grigio
-						$(ID).css("background-color", "var(--bs-card-background-undefined)")
-						$(ClassTitle).css("color", "var(--bs-card-title-undefined)")
-						$(ClassLabel).css("color", "var(--bs-card-label-undefined)")
-						$(ClassValue).css("color", "var(--bs-card-value-undefined)")
-					}
-					//$('#modal1').modal("hide");
-
-				})
-				.catch(error => console.error(error))
-		})
+	if (dryer.stato == "Stand By") {
+		// Arancione
+		$(ID).css("background-color", "var(--bs-card-background-yellow)")
+		$(ClassTitle).css("color", "var(--bs-card-title-yellow)")
+		$(ClassLabel).css("color", "var(--bs-card-label-yellow)")
+		$(ClassValue).css("color", "var(--bs-card-value-yellow)")
 	}
-
-})
+	if (dryer.stato == "undefined") {
+		// Grigio
+		$(ID).css("background-color", "var(--bs-card-background-undefined)")
+		$(ClassTitle).css("color", "var(--bs-card-title-undefined)")
+		$(ClassLabel).css("color", "var(--bs-card-label-undefined)")
+		$(ClassValue).css("color", "var(--bs-card-value-undefined)")
+	}
+}

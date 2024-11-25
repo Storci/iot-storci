@@ -426,6 +426,24 @@ function getCustomerCells(customer) {
     });
 }
 
+// Recupera l'elenco delle celle di un cliente
+function getCustomerCells_V2(customer) {
+    let url = baseUrl + "Things/Storci.Thing.Manage.Bootstrap/Services/getCustomerCells_V2";
+    let data = JSON.stringify({"Customer":customer});
+    //fetch API
+    return fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: data
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    });
+}
+
 
 // Recupera il record dell'utente inserito nella DataTable Storci.DataTables.Customer_Users.
 function getUser(username) {
@@ -881,6 +899,7 @@ export{
 	influxQuery,
 	getCustomerGroupMachine,
 	getCustomerCells,
+    getCustomerCells_V2,
 	getUser,
 	getCellInfo,
 	getCellHistoryProductions,
