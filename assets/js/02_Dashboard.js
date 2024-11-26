@@ -50,9 +50,8 @@ let promises = [];
 //recupera i dati generici della linea
 promises.push(
   tw.service_02_getLinesGeneralInfo(entityName).then(res => {
-    console.log(res);
-    if (res.array.length > 0) {
-      res.array.forEach((item, i) => {
+    if (res.rows.length > 0) {
+      res.rows.forEach((item, i) => {
         createDivLine('#IDdivLinee', item.entityName);
         setLineCardsValue(entityName);
         setInterval(setLineCardsValue, 60000, entityName);
@@ -89,14 +88,13 @@ promises.push(
 // recupera i dati generici della cella
 promises.push(
   tw.service_01_getDryersGeneralInfo(entityName).then(res => {
-    console.log(res);
-    if (JSON.stringify(res) !== '{}') {
+    if (JSON.stringify(res.rows[0]) !== '{}') {
       createDivDryers('#IDdivDryers', entityName);
       setDryersCardsValue(entityName);
       setInterval(setDryersCardsValue, 60000, entityName);
 
       let arrayUM = ['Consumo Giornaliero (kcal)', 'Celle Attive'];
-      let id = 'ID' + res.entityName.replace(/\./g, '');
+      let id = 'ID' + res.rows[0].entityName.replace(/\./g, '');
       let idLegend = id + 'Legend';
       let idTrend = id + 'Trend';
 
@@ -140,7 +138,7 @@ Promise.all(promises).then(() => {
 function setLineCardsValue(entityName) {
   tw.service_02_getLinesGeneralInfo(entityName)
     .then(result => {
-      result.array.forEach((item, i) => {
+      result.rows.forEach((item, i) => {
         let keyProperty = item.entityName.replace(/\./g, '');
         keyProperty = keyProperty.toLowerCase();
         let key = `[${keyProperty}]`;
@@ -156,12 +154,12 @@ function setLineCardsValue(entityName) {
 function setDryersCardsValue(entityName) {
   tw.service_01_getDryersGeneralInfo(entityName)
     .then(result => {
-      if (result.entityName) {
-        let keyProperty = result.entityName.replace(/\./g, '');
+      if (result.rows[0].entityName) {
+        let keyProperty = result.rows[0].entityName.replace(/\./g, '');
         keyProperty = keyProperty.toLowerCase();
         let key = `[${keyProperty}]`;
         $(key).each(function () {
-          $(this).text(result[$(this).attr(keyProperty)]);
+          $(this).text(result.rows[0][$(this).attr(keyProperty)]);
         });
       }
     })
@@ -199,18 +197,18 @@ function createDivDryers(IDdiv, entityName) {
   let id = 'ID' + entityName.replace(/\./g, '');
   let html = '';
 
-  html += '<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" data-pg-collapsed>'
+  html += '<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1 border-bottom" data-pg-collapsed>'
   html += '<h1 class="h2 card-result" translate_id ="dryer">Dryer</h1>'
   html += '<div class="btn-toolbar mb-2 mb-md-0">'
   html += '<div class="btn-group me-2"></div>'
   html += '</div>'
   html += '</div>'
-  html += '<div id="IDDryersData" class="row g-0 row-cols-1 row-cols-lg-4 d-flex gy-3" style="min-height: 300px;">'
+  html += '<div id="IDDryersData" class="row g-0 row-cols-1 row-cols-lg-4 d-flex gy-2 mb-5" style="min-height: 300px;">'
   html += '<div class="col col-customer col-sx-padding">'
   html += '<div class="card card-h-100" style="border-radius: 0px;">'
   html += '<div class="card-body" style="padding: 1.5rem;">'
   html += '<h6 class="text-muted card-subtitle mb-2" style="color: var(--bs-heading-medium-emphasis);font-size: 1rem;" translate_id="dryers_in_processing">Active Dryers</h6>'
-  html += '<h4 class="card-title thingworx-property-value" ' + keyProperty + '="celle_attive" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
+  html += '<h4 class="card-title thingworx-property-value" ' + keyProperty + '="Celle_in_Lavorazione" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
   html += '</div>'
   html += '</div>'
   html += '</div>'
@@ -226,7 +224,7 @@ function createDivDryers(IDdiv, entityName) {
   html += '<div class="card card-h-100" style="border-radius: 0px;">'
   html += '<div class="card-body" style="padding: 1.5rem;">'
   html += '<h6 class="text-muted card-subtitle mb-2" style="color: var(--bs-heading-medium-emphasis);font-size: 1rem;" translate_id="room_humidity">Room Humidity</h6>'
-  html += '<h4 class="card-title thingworx-property-value" ' + keyProperty + '="umidita_ambiente" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
+  html += '<h4 class="card-title thingworx-property-value" ' + keyProperty + '="Umidita_Ambiente" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
   html += '</div>'
   html += '</div>'
   html += '</div>'
@@ -234,7 +232,7 @@ function createDivDryers(IDdiv, entityName) {
   html += '<div class="card card-h-100" style="border-radius: 0px;">'
   html += '<div class="card-body" style="padding: 1.5rem;">'
   html += '<h6 class="text-muted card-subtitle mb-2" style="color: var(--bs-heading-medium-emphasis);font-size: 1rem;" translate_id="number_of_alarms">Number of Alarms Present</h6>'
-  html += '<h4 class="card-title thingworx-property-value" ' + keyProperty + '="allarmi_attivi" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
+  html += '<h4 class="card-title thingworx-property-value" ' + keyProperty + '="Allarmi_Attivi" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
   html += '</div>'
   html += '</div>'
   html += '</div>'
@@ -269,18 +267,18 @@ function createDivLine(IDdiv, entityName) {
   let id = 'ID' + entityName.replace(/\./g, '');
   let html = '';
 
-  html += '<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" data-pg-collapsed>'
-  html += '<h1 class="h2 card-result" translate_id ="line">Line</h1>'
+  html += '<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1 mt-0 border-bottom" data-pg-collapsed>'
+  html += '<h1 class="h2 card-result" class="card-title" ' + keyProperty + '="Nome_Linea">Line</h1>'
   html += '<div class="btn-toolbar mb-2 mb-md-0">'
   html += '<div class="btn-group me-2"></div>'
   html += '</div>'
   html += '</div>'
-  html += '<div id="IDdivLineData" class="row g-0 row-cols-1 row-cols-lg-3 gy-3" style="min-height: 300px;">'
+  html += '<div id="IDdivLineData" class="row g-0 row-cols-1 row-cols-lg-3 gy-2 mb-5" style="min-height: 300px;">'
   html += '<div class="col col-customer col-sx-padding">'
   html += '<div class="card card-h-100" style="border-radius: 0px;">'
   html += '<div class="card-body" style="padding: 1.5rem;">'
   html += '<h6 class="text-muted card-subtitle mb-2" style="color: var(--bs-heading-medium-emphasis);font-size: 1rem;" translate_id="machine_status">Machine Status</h6>'
-  html += '<h4 class="card-title" ' + keyProperty + '="stato_linea" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
+  html += '<h4 class="card-title" ' + keyProperty + '="Stato_Linea" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
   html += '</div>'
   html += '</div>'
   html += '</div>'
@@ -288,7 +286,7 @@ function createDivLine(IDdiv, entityName) {
   html += '<div class="card card-h-100" style="border-radius: 0px;">'
   html += '<div class="card-body" style="padding: 1.5rem;">'
   html += '<h6 class="text-muted card-subtitle mb-2" style="color: var(--bs-heading-medium-emphasis);font-size: 1rem;" translate_id="Recipe_set">Recipe Set</h6>'
-  html += '<h4 class="card-title" ' + keyProperty + '="nome_ricetta" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
+  html += '<h4 class="card-title" ' + keyProperty + '="Nome_Ricetta" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;">Title</h4>'
   html += '</div>'
   html += '</div>'
   html += '</div>'
@@ -296,7 +294,7 @@ function createDivLine(IDdiv, entityName) {
   html += '<div class="card card-h-100" style="border-radius: 0px;">'
   html += '<div class="card-body" style="padding: 1.5rem;">'
   html += '<h6 class="text-muted card-subtitle mb-2" style="color: var(--bs-heading-medium-emphasis);font-size: 1rem;" translate_id="number_of_alarms">Number Of Alarms Present</h6>'
-  html += '<h4 class="card-title" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;" ' + keyProperty + '="numero_allarmi">Title</h4>'
+  html += '<h4 class="card-title" style="color: var(--bs-heading-high-emphasis);font-size: 1.2rem;" ' + keyProperty + '="Numero_Allarmi">Title</h4>'
   html += '</div>'
   html += '</div>'
   html += '</div>'
