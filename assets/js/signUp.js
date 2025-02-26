@@ -58,105 +58,97 @@ $("#IDPassword_repeat").keyup(function(){
   }
 })
 
+// Function to handle fingerprint registration
+async function handleFingerprintRegistration(email, name) {
+  // Generate registration options
+  const response = await fetch('http://localhost:3000/generate-registration-options', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, name }),
+  });
 
-// Funzione scatenata dalla pressione del pulsante di sign up
-/*$('#IDButtonSignUp').click(function(){
-  let email = $('#IDEmail').val()
-  let customerCode = $('#Unique').val()
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
+  }
 
-  // Controlla che l'email non sia già stata usata
-  // Recupera il record dell'utente dalla tabella di tw
-	tw.getUser(email)
-		.then(tableRow => {
-      if(tableRow.rows.length > 0){
-        $('#IDErrorMessageSignUp').css("display", "block")
-        $('#IDErrorMessageSignUp').text('Error, the email is already use')
-      }else{
-        let pass1 = $('#IDPassword').val()
-        let pass2 = $('#IDPassword_repeat').val()
-        if(pass1 == pass2){
-          
-          tw.service_97_addNewUser(email, customerCode)
-          fb.signUpWithEmailPassword(email, pass1) //baseURL)
+  const options = await response.json();
 
-          let db = firebase.firestore()
-          let data = db.collection('users').doc(email)
+  // Ensure the challenge is correctly set
+  if (!options.challenge) {
+    throw new Error('Challenge is missing in the registration options');
+  }
 
-          data.set({
-            firstName:$("#IDName").val(),
-            lastName: $("#IDLastName").val(),
-            email:    $("#IDEmail").val(),
-            company:  $("#IDCompanyName").val(),
-            state:    $("#IDCountries").val(),
-            mobile:   $("#IDPhoneNumber").val(),
-          })
-          .then(() => {
-              $("#signUpSuccess").css("display","block")
-              /*setTimeout(() => {
-                window.location.href = "./90_signIn.html"
-              }, 3000);
-          })
-          .catch((error) => {
-            console.log(error)
-            $('#IDErrorMessage').css("display", "block")
-            $('#IDErrorMessage').text(error)
-          })
-        }else{
-          $('#IDErrorMessage').css("display", "block")
-          $('#IDErrorMessage').text('Error, the 2 passwords are different')
-        }
-      }
-    })
-		.catch(error => console.error(error))
-})*/
+  // Convert the challenge from base64 to Uint8Array
+  options.challenge = Uint8Array.from(atob(options.challenge), c => c.charCodeAt(0));
 
+  // Convert user ID from base64 to Uint8Array
+  options.user.id = Uint8Array.from(atob(options.user.id), c => c.charCodeAt(0));
 
-$('#IDButtonSignUp').click(async function(e) {
+  // Convert excludeCredentials ID from base64 to Uint8Array
+  if (options.excludeCredentials) {
+    options.excludeCredentials = options.excludeCredentials.map(cred => ({
+      ...cred,
+      id: Uint8Array.from(atob(cred.id), c => c.charCodeAt(0)),
+    }));
+  }
+
+  // Create a new credential
+  const credential = await navigator.credentials.create({ publicKey: options });
+
+  // Send the credential to the server for verification
+  const verificationResponse = await fetch('http://localhost:3000/verify-registration', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, attestationResponse: credential }),
+  });
+
+  if (!verificationResponse.ok) {
+    const errorText = await verificationResponse.text();
+    throw new Error(`HTTP error! status: ${verificationResponse.status}, response: ${errorText}`);
+  }
+
+  const verificationResult = await verificationResponse.json();
+
+  if (verificationResult.verified) {
+    console.log("Fingerprint registration successful");
+    return true;
+  } else {
+    throw new Error("Fingerprint registration failed");
+  }
+}
+
+// Common function to handle user registration
+async function handleUserRegistration(e) {
   e.preventDefault(); // Prevent default form submission behavior
 
   try {
-      let email = $('#IDEmail').val();
-      let customerCode = $('#Unique').val();
+    const email = $("#IDEmail").val();
+    const name = $("#IDName").val() + " " + $("#IDLastName").val();
 
-      let tableRow = await tw.getUser(email);
+    // Handle fingerprint registration
+    const fingerprintRegistered = await handleFingerprintRegistration(email, name);
 
-      if (tableRow.rows.length > 0) {
-          $('#IDErrorMessageSignUp').css("display", "block");
-          $('#IDErrorMessageSignUp').text('Error, the email is already in use');
-      } else {
-          let pass1 = $('#IDPassword').val();
-          let pass2 = $('#IDPassword_repeat').val();
-
-          if (pass1 === pass2) {
-              await tw.service_97_addNewUser(email, customerCode);
-              await fb.signUpWithEmailPassword(email, pass1);
-
-              let db = firebase.firestore();
-              let data = db.collection('users').doc(email);
-
-              await data.set({
-                  firstName: $("#IDName").val(),
-                  lastName: $("#IDLastName").val(),
-                  email: $("#IDEmail").val(),
-                  company: $("#IDCompanyName").val(),
-                  state: $("#IDCountries").val(),
-                  mobile: $("#IDPhoneNumber").val(),
-              });
-
-              $("#signUpSuccess").css("display", "block");
-              console.log("sign up succesful")
-          } else {
-              $('#IDErrorMessage').css("display", "block");
-              $('#IDErrorMessage').text('Error, the two passwords do not match');
-          }
-      }
+    if (fingerprintRegistered) {
+      console.log("User registration successful");
+      $("#signUpSuccess").css("display", "block");
+    }
   } catch (error) {
-      console.error(error);
-      $('#IDErrorMessage').css("display", "block");
-      $('#IDErrorMessage').text(error.message); // Display error message to user
+    console.error(error);
+    $('#IDErrorMessageSignUp').css("display", "block");
+    $('#IDErrorMessageSignUp').text(error.message);
   }
-});
+}
 
+// Add event listener to the registration button
+document.getElementById("IDButtonSignUp").addEventListener("click", handleUserRegistration);
+
+// Add event listener to the fingerprint registration button
+document.getElementById("IDButtonFingerprintRegister").addEventListener("click", handleUserRegistration);
 
 // URL per chiamata REST API per ottenere la lista dei paesi
 const url = "https://restcountries.com/v2/all";
@@ -191,55 +183,5 @@ async function fetchCountries() {
         console.error('operazione in errore:', error);
     }
 }
-
 // Call the function to fetch and display the countries
 fetchCountries();
-
-
-
-
-/*$('#IDButtonSignUp').click(async function() {
-  try {
-      let email = $('#IDEmail').val();
-      let customerCode = $('#Unique').val();
-
-      let tableRow = await tw.getUser(email);
-
-      if (tableRow.rows.length > 0) {
-          $('#IDErrorMessageSignUp').css("display", "block");
-          $('#IDErrorMessageSignUp').text('Error, the email is already in use');
-      } else {
-          let pass1 = $('#IDPassword').val();
-          let pass2 = $('#IDPassword_repeat').val();
-
-          if (pass1 === pass2) {
-              await Promise.all([
-                  tw.service_97_addNewUser(email, customerCode),
-                  fb.signUpWithEmailPassword(email, pass1)
-              ]);
-
-              let db = firebase.firestore();
-              let data = db.collection('users').doc(email);
-
-              await data.set({
-                  firstName: $("#IDName").val(),
-                  lastName: $("#IDLastName").val(),
-                  email: $("#IDEmail").val(),
-                  company: $("#IDCompanyName").val(),
-                  state: $("#IDCountries").val(),
-                  mobile: $("#IDPhoneNumber").val(),
-              });
-
-              $("#signUpSuccess").css("display", "block");
-          } else {
-              $('#IDErrorMessage').css("display", "block");
-              $('#IDErrorMessage').text('Error, the two passwords do not match');
-          }
-      }
-  } catch (error) {
-      console.error(error);
-      $('#IDErrorMessage').css("display", "block");
-      $('#IDErrorMessage').text(error.message); // Display error message to user
-  }
-});
-*/

@@ -138,4 +138,61 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Function to handle fingerprint authentication
+async function handleFingerprintAuthentication() {
+    try {
+      const email = $("#field-email").val();
   
+      // Generate authentication options
+      const response = await fetch('http://localhost:3000/generate-authentication-options', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
+      }
+  
+      const options = await response.json();
+  
+      // Get the credential
+      const assertion = await navigator.credentials.get({ publicKey: options });
+  
+      // Send the credential to the server for verification
+      const verificationResponse = await fetch('http://localhost:3000/verify-authentication', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, assertionResponse: assertion }),
+      });
+  
+      if (!verificationResponse.ok) {
+        const errorText = await verificationResponse.text();
+        throw new Error(`HTTP error! status: ${verificationResponse.status}, response: ${errorText}`);
+      }
+  
+      const verificationResult = await verificationResponse.json();
+  
+      if (verificationResult.verified) {
+        console.log("Fingerprint authentication successful");
+        // Redirect to the dashboard or another page
+        window.location.href = "./dashboard.html";
+      } else {
+        throw new Error("Fingerprint authentication failed");
+      }
+    } catch (error) {
+      console.error(error);
+      $('#IDErrorMessage').css("display", "block");
+      $('#IDErrorMessage').text(error.message);
+    }
+  }
+  
+  // Add event listener to the fingerprint button
+  document.getElementById("IDButtonFingerprint").addEventListener("click", handleFingerprintAuthentication);
+
+
