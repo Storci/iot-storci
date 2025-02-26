@@ -59,7 +59,12 @@ $("#IDPassword_repeat").keyup(function(){
 })
 
 // Function to handle fingerprint registration
-async function handleFingerprintRegistration(email, name) {
+async function handleFingerprintRegistration(e) {
+  e.preventDefault(); // Prevent default form submission behavior
+
+  const email = $("#IDEmail").val();
+  const name = $("#IDName").val() + " " + $("#IDLastName").val();
+
   // Generate registration options
   const response = await fetch('http://localhost:3000/generate-registration-options', {
     method: 'POST',
@@ -122,21 +127,19 @@ async function handleFingerprintRegistration(email, name) {
   }
 }
 
-// Common function to handle user registration
-async function handleUserRegistration(e) {
+// Function to handle normal user registration
+async function handleNormalUserRegistration(e) {
   e.preventDefault(); // Prevent default form submission behavior
 
   try {
     const email = $("#IDEmail").val();
+    const password = $("#IDPassword").val();
     const name = $("#IDName").val() + " " + $("#IDLastName").val();
 
-    // Handle fingerprint registration
-    const fingerprintRegistered = await handleFingerprintRegistration(email, name);
-
-    if (fingerprintRegistered) {
-      console.log("User registration successful");
-      $("#signUpSuccess").css("display", "block");
-    }
+    // Perform normal user registration (e.g., save to database, etc.)
+    // This is a placeholder for your normal registration logic
+    console.log("Normal user registration successful");
+    $("#signUpSuccess").css("display", "block");
   } catch (error) {
     console.error(error);
     $('#IDErrorMessageSignUp').css("display", "block");
@@ -144,11 +147,11 @@ async function handleUserRegistration(e) {
   }
 }
 
-// Add event listener to the registration button
-document.getElementById("IDButtonSignUp").addEventListener("click", handleUserRegistration);
+// Add event listener to the normal registration button
+document.getElementById("IDButtonSignUp").addEventListener("click", handleNormalUserRegistration);
 
 // Add event listener to the fingerprint registration button
-document.getElementById("IDButtonFingerprintRegister").addEventListener("click", handleUserRegistration);
+document.getElementById("IDButtonFingerprintRegister").addEventListener("click", handleFingerprintRegistration);
 
 // URL per chiamata REST API per ottenere la lista dei paesi
 const url = "https://restcountries.com/v2/all";
