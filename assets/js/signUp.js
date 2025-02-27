@@ -58,53 +58,52 @@ $("#IDPassword_repeat").keyup(function(){
   }
 })
 
-
+// Function to handle normal user registration
 $('#IDButtonSignUp').click(async function(e) {
   e.preventDefault(); // Prevent default form submission behavior
 
   try {
-      let email = $('#IDEmail').val();
-      let customerCode = $('#Unique').val();
+    let email = $('#IDEmail').val();
+    let customerCode = $('#Unique').val();
 
-      let tableRow = await tw.getUser(email);
+    let tableRow = await tw.getUser(email);
 
-      if (tableRow.rows.length > 0) {
-          $('#IDErrorMessageSignUp').css("display", "block");
-          $('#IDErrorMessageSignUp').text('Error, the email is already in use');
+    if (tableRow.rows.length > 0) {
+      $('#IDErrorMessageSignUp').css("display", "block");
+      $('#IDErrorMessageSignUp').text('Error, the email is already in use');
+    } else {
+      let pass1 = $('#IDPassword').val();
+      let pass2 = $('#IDPassword_repeat').val();
+
+      if (pass1 === pass2) {
+        await tw.service_97_addNewUser(email, customerCode);
+        await fb.signUpWithEmailPassword(email, pass1);
+
+        let db = firebase.firestore();
+        let data = db.collection('users').doc(email);
+
+        await data.set({
+          firstName: $("#IDName").val(),
+          lastName: $("#IDLastName").val(),
+          email: $("#IDEmail").val(),
+          company: $("#IDCompanyName").val(),
+          state: $("#IDCountries").val(),
+          mobile: $("#IDPhoneNumber").val(),
+        });
+
+        $("#signUpSuccess").css("display", "block");
+        console.log("sign up successful");
       } else {
-          let pass1 = $('#IDPassword').val();
-          let pass2 = $('#IDPassword_repeat').val();
-
-          if (pass1 === pass2) {
-              await tw.service_97_addNewUser(email, customerCode);
-              await fb.signUpWithEmailPassword(email, pass1);
-
-              let db = firebase.firestore();
-              let data = db.collection('users').doc(email);
-
-              await data.set({
-                  firstName: $("#IDName").val(),
-                  lastName: $("#IDLastName").val(),
-                  email: $("#IDEmail").val(),
-                  company: $("#IDCompanyName").val(),
-                  state: $("#IDCountries").val(),
-                  mobile: $("#IDPhoneNumber").val(),
-              });
-
-              $("#signUpSuccess").css("display", "block");
-              console.log("sign up succesful")
-          } else {
-              $('#IDErrorMessage').css("display", "block");
-              $('#IDErrorMessage').text('Error, the two passwords do not match');
-          }
+        $('#IDErrorMessage').css("display", "block");
+        $('#IDErrorMessage').text('Error, the two passwords do not match');
       }
+    }
   } catch (error) {
-      console.error(error);
-      $('#IDErrorMessage').css("display", "block");
-      $('#IDErrorMessage').text(error.message); // Display error message to user
+    console.error(error);
+    $('#IDErrorMessage').css("display", "block");
+    $('#IDErrorMessage').text(error.message); // Display error message to user
   }
 });
-
 
 // Function to handle fingerprint registration
 async function handleFingerprintRegistration(e) {
@@ -113,65 +112,70 @@ async function handleFingerprintRegistration(e) {
   const email = $("#IDEmail").val();
   const name = $("#IDName").val() + " " + $("#IDLastName").val();
 
-  // Generate registration options
-  const response = await fetch('http://localhost:3000/generate-registration-options', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, name }),
-  });
+  try {
+    const response = await fetch('http://localhost:3000/generate-registration-options', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, name }),
+    });
+  
+    // Check if the request was successful
+    if (!response.ok) {
+      const errorData = await response.json(); // Get the error object sent by the server
+      console.error('Server error:', errorData.error);
+      throw new Error(`HTTP error! status: ${response.status}, ${errorData.error}`);
+    }
+  
+    const options = await response.json(); // Parse the JSON response
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
-  }
+    // Ensure the challenge is correctly set
+    if (!options.challenge) {
+      throw new Error('Challenge is missing in the registration options');
+    }
 
-  const options = await response.json();
+    // Convert the challenge from base64 to Uint8Array
+    options.challenge = Uint8Array.from(atob(options.challenge), c => c.charCodeAt(0));
 
-  // Ensure the challenge is correctly set
-  if (!options.challenge) {
-    throw new Error('Challenge is missing in the registration options');
-  }
+    // Convert user ID from base64 to Uint8Array
+    options.user.id = Uint8Array.from(atob(options.user.id), c => c.charCodeAt(0));
 
-  // Convert the challenge from base64 to Uint8Array
-  options.challenge = Uint8Array.from(atob(options.challenge), c => c.charCodeAt(0));
+    // Convert excludeCredentials ID from base64 to Uint8Array
+    if (options.excludeCredentials) {
+      options.excludeCredentials = options.excludeCredentials.map(cred => ({
+        ...cred,
+        id: Uint8Array.from(atob(cred.id), c => c.charCodeAt(0)),
+      }));
+    }
 
-  // Convert user ID from base64 to Uint8Array
-  options.user.id = Uint8Array.from(atob(options.user.id), c => c.charCodeAt(0));
+    // Create a new credential
+    const credential = await navigator.credentials.create({ publicKey: options });
 
-  // Convert excludeCredentials ID from base64 to Uint8Array
-  if (options.excludeCredentials) {
-    options.excludeCredentials = options.excludeCredentials.map(cred => ({
-      ...cred,
-      id: Uint8Array.from(atob(cred.id), c => c.charCodeAt(0)),
-    }));
-  }
+    // Send the credential to the server for verification
+    const verificationResponse = await fetch('http://localhost:3000/verify-registration', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, attestationResponse: credential }),
+    });
 
-  // Create a new credential
-  const credential = await navigator.credentials.create({ publicKey: options });
+    if (!verificationResponse.ok) {
+      const errorText = await verificationResponse.text();
+      throw new Error(`HTTP error! status: ${verificationResponse.status}, response: ${errorText}`);
+    }
 
-  // Send the credential to the server for verification
-  const verificationResponse = await fetch('http://localhost:3000/verify-registration', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, attestationResponse: credential }),
-  });
+    const verificationResult = await verificationResponse.json();
 
-  if (!verificationResponse.ok) {
-    const errorText = await verificationResponse.text();
-    throw new Error(`HTTP error! status: ${verificationResponse.status}, response: ${errorText}`);
-  }
-
-  const verificationResult = await verificationResponse.json();
-
-  if (verificationResult.verified) {
-    console.log("Fingerprint registration successful");
-    return true;
-  } else {
-    throw new Error("Fingerprint registration failed");
+    if (verificationResult.verified) {
+      console.log("Fingerprint registration successful");
+      return true;
+    } else {
+      throw new Error("Fingerprint registration failed");
+    }
+  } catch (e) {
+    console.log("Error fetching from server ", e);
   }
 }
 
@@ -183,33 +187,33 @@ const url = "https://restcountries.com/v2/all";
 
 // la funzione che ottiene la lista dei paesi and aggiornare il dropdown
 async function fetchCountries() {
-    try {
-        // fare una richiesta get utilizzando la parola API FETCH
-        const response = await fetch(url);
-        
-        // Check if the response is OK (status code 200-299) controllare se la risposta ricevuta è OK 200
-        if (!response.ok) {
-            throw new Error('risposto è andata a buon fine ' + response.statusText);
-        }
-        
-        // fare un parse alla risposta ricevuto in un JSON
-        const countries = await response.json();
+  try {
+    // fare una richiesta get utilizzando la parola API FETCH
+    const response = await fetch(url);
 
-        // attraverso il for genero l'elemento option in base alla lunghezza
-        let results = '<option value="-1">Please Select a Country or State</option>';
-        for (let i = 0; i < countries.length; i++) {
-            results += `<option>${countries[i].name}</option>`;
-        }
-
-        // Update the select element with the new options aggiorna l'elemento selezionato con  le nuove opzioni 
-        document.getElementById("IDCountries").innerHTML = results;
-        
-        // un console log per visualizzare i paesi
-        console.log(countries);
-    } catch (error) {
-        // un exception in caso di un errore
-        console.error('operazione in errore:', error);
+    // Check if the response is OK (status code 200-299) controllare se la risposta ricevuta è OK 200
+    if (!response.ok) {
+      throw new Error('risposto è andata a buon fine ' + response.statusText);
     }
+
+    // fare un parse alla risposta ricevuto in un JSON
+    const countries = await response.json();
+
+    // attraverso il for genero l'elemento option in base alla lunghezza
+    let results = '<option value="-1">Please Select a Country or State</option>';
+    for (let i = 0; i < countries.length; i++) {
+      results += `<option>${countries[i].name}</option>`;
+    }
+
+    // Update the select element with the new options aggiorna l'elemento selezionato con  le nuove opzioni 
+    document.getElementById("IDCountries").innerHTML = results;
+
+    // un console log per visualizzare i paesi
+    console.log(countries);
+  } catch (error) {
+    // un exception in caso di un errore
+    console.error('operazione in errore:', error);
+  }
 }
 // Call the function to fetch and display the countries
 fetchCountries();
