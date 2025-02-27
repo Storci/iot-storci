@@ -58,6 +58,54 @@ $("#IDPassword_repeat").keyup(function(){
   }
 })
 
+
+$('#IDButtonSignUp').click(async function(e) {
+  e.preventDefault(); // Prevent default form submission behavior
+
+  try {
+      let email = $('#IDEmail').val();
+      let customerCode = $('#Unique').val();
+
+      let tableRow = await tw.getUser(email);
+
+      if (tableRow.rows.length > 0) {
+          $('#IDErrorMessageSignUp').css("display", "block");
+          $('#IDErrorMessageSignUp').text('Error, the email is already in use');
+      } else {
+          let pass1 = $('#IDPassword').val();
+          let pass2 = $('#IDPassword_repeat').val();
+
+          if (pass1 === pass2) {
+              await tw.service_97_addNewUser(email, customerCode);
+              await fb.signUpWithEmailPassword(email, pass1);
+
+              let db = firebase.firestore();
+              let data = db.collection('users').doc(email);
+
+              await data.set({
+                  firstName: $("#IDName").val(),
+                  lastName: $("#IDLastName").val(),
+                  email: $("#IDEmail").val(),
+                  company: $("#IDCompanyName").val(),
+                  state: $("#IDCountries").val(),
+                  mobile: $("#IDPhoneNumber").val(),
+              });
+
+              $("#signUpSuccess").css("display", "block");
+              console.log("sign up succesful")
+          } else {
+              $('#IDErrorMessage').css("display", "block");
+              $('#IDErrorMessage').text('Error, the two passwords do not match');
+          }
+      }
+  } catch (error) {
+      console.error(error);
+      $('#IDErrorMessage').css("display", "block");
+      $('#IDErrorMessage').text(error.message); // Display error message to user
+  }
+});
+
+
 // Function to handle fingerprint registration
 async function handleFingerprintRegistration(e) {
   e.preventDefault(); // Prevent default form submission behavior
@@ -126,29 +174,6 @@ async function handleFingerprintRegistration(e) {
     throw new Error("Fingerprint registration failed");
   }
 }
-
-// Function to handle normal user registration
-async function handleNormalUserRegistration(e) {
-  e.preventDefault(); // Prevent default form submission behavior
-
-  try {
-    const email = $("#IDEmail").val();
-    const password = $("#IDPassword").val();
-    const name = $("#IDName").val() + " " + $("#IDLastName").val();
-
-    // Perform normal user registration (e.g., save to database, etc.)
-    // This is a placeholder for your normal registration logic
-    console.log("Normal user registration successful");
-    $("#signUpSuccess").css("display", "block");
-  } catch (error) {
-    console.error(error);
-    $('#IDErrorMessageSignUp').css("display", "block");
-    $('#IDErrorMessageSignUp').text(error.message);
-  }
-}
-
-// Add event listener to the normal registration button
-document.getElementById("IDButtonSignUp").addEventListener("click", handleNormalUserRegistration);
 
 // Add event listener to the fingerprint registration button
 document.getElementById("IDButtonFingerprintRegister").addEventListener("click", handleFingerprintRegistration);
