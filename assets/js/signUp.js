@@ -152,13 +152,25 @@ async function handleFingerprintRegistration(e) {
     // Create a new credential
     const credential = await navigator.credentials.create({ publicKey: options });
 
+    // Convert the credential to a format suitable for sending to the server
+    const attestationResponse = {
+      id: credential.id,
+      rawId: Array.from(new Uint8Array(credential.rawId)),
+      response: {
+        attestationObject: Array.from(new Uint8Array(credential.response.attestationObject)),
+        clientDataJSON: Array.from(new Uint8Array(credential.response.clientDataJSON)),
+      },
+      type: credential.type,
+      extensions: credential.getClientExtensionResults(),
+    };
+
     // Send the credential to the server for verification
     const verificationResponse = await fetch('http://localhost:3000/verify-registration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, attestationResponse: credential }),
+      body: JSON.stringify({ email, attestationResponse }),
     });
 
     if (!verificationResponse.ok) {
