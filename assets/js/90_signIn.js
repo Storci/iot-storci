@@ -1,6 +1,20 @@
 import * as tw from "./Global/Thingworx/thingworx_api_module.js"
 import * as fb from "./Global/Firebase/firebase_auth_module.js"
 
+if (!PublicKeyCredential) {
+  alert('WebAuthn is not supported in this browser');
+}
+
+// Modify credential request
+// const credential = await navigator.credentials.get({
+//   publicKey: {
+//     ...publicKeyConfig,
+//     userVerification: 'required'
+//   },
+//   signal: controller.signal,
+//   mediation: 'optional'
+// });
+
 // Convalida l'inserimento dell'email
 $('.user-info').keyup(function(){
   let value = $(this).val()
@@ -63,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Recupera il valore inserito nel campo email
-    let email = document.querySelector('#field-email').value;
+    let email = document.querySelector('#IDEmail').value;
     // Recupera il valore della password
     let password = document.querySelector('#field-password').value;
 
@@ -128,62 +142,161 @@ document.addEventListener('DOMContentLoaded', function() {
     console.error("Element with ID 'showPassword' or 'IDPassword' not found.");
   }
 });
-
-// Function to handle fingerprint authentication
-async function handleFingerprintAuthentication() {
-  try {
-    const email = $("#field-email").val();
-
-    // Generate authentication options
-    const response = await fetch('http://localhost:3000/generate-authentication-options', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
-    }
-
-    const options = await response.json();
-
-    // Get the credential
-    const assertion = await navigator.credentials.get({ publicKey: options });
-
-    // Send the credential to the server for verification
-    const verificationResponse = await fetch('http://localhost:3000/verify-authentication', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, assertionResponse: assertion }),
-    });
-
-    if (!verificationResponse.ok) {
-      const errorText = await verificationResponse.text();
-      throw new Error(`HTTP error! status: ${verificationResponse.status}, response: ${errorText}`);
-    }
-
-    const verificationResult = await verificationResponse.json();
-
-    if (verificationResult.verified) {
-      console.log("Fingerprint authentication successful");
-      // Redirect to the dashboard or another page
-      window.location.href = "./dashboard.html";
-    } else {
-      throw new Error("Fingerprint authentication failed");
-    }
-  } catch (error) {
-    console.error(error);
-    $('#IDErrorMessage').css("display", "block");
-    $('#IDErrorMessage').text(error.message);
-  }
+// Base64URL Conversion Helpers
+function base64ToBase64Url(b64) {
+  return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-// Add event listener to the fingerprint button
-document.getElementById("IDButtonFingerprint").addEventListener("click", handleFingerprintAuthentication);
+function base64UrlToBase64(b64url) {
+  let padding = '';
+  if (b64url.length % 4 === 2) padding += '==';
+  else if (b64url.length % 4 === 3) padding += '=';
+  return b64url.replace(/-/g, '+').replace(/_/g, '/') + padding;
+}
+
+async function handleFingerprintAuthentication(email) {
+  try {
+
+    console.log('Email sent for authentication:', email);
+    // Add loading state
+    console.group('[WebAuthn Debug]');
+    console.log('Starting auth for:', email);
+
+
+    
+    // Get authentication options
+   console.log('Step 1: Requesting auth options');
+    const optionsResponse = await fetch('http://localhost:3000/generate-authentication-options',  {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    console.log('Auth options status:', optionsResponse.status);
+
+    // Verify options response
+    if (!optionsResponse.ok) {
+      const error = await optionsResponse.json();
+      throw new Error(error.error || 'Failed to get authentication options');
+    }
+
+    const options = await optionsResponse.json();
+    console.log('Auth options:', options);
+
+    // Convert challenge PROPERLY
+    const decodedChallenge = Uint8Array.from(
+      atob(base64UrlToBase64(options.challenge)),
+      c => c.charCodeAt(0)
+    );
+    console.log('Challenge buffer:', decodedChallenge);
+
+    // 3. Convert credentials
+    console.log('Step 3: Converting allowCredentials');
+    const allowCredentials = options.allowCredentials.map(cred => {
+      const idBuffer = Uint8Array.from(
+        atob(base64UrlToBase64(cred.id)),
+        c => c.charCodeAt(0)
+      );
+      console.log('Credential ID:', cred.id, 'Buffer:', idBuffer);
+      return {
+        ...cred,
+        id: idBuffer
+      };
+    });
+
+    // 4. Create publicKey request
+    console.log('Step 4: Creating credential request');
+    const publicKey = {
+      challenge: decodedChallenge,
+      allowCredentials: allowCredentials,
+      rpId: options.rpID,
+      timeout: options.timeout,
+      userVerification: 'preferred',
+    };
+    console.log('PublicKey config:', publicKey);
+
+    // Set timeout and signal
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 120000);
+
+    // Get credential
+    const credential = await navigator.credentials.get({
+      publicKey: publicKey,
+      signal: controller.signal,
+      mediation: 'optional' // consider removing if not needed
+    });
+    
+    if (typeof PublicKeyCredential !== 'undefined' && 
+      !PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable) {
+    PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable = async () => true;
+  }
+
+    // Prepare verification response
+    const authenticationResponse = {
+      id: credential.id,
+      rawId: base64ToBase64Url(
+        btoa(String.fromCharCode(...new Uint8Array(credential.rawId)))
+      ),
+      type: credential.type,
+      response: {
+        clientDataJSON: base64ToBase64Url(
+          btoa(String.fromCharCode(...new Uint8Array(credential.response.clientDataJSON)))
+        ),
+        authenticatorData: base64ToBase64Url(
+          btoa(String.fromCharCode(...new Uint8Array(credential.response.authenticatorData)))
+        ),
+        signature: base64ToBase64Url(
+          btoa(String.fromCharCode(...new Uint8Array(credential.response.signature)))
+        ),
+        userHandle: credential.response.userHandle,
+      },
+    };
+
+    // Verify with server
+    const verificationResponse = await fetch('http://localhost:3000/verify-authentication', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, authenticationResponse }),
+    });
+
+    const result = await verificationResponse.json();
+    
+    if (result.success) {
+      console.log('Login successful!', result.user);
+      window.location.href = '/dashboard';
+    } else {
+      console.error('Login failed:', result.error);
+      showLoginError(result.error);
+    }
+  } catch (error) {
+    console.error('Authentication error:', error);
+    showLoginError(error.message);
+  } finally {
+    $('#IDButtonFingerprint').prop('disabled', false).text('Fingerprint Login');
+  }
+  
+}
+
+function showLoginError(message) {
+  $('#loginErrorMessage').text(message).show();
+}
+
+// Add login form handler
+$('#IDButtonFingerprint').click(async (e) => {
+  e.preventDefault();
+  // Verify this matches your HTML input ID
+  const email = $('#IDEmail').val().trim();
+if (!validateEmail(email)) {
+  showLoginError('Please enter a valid email address');
+  return;
+}
+  
+  await handleFingerprintAuthentication(email);
+});
+
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+
 
 
